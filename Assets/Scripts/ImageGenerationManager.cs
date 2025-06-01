@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using TMPro;
@@ -63,6 +62,7 @@ public class ImageGenerationManager : MonoBehaviour
     
     private IEnumerator RequestImageGeneration(string prompt)
     {
+        Debug.Log("이미지 생성 요청: " + prompt);
         string url = $"https://api-inference.huggingface.co/models/{textToImageModelID}";
         
         var requestData = new Dictionary<string, object>
@@ -89,8 +89,8 @@ public class ImageGenerationManager : MonoBehaviour
             
         if (request.result == UnityWebRequest.Result.Success)
         {
-            byte[] imageData = request.downloadHandler.data;
-            originalTexture = new Texture2D(2, 2);
+            var imageData = request.downloadHandler.data;
+            originalTexture = new Texture2D(2, 2, TextureFormat.RGB24, false);
             if (originalTexture.LoadImage(imageData))
             {
                 originalImageDisplay.texture = originalTexture;
@@ -121,7 +121,7 @@ public class ImageGenerationManager : MonoBehaviour
         var previous = active;
         active = renderTex;
         
-        var result = new Texture2D(source.width, source.height);
+        var result = new Texture2D(source.width, source.height, TextureFormat.RGB24, false);
         result.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
         result.Apply();
         
@@ -133,7 +133,7 @@ public class ImageGenerationManager : MonoBehaviour
     
     public void CreateSpotDifferencePuzzle()
     {
-        if (originalTexture == null)
+        if (!originalTexture)
         {
             Debug.LogWarning("먼저 이미지를 생성해주세요.");
             return;
@@ -141,7 +141,7 @@ public class ImageGenerationManager : MonoBehaviour
         
         GenerateDifferencePositions();
         
-        StartCoroutine(ApplyInpaintingToAllDifferences());
+        StartCoroutine(CO_ApplyInpaintingToAllDifferences());
     }
     
     private void GenerateDifferencePositions()
@@ -189,40 +189,36 @@ public class ImageGenerationManager : MonoBehaviour
         Debug.Log($"{differencePositions.Count}개의 차이점 위치 생성 완료");
     }
     
-    private IEnumerator ApplyInpaintingToAllDifferences()
+    private IEnumerator CO_ApplyInpaintingToAllDifferences()
     {
-        // foreach (var position in differencePositions)
-        // {
-            // yield return StartCoroutine(ApplyInpainting(position));
-        // }
-        yield return StartCoroutine(ApplyInpainting(differencePositions[0]));
+        yield return StartCoroutine(CO_ApplyInpainting(differencePositions));
         
         Debug.Log("틀린그림 찾기 퍼즐 생성 완료!");
     }
     
-    private IEnumerator ApplyInpainting(Vector2Int position)
+    private IEnumerator CO_ApplyInpainting(List<Vector2Int> positions)
     {
-        var maskTexture = new Texture2D(modifiedTexture.width, modifiedTexture.height);
+        var maskTexture = new Texture2D(modifiedTexture.width, modifiedTexture.height, TextureFormat.RGB24, false);
         var maskColors = new Color[maskTexture.width * maskTexture.height];
-        for (int i = 0; i < maskColors.Length; i++)
+        for (var i = 0; i < maskColors.Length; i++)
         {
             maskColors[i] = Color.black;
         }
         
-        for (int y = -differenceSize; y <= differenceSize; y++)
+        foreach(var pos in positions)
         {
-            for (int x = -differenceSize; x <= differenceSize; x++)
+            for (var y = -differenceSize; y <= differenceSize; y++)
             {
-                if (x*x + y*y <= differenceSize*differenceSize)
+                for (var x = -differenceSize; x <= differenceSize; x++)
                 {
-                    int posX = position.x + x;
-                    int posY = position.y + y;
-                    
-                    if (posX >= 0 && posX < maskTexture.width && posY >= 0 && posY < maskTexture.height)
-                    {
-                        int index = posY * maskTexture.width + posX;
-                        maskColors[index] = Color.white;
-                    }
+                    if (x * x + y * y > differenceSize * differenceSize) continue;
+                    var posX = pos.x + x;
+                    var posY = pos.y + y;
+
+                    if (posX < 0 || posX >= maskTexture.width || posY < 0 || posY >= maskTexture.height) continue;
+                        
+                    var index = posY * maskTexture.width + posX;
+                    maskColors[index] = Color.white;
                 }
             }
         }
@@ -238,25 +234,16 @@ public class ImageGenerationManager : MonoBehaviour
         };
         modifiedPrompt += ", " + modifications[UnityEngine.Random.Range(0, modifications.Length)];
         
-        yield return StartCoroutine(RequestInpainting(modifiedTexture, maskTexture, modifiedPrompt, position,
+        yield return StartCoroutine(CO_RequestInpainting(modifiedTexture, maskTexture, modifiedPrompt,
             texture2D =>
             {
-                Debug.Log($"[ApplyInpainting] 인페인팅 완료: {position}");
+                Debug.Log($"[ApplyInpainting] 인페인팅 완료");
                 modifiedImageDisplay.texture = texture2D;
             }));
     }
     
-    private IEnumerator RequestInpainting(Texture2D imageTexture, Texture2D maskTexture, string prompt, Vector2Int position, Action<Texture2D> onResult)
+    private IEnumerator CO_RequestInpainting(Texture2D imageTexture, Texture2D maskTexture, string prompt, Action<Texture2D> doneCallback)
     {
-        var savePath = Path.Combine(Application.dataPath, "SavedImages");
-        var imagePath = Path.Combine(savePath, "myTexture.png");
-        var maskPath = Path.Combine(savePath, "myMaskTexture.png");
-        if (!Directory.Exists(savePath))
-            Directory.CreateDirectory(savePath);
-        
-        File.WriteAllBytes(imagePath, imageTexture.EncodeToPNG());
-        File.WriteAllBytes(maskPath, maskTexture.EncodeToPNG());
-        
         var imageBase64 = Convert.ToBase64String(imageTexture.EncodeToPNG());
         var maskBase64 = Convert.ToBase64String(maskTexture.EncodeToPNG());
         
@@ -286,9 +273,9 @@ public class ImageGenerationManager : MonoBehaviour
         else
         {
             var resultBytes = request.downloadHandler.data;
-            var resultTexture = new Texture2D(2, 2);
+            var resultTexture = new Texture2D(2, 2, TextureFormat.RGB24, false);
             resultTexture.LoadImage(resultBytes);
-            onResult?.Invoke(resultTexture);
+            doneCallback?.Invoke(resultTexture);
         }
     }
 }
