@@ -74,5 +74,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # ============ ## OS generated ## ============ #
-Assets/.DS_Store
 .DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+Assets/.DS_Store
