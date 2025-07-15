@@ -5,51 +5,92 @@ using UnityEngine;
 public class TouchManager : MonoBehaviour
 {
     public StageData currentStage;
-    public RectTransform playArea;
-    private List<AnswerPair> foundAnswer;
+    public RectTransform originalImageArea;
+    public RectTransform wrongImageArea;
+    private List<Vector2> foundAnswer;
     public TextMeshProUGUI resultText; // 임시 텍스트(추후에 삭제)
+
+    private bool isChecking = false;
+
+    private enum CheckResult { None, Correct, AlreadyFound }
 
     private void Awake()
     {
-        foundAnswer = new List<AnswerPair>();   
+        foundAnswer = new List<Vector2>();
     }
 
     public void CheckAnswer(Vector2 screenPos)
     {
-        if (CheckInImage(playArea, screenPos, true) || CheckInImage(playArea, screenPos, false))
+        if (isChecking) return;
+        if (!IsPointerInsideRect(originalImageArea, screenPos) && !IsPointerInsideRect(wrongImageArea, screenPos)) return;
+
+
+        var resultOriginal = CheckInImage(originalImageArea, screenPos);
+        var resultWrong = CheckInImage(wrongImageArea, screenPos);
+
+        if (resultOriginal == CheckResult.Correct || resultWrong == CheckResult.Correct)
         {
-                // TODO : 텍스트 관련 삭제 후 정답 체크 시 빨간 동그라미 표시(영구 유지)
-                resultText.text = "Correct!";
-                resultText.gameObject.SetActive(true);
-                StartCoroutine("HideResultText");
+            // TODO : 텍스트 관련 삭제 후 정답 체크 시 빨간 동그라미 표시(영구 유지)
+            resultText.text = "Correct!";
+            resultText.gameObject.SetActive(true);
+            StartCoroutine("HideResultText");
+        }
+        else if (resultOriginal == CheckResult.AlreadyFound || resultWrong == CheckResult.AlreadyFound)
+        {
+            //Debug.Log("이미 찾은 곳입니다.");
+        }
+        else
+        {
+            // TODO : 텍스트 관련 삭제 후 틀린 곳 체크 시 남은 시간 차감 및 X 표시(1초 유지)
+            isChecking = true;
+            resultText.text = "Wrong!";
+            resultText.gameObject.SetActive(true);
+            StartCoroutine("HideResultText");
+            StartCoroutine("CheckingAfterDelay");
         }
     }
 
-    private bool CheckInImage(RectTransform imageRect, Vector2 screenPos, bool isOriginal)
+    private CheckResult CheckInImage(RectTransform imageRect, Vector2 screenPos)
     {
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(imageRect, screenPos, null, out localPoint);
 
-        foreach (var answer in currentStage.answerPairs)
+        foreach (var answer in currentStage.answerPos)
         {
-            if (IsAlreadyFound(answer)) continue;
-            Vector2 target = isOriginal ? answer.originalImagePos : answer.wrongImagePos;
-
-            if (Vector2.Distance(localPoint, target) <= currentStage.correctRange)
+            if (Vector2.Distance(localPoint, answer) <= currentStage.correctRange)
             {
+                if (IsAlreadyFound(answer))
+                {
+                    return CheckResult.AlreadyFound;
+                }
                 foundAnswer.Add(answer);
-                return true;
+                return CheckResult.Correct;
             }
         }
-        return false;
+        return CheckResult.None;
     }
 
-    private bool IsAlreadyFound(AnswerPair answer)
+    private bool IsPointerInsideRect(RectTransform rectTransform, Vector2 screenPos)
+    {
+        if (rectTransform == null) return false;
+        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPos, null);
+    }
+
+    private bool IsAlreadyFound(Vector2 answer)
     {
         return foundAnswer.Contains(answer);
     }
 
+    public int GetFoundAnswerCount()
+    {
+        return foundAnswer.Count;
+    }
 
+    private IEnumerator CheckingAfterDelay()
+    {
+        yield return new WaitForSeconds(1f);
+        isChecking = false;
+    }
     // TODO : 추후에 삭제
     private IEnumerator HideResultText()
     {
