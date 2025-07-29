@@ -5,7 +5,7 @@ using UnityEngine;
 public class TouchManager : MonoBehaviour
 {
     [Header("GameManager")]
-    
+
     [SerializeField]
     private InGameManager inGameManager;
 
@@ -77,7 +77,7 @@ public class TouchManager : MonoBehaviour
         return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPos, null);
     }
 
-    private bool IsAlreadyFound(Vector2 answer)
+    public bool IsAlreadyFound(Vector2 answer)
     {
         return foundAnswer.Contains(answer);
     }
@@ -91,5 +91,13 @@ public class TouchManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         isChecking = false;
+    }
+
+    public void ForceAddFoundAnswer(Vector2 answer)
+    {
+        if (!foundAnswer.Contains(answer))
+        {
+            foundAnswer.Add(answer);
+        }
     }
 }

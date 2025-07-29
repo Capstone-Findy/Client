@@ -11,6 +11,7 @@ public class InGameManager : MonoBehaviour
     [Header("Game Information")]
     public StageData currentStage;
     public bool isGameOver = false;
+    public float actualPlayTime = 0f;
 
     [Header("Slider")]
     public Slider timeSlider;
@@ -53,6 +54,7 @@ public class InGameManager : MonoBehaviour
         if (currentTime > 0)
         {
             currentTime -= Time.deltaTime;
+            actualPlayTime += Time.deltaTime;
             timeSlider.value = currentTime;
         }
         else
@@ -77,19 +79,17 @@ public class InGameManager : MonoBehaviour
         {
             gameVictoryPanel.SetActive(true);
 
-            float usedTime = totalTime - currentTime;
-
             if (!DataManager.HasClearTime())
             {
                 // TODO : 로그인 시스템 추가 이후 UploadClearTimeToServer로 함수 변경
-                DataManager.SaveClearTime(usedTime);
-                FirstClearTimeText.text = $"최초 시도 걸린 시간 : {usedTime:F2}초";
+                DataManager.SaveClearTime(actualPlayTime);
+                FirstClearTimeText.text = $"최초 시도 걸린 시간 : {actualPlayTime:F2}초";
             }
             else
             {
                 float firstTime = DataManager.GetClearTime();
                 FirstClearTimeText.text = $"최초 시도 걸린 시간 : {firstTime:F2}초";
-                NonFirstClearTimeText.text = $"이번 시도 걸린 시간 : {usedTime:F2}초";
+                NonFirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
             }
         }
         else
