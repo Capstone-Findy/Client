@@ -1760,6 +1760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameManager: {fileID: 955850470}
+  itemManager: {fileID: 1017418622}
   currentStage: {fileID: 11400000, guid: 2d48df33578d44cfbb0bf4a02c59257e, type: 2}
   originalImageArea: {fileID: 1965288244}
   wrongImageArea: {fileID: 531090585}
@@ -2588,12 +2589,12 @@ RectTransform:
   - {fileID: 531090585}
   - {fileID: 153822112}
   - {fileID: 775052302}
-  - {fileID: 563530734}
-  - {fileID: 1341515401}
   - {fileID: 808111262}
   - {fileID: 1322047307}
   - {fileID: 1785503710}
   - {fileID: 718184811}
+  - {fileID: 563530734}
+  - {fileID: 1341515401}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2671,7 +2672,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Find One
+  m_Text: Overlap
 --- !u!222 &1555027201
 CanvasRenderer:
   m_ObjectHideFlags: 0

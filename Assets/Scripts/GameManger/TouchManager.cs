@@ -8,6 +8,8 @@ public class TouchManager : MonoBehaviour
 
     [SerializeField]
     private InGameManager inGameManager;
+    [SerializeField]
+    private ItemManager itemManager;
 
     [Header("Stage Information")]
     public StageData currentStage;
@@ -32,14 +34,21 @@ public class TouchManager : MonoBehaviour
         var resultOriginal = CheckInImage(originalImageArea, screenPos);
         var resultWrong = CheckInImage(wrongImageArea, screenPos);
 
-        if (resultOriginal == CheckResult.Correct || resultWrong == CheckResult.Correct)
+        if (resultOriginal == CheckResult.Correct)
         {
-            // TODO : 정답 체크 시 빨간 동그라미 표시(영구 유지)
-            Debug.Log("Correct!!!");
+            Vector2 answerPos = GetAnswerPosition(screenPos, originalImageArea);
+            itemManager.CreateHintMarker(originalImageArea, answerPos);
+            itemManager.CreateHintMarker(wrongImageArea, answerPos);
+        }
+        else if (resultWrong == CheckResult.Correct)
+        {
+            Vector2 answerPos = GetAnswerPosition(screenPos, wrongImageArea);
+            itemManager.CreateHintMarker(originalImageArea, answerPos);
+            itemManager.CreateHintMarker(wrongImageArea, answerPos);
         }
         else if (resultOriginal == CheckResult.AlreadyFound || resultWrong == CheckResult.AlreadyFound)
         {
-            //Debug.Log("이미 찾은 곳입니다.");
+            // TODO : UI 추가 -> 화면에 텍스트로 이미 찾은 곳임을 알림
         }
         else
         {
@@ -99,5 +108,21 @@ public class TouchManager : MonoBehaviour
         {
             foundAnswer.Add(answer);
         }
+    }
+
+    private Vector2 GetAnswerPosition(Vector2 screenPos, RectTransform imageRect)
+    {
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(imageRect, screenPos, null, out localPoint);
+
+        foreach (var answer in currentStage.answerPos)
+        {
+            if (Vector2.Distance(localPoint, answer) <= currentStage.correctRange)
+            {
+                return answer;
+            }
+        }
+
+        return Vector2.zero;
     }
 }

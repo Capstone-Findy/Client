@@ -62,6 +62,11 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    private void ScreenOverlap()
+    {
+        
+    } 
+
     public void Gamble()
     {
         float chance = Random.value;
@@ -91,7 +96,7 @@ public class ItemManager : MonoBehaviour
     /*
     Function Helper
     */
-    private void CreateHintMarker(RectTransform imageArea, Vector2 localPos)
+    public void CreateHintMarker(RectTransform imageArea, Vector2 localPos)
     {
         GameObject marker = Instantiate(hintMarkerPrefab, imageArea);
         marker.transform.localScale = Vector3.one;
