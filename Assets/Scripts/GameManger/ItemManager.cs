@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -23,6 +23,18 @@ public class ItemManager : MonoBehaviour
     private RectTransform originalImageArea;
     [SerializeField]
     private RectTransform wrongImageArea;
+    [SerializeField]
+    private Image overlayBackground;
+
+    [Header("Control")]
+    private bool isUsed = false;
+
+    [Header("Data")]
+    // TODO : 사용자마다 다른 아이템 개수 및 서버에 존재하는 아이템 개수를 갖고와 초기화
+    private int hintItemCount = 5;
+    private int timeAddItemCount = 5;
+    private int overlapItemCount = 5;
+    private int gambleItemCount = 5;
 
 
     /*
@@ -30,6 +42,11 @@ public class ItemManager : MonoBehaviour
     */
     public void FindOne()
     {
+        if (hintItemCount <= 0)
+        {
+            Debug.Log("보유한 아이템이 없습니다.");
+            return;
+        }
         int remainingAnswer = currentStage.totalAnswerCount - touchManager.GetFoundAnswerCount();
         if (remainingAnswer <= 1)
         {
@@ -37,19 +54,25 @@ public class ItemManager : MonoBehaviour
             return;
         }
         foreach (var answer in currentStage.answerPos)
+        {
+            if (!touchManager.IsAlreadyFound(answer))
             {
-                if (!touchManager.IsAlreadyFound(answer))
-                {
-                    CreateHintMarker(originalImageArea, answer);
-                    CreateHintMarker(wrongImageArea, answer);
-                    touchManager.ForceAddFoundAnswer(answer);
-                    break;
-                }
+                CreateHintMarker(originalImageArea, answer);
+                CreateHintMarker(wrongImageArea, answer);
+                touchManager.ForceAddFoundAnswer(answer);
+                break;
             }
+        }
+        hintItemCount--;
     }
 
     public void AddTimeItem()
     {
+        if (timeAddItemCount <= 0)
+        {
+            Debug.Log("보유한 아이템이 없습니다.");
+            return;
+        }
         if (inGameManager.currentTime < maxTime)
         {
             inGameManager.currentTime += timeBonus;
@@ -60,15 +83,83 @@ public class ItemManager : MonoBehaviour
             }
             inGameManager.timeSlider.value = inGameManager.currentTime;
         }
+        timeAddItemCount--;
     }
 
-    private void ScreenOverlap()
+    public void ScreenOverlap()
     {
-        
-    } 
+        if (overlapItemCount <= 0)
+        {
+            Debug.Log("보유한 아이템이 없습니다.");
+            return;
+        }
+        if (!isUsed)
+        {
+            StartCoroutine("OverlapCoroutine");
+        }
+    }
+
+    private IEnumerator OverlapCoroutine()
+    {
+
+        isUsed = true;
+        overlapItemCount--;
+
+        Vector2 originalPos1 = originalImageArea.anchoredPosition;
+        Vector2 originalPos2 = wrongImageArea.anchoredPosition;
+        Vector2 center = new Vector2(0, 200);
+
+        Image originalImg = originalImageArea.GetComponent<Image>();
+        Image wrongImg = wrongImageArea.GetComponent<Image>();
+
+        float duration = 0.8f; // 이미지 이동속도
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            originalImageArea.anchoredPosition = Vector2.Lerp(originalPos1, center, t);
+            wrongImageArea.anchoredPosition = Vector2.Lerp(originalPos2, center, t);
+
+            Color origColor = originalImg.color;
+            Color wrongColor = wrongImg.color;
+            origColor.a = Mathf.Lerp(1f, 0.5f, t);
+            wrongColor.a = Mathf.Lerp(1f, 0.5f, t);
+
+            originalImg.color = origColor;
+            wrongImg.color = wrongColor;
+
+            yield return null;
+
+        }
+
+        overlayBackground.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        overlayBackground.gameObject.SetActive(false);
+
+        originalImageArea.anchoredPosition = originalPos1;
+        wrongImageArea.anchoredPosition = originalPos2;
+
+        Color resetOrigColor = originalImg.color;
+        Color resetWrongColor = wrongImg.color;
+
+        resetOrigColor.a = 1f;
+        resetWrongColor.a = 1f;
+
+        originalImg.color = resetOrigColor;
+        wrongImg.color = resetWrongColor;
+        isUsed = false;
+    }
 
     public void Gamble()
     {
+        if (gambleItemCount <= 0)
+        {
+            Debug.Log("보유한 아이템이 없습니다.");
+            return;
+        }
         float chance = Random.value;
 
         if (chance < 0.5f)
@@ -90,11 +181,12 @@ public class ItemManager : MonoBehaviour
                 inGameManager.currentTime = 0f;
             }
         }
+        gambleItemCount--;
     }
 
 
     /*
-    Function Helper
+    Utility
     */
     public void CreateHintMarker(RectTransform imageArea, Vector2 localPos)
     {
@@ -103,4 +195,14 @@ public class ItemManager : MonoBehaviour
         marker.GetComponent<RectTransform>().anchoredPosition = localPos;
         Destroy(marker, 2f);
     }
+
+    /*
+    Getter
+    */
+    public int GetUsedHintCount() => 5 - hintItemCount;
+    public int GetUsedTimeAddCount() => 5 - timeAddItemCount;
+    public int GetUsedOverlapCount() => 5 - overlapItemCount;
+    public int GetUsedGambleCount() => 5 - gambleItemCount;
+
 }
+

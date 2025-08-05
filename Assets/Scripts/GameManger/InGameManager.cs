@@ -7,6 +7,7 @@ public class InGameManager : MonoBehaviour
 {
     [Header("GameManager")]
     public TouchManager touchManager;
+    public ItemManager itemManager;
 
     [Header("Game Information")]
     public StageData currentStage;
@@ -24,11 +25,21 @@ public class InGameManager : MonoBehaviour
     [SerializeField]
     private GameObject gameVictoryPanel;
     [SerializeField]
+    private GameObject itemUsagePanel;
+    [SerializeField]
     private TextMeshProUGUI answerCountText;
     [SerializeField]
     private TextMeshProUGUI FirstClearTimeText;
     [SerializeField]
     private TextMeshProUGUI NonFirstClearTimeText;
+    [SerializeField]
+    private TextMeshProUGUI usedHintCountText;
+    [SerializeField]
+    private TextMeshProUGUI usedTimeAddCountText;
+    [SerializeField]
+    private TextMeshProUGUI usedOverlapCountText;
+    [SerializeField]
+    private TextMeshProUGUI usedGambleCountText;
 
     void Start()
     {
@@ -97,10 +108,26 @@ public class InGameManager : MonoBehaviour
             gameOverPanel.SetActive(true);
             answerCountText.text = $"찾은 정답 개수 : {foundCount}개";
         }
+        itemUsagePanel.SetActive(true);
+        ShowUsedItem();
+
     }
 
     public void Retry()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    private void ShowUsedItem()
+    {
+        int hintUsed = itemManager.GetUsedHintCount();
+        int timeAddUsed = itemManager.GetUsedTimeAddCount();
+        int overlapUsed = itemManager.GetUsedOverlapCount();
+        int gambleUsed = itemManager.GetUsedGambleCount();
+        
+        usedHintCountText.text = $"{hintUsed}";
+        usedTimeAddCountText.text = $"{timeAddUsed}";
+        usedOverlapCountText.text = $"{overlapUsed}";
+        usedGambleCountText.text = $"{gambleUsed}";
     }
 }
