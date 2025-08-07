@@ -27,6 +27,8 @@ public class InGameManager : MonoBehaviour
     [SerializeField]
     private GameObject itemUsagePanel;
     [SerializeField]
+    private GameObject pausePanel;
+    [SerializeField]
     private TextMeshProUGUI answerCountText;
     [SerializeField]
     private TextMeshProUGUI FirstClearTimeText;
@@ -113,9 +115,24 @@ public class InGameManager : MonoBehaviour
 
     }
 
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+        pausePanel.SetActive(true);
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        pausePanel.SetActive(false);
+    }
     public void Retry()
     {
         SceneManager.LoadScene("GameScene");
+    }
+    public void ToggleMasterVolume(bool isOn)
+    {
+        AudioListener.volume = isOn ? 1f : 0f;
     }
 
     private void ShowUsedItem()
@@ -124,7 +141,7 @@ public class InGameManager : MonoBehaviour
         int timeAddUsed = itemManager.GetUsedTimeAddCount();
         int overlapUsed = itemManager.GetUsedOverlapCount();
         int gambleUsed = itemManager.GetUsedGambleCount();
-        
+
         usedHintCountText.text = $"{hintUsed}";
         usedTimeAddCountText.text = $"{timeAddUsed}";
         usedOverlapCountText.text = $"{overlapUsed}";
