@@ -77,7 +77,7 @@ public class InGameManager : MonoBehaviour
         }
     }
 
-    private void GoToNextStage()
+    private void LoadNextStage()
     {
         // TODO : 다음 스테이지 이동 구현 및 패널 제외한 인게임은 터치 불가하도록 설정
     }
