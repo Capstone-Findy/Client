@@ -42,6 +42,8 @@ public class InGameManager : MonoBehaviour
     private TextMeshProUGUI usedOverlapCountText;
     [SerializeField]
     private TextMeshProUGUI usedGambleCountText;
+    [SerializeField]
+    private TextMeshProUGUI timeLeftText;
 
     void Start()
     {
@@ -69,9 +71,11 @@ public class InGameManager : MonoBehaviour
             currentTime -= Time.deltaTime;
             actualPlayTime += Time.deltaTime;
             timeSlider.value = currentTime;
+            timeLeftText.text = currentTime.ToString("F0");
         }
         else
         {
+            timeLeftText.text = "0";
             currentTime = 0;
             GameOver();
         }
