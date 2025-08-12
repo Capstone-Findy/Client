@@ -20,6 +20,8 @@ public class ItemManager : MonoBehaviour
     [SerializeField]
     private GameObject hintMarkerPrefab;
     [SerializeField]
+    private GameObject wrongMarkerPrefab;
+    [SerializeField]
     private RectTransform originalImageArea;
     [SerializeField]
     private RectTransform wrongImageArea;
@@ -194,6 +196,14 @@ public class ItemManager : MonoBehaviour
         marker.transform.localScale = Vector3.one;
         marker.GetComponent<RectTransform>().anchoredPosition = localPos;
         Destroy(marker, 2f);
+    }
+
+    public void CreateWrongMarker(RectTransform imageArea, Vector2 localPos)
+    {
+        GameObject marker = Instantiate(wrongMarkerPrefab, imageArea);
+        marker.transform.localScale = Vector3.one;
+        marker.GetComponent<RectTransform>().anchoredPosition = localPos;
+        Destroy(marker, 1f);
     }
 
     /*

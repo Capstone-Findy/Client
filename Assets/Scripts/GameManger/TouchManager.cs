@@ -49,13 +49,21 @@ public class TouchManager : MonoBehaviour
         else if (resultOriginal == CheckResult.AlreadyFound || resultWrong == CheckResult.AlreadyFound)
         {
             // TODO : UI 추가 -> 화면에 텍스트로 이미 찾은 곳임을 알림
+            Debug.Log("이미 찾은곳 입니다.");
         }
         else
         {
-            // TODO : 틀린 곳 체크 시 X 표시(1초 유지)
+            Vector2 localPosOriginal;
+            Vector2 localPosWrong;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(originalImageArea, screenPos, null, out localPosOriginal);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(wrongImageArea, screenPos, null, out localPosWrong);
+
+            itemManager.CreateWrongMarker(originalImageArea, localPosOriginal);
+            itemManager.CreateWrongMarker(wrongImageArea, localPosWrong);
+
             isChecking = true;
             inGameManager.currentTime -= 3f;
-            Debug.Log("Wrong!!!");
             StartCoroutine("CheckingAfterDelay");
         }
     }
