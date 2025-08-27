@@ -1168,7 +1168,7 @@ GameObject:
   - component: {fileID: 487166093}
   - component: {fileID: 487166092}
   m_Layer: 5
-  m_Name: FoundAnswerText (1)
+  m_Name: RemainAnswerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3102,6 +3102,7 @@ MonoBehaviour:
   itemUsagePanel: {fileID: 588643707}
   pausePanel: {fileID: 560315129}
   answerCountText: {fileID: 777058858}
+  remainCountText: {fileID: 487166092}
   FirstClearTimeText: {fileID: 1041011557}
   NonFirstClearTimeText: {fileID: 2118631314}
   usedHintCountText: {fileID: 1463596681}

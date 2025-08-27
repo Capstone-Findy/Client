@@ -31,6 +31,8 @@ public class InGameManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI answerCountText;
     [SerializeField]
+    private TextMeshProUGUI remainCountText;
+    [SerializeField]
     private TextMeshProUGUI FirstClearTimeText;
     [SerializeField]
     private TextMeshProUGUI NonFirstClearTimeText;
@@ -111,8 +113,11 @@ public class InGameManager : MonoBehaviour
         }
         else
         {
+            int remainCountAnswer = currentStage.totalAnswerCount - foundCount;
             gameOverPanel.SetActive(true);
             answerCountText.text = $"찾은 정답 개수 : {foundCount}개";
+            remainCountText.text = $"남은 정답 개수 : {remainCountAnswer}개"; 
+
         }
         itemUsagePanel.SetActive(true);
         ShowUsedItem();
