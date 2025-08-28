@@ -55,7 +55,8 @@ public class InGameManager : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !pausePanel.activeInHierarchy
+        && !gameOverPanel.activeInHierarchy && !gameVictoryPanel.activeInHierarchy)
         {
             Vector2 pos = Input.mousePosition;
             touchManager.CheckAnswer(pos);
@@ -116,7 +117,7 @@ public class InGameManager : MonoBehaviour
             int remainCountAnswer = currentStage.totalAnswerCount - foundCount;
             gameOverPanel.SetActive(true);
             answerCountText.text = $"찾은 정답 개수 : {foundCount}개";
-            remainCountText.text = $"남은 정답 개수 : {remainCountAnswer}개"; 
+            remainCountText.text = $"남은 정답 개수 : {remainCountAnswer}개";
 
         }
         itemUsagePanel.SetActive(true);
@@ -157,3 +158,4 @@ public class InGameManager : MonoBehaviour
         usedGambleCountText.text = $"{gambleUsed}";
     }
 }
+
