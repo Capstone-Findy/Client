@@ -3780,6 +3780,10 @@ MonoBehaviour:
   overlayBackground: {fileID: 992521214}
   coinAnimPrefab: {fileID: 8477130758618809714, guid: 398af6eea33ef43fcba28e1da9f6ee73, type: 3}
   uiCanvas: {fileID: 1506180275}
+  coinFrontSprite: {fileID: 1608517570, guid: 2f967c6376ff54bc79362f4103bf86de, type: 3}
+  coinBackSprite: {fileID: 829623442, guid: 2f967c6376ff54bc79362f4103bf86de, type: 3}
+  coinSpinDuration: 0.8
+  coinResultDuration: 0.5
 --- !u!4 &1017418623
 Transform:
   m_ObjectHideFlags: 0

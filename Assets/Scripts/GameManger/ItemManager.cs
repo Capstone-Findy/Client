@@ -31,6 +31,14 @@ public class ItemManager : MonoBehaviour
     private GameObject coinAnimPrefab;
     [SerializeField]
     private Transform uiCanvas;
+    [SerializeField]
+    private Sprite coinFrontSprite;
+    [SerializeField]
+    private Sprite coinBackSprite;
+    [SerializeField]
+    private float coinSpinDuration = 0.8f;
+    [SerializeField]
+    private float coinResultDuration = 0.5f;
 
     [Header("Control")]
     private bool isUsed = false;
@@ -188,7 +196,8 @@ public class ItemManager : MonoBehaviour
             }
         }
         gambleItemCount--;
-        ShowGambleAnimation();
+        bool showBack = chance >= 0.5f;
+        ShowGambleAnimation(showBack);
     }
 
 
@@ -211,12 +220,39 @@ public class ItemManager : MonoBehaviour
         Destroy(marker, 1f);
     }
 
-    private void ShowGambleAnimation()
+    private void ShowGambleAnimation(bool showBack)
+    {
+        StartCoroutine(ShowGambleAnimationRoutine(showBack));
+    }
+
+    private IEnumerator ShowGambleAnimationRoutine(bool showBack)
     {
         GameObject coinFx = Instantiate(coinAnimPrefab, uiCanvas);
-        coinFx.transform.localPosition = new Vector3(0, 200, 0);
+        var rect = coinFx.GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            rect.anchoredPosition = new Vector2(0, 200);
+        }
 
-        Destroy(coinFx, 0.5f);
+        var img = coinFx.GetComponent<Image>();
+        var anim = coinFx.GetComponent<Animator>();
+
+        if (anim != null)
+        {
+            anim.Play("CoinToss", 0, 0f);
+        }
+        yield return new WaitForSeconds(coinSpinDuration);
+
+        if (anim != null)
+        {
+            anim.enabled = false;
+        }
+        if (img != null)
+        {
+            img.sprite = showBack ? coinBackSprite : coinFrontSprite;
+        }
+        yield return new WaitForSeconds(coinResultDuration);
+        Destroy(coinFx);
     }
 
     /*
