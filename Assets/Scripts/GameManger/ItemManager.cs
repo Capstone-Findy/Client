@@ -27,6 +27,10 @@ public class ItemManager : MonoBehaviour
     private RectTransform wrongImageArea;
     [SerializeField]
     private Image overlayBackground;
+    [SerializeField]
+    private GameObject coinAnimPrefab;
+    [SerializeField]
+    private Transform uiCanvas;
 
     [Header("Control")]
     private bool isUsed = false;
@@ -184,6 +188,7 @@ public class ItemManager : MonoBehaviour
             }
         }
         gambleItemCount--;
+        ShowGambleAnimation();
     }
 
 
@@ -204,6 +209,14 @@ public class ItemManager : MonoBehaviour
         marker.transform.localScale = Vector3.one;
         marker.GetComponent<RectTransform>().anchoredPosition = localPos;
         Destroy(marker, 1f);
+    }
+
+    private void ShowGambleAnimation()
+    {
+        GameObject coinFx = Instantiate(coinAnimPrefab, uiCanvas);
+        coinFx.transform.localPosition = Vector3.zero;
+
+        Destroy(coinFx, 0.5f);
     }
 
     /*
