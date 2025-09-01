@@ -214,7 +214,7 @@ public class ItemManager : MonoBehaviour
     private void ShowGambleAnimation()
     {
         GameObject coinFx = Instantiate(coinAnimPrefab, uiCanvas);
-        coinFx.transform.localPosition = Vector3.zero;
+        coinFx.transform.localPosition = new Vector3(0, 200, 0);
 
         Destroy(coinFx, 0.5f);
     }
