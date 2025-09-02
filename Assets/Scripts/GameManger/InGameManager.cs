@@ -45,6 +45,14 @@ public class InGameManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI usedGambleCountText;
     [SerializeField]
+    private TextMeshProUGUI remainHintCountText;
+    [SerializeField]
+    private TextMeshProUGUI remainTimeAddCountText;
+    [SerializeField]
+    private TextMeshProUGUI remainOverlapCountText;
+    [SerializeField]
+    private TextMeshProUGUI remainGambleCountText;
+    [SerializeField]
     private TextMeshProUGUI timeLeftText;
 
     void Start()
@@ -55,6 +63,8 @@ public class InGameManager : MonoBehaviour
     }
     void Update()
     {
+        ShowLeftItemCount();
+        
         if (Input.GetMouseButtonDown(0) && !pausePanel.activeInHierarchy
         && !gameOverPanel.activeInHierarchy && !gameVictoryPanel.activeInHierarchy)
         {
@@ -156,6 +166,19 @@ public class InGameManager : MonoBehaviour
         usedTimeAddCountText.text = $"{timeAddUsed}";
         usedOverlapCountText.text = $"{overlapUsed}";
         usedGambleCountText.text = $"{gambleUsed}";
+    }
+
+    private void ShowLeftItemCount()
+    {
+        int leftHintCount = itemManager.hintItemCount;
+        int leftTimeAddCount = itemManager.timeAddItemCount;
+        int leftOverlapCount = itemManager.overlapItemCount;
+        int leftGambleCount = itemManager.gambleItemCount;
+
+        remainHintCountText.text = $"{leftHintCount}개";
+        remainTimeAddCountText.text = $"{leftTimeAddCount}개";
+        remainOverlapCountText.text = $"{leftOverlapCount}개";
+        remainGambleCountText.text = $"{leftGambleCount}개";
     }
 }
 

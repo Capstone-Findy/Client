@@ -49,10 +49,10 @@ public class ItemManager : MonoBehaviour
 
     [Header("Data")]
     // TODO : 사용자마다 다른 아이템 개수 및 서버에 존재하는 아이템 개수를 갖고와 초기화
-    private int hintItemCount = 5;
-    private int timeAddItemCount = 5;
-    private int overlapItemCount = 5;
-    private int gambleItemCount = 5;
+    public int hintItemCount = 5;
+    public int timeAddItemCount = 5;
+    public int overlapItemCount = 5;
+    public int gambleItemCount = 5;
 
 
     /*
