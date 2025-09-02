@@ -3784,6 +3784,8 @@ MonoBehaviour:
   coinBackSprite: {fileID: 829623442, guid: 2f967c6376ff54bc79362f4103bf86de, type: 3}
   coinSpinDuration: 0.8
   coinResultDuration: 0.5
+  frontSentense: {fileID: 21300000, guid: 684945b907c454ee5970aa44877a2ca2, type: 3}
+  backSentense: {fileID: 21300000, guid: 179f32818005348ffbdfc17653cb682c, type: 3}
 --- !u!4 &1017418623
 Transform:
   m_ObjectHideFlags: 0

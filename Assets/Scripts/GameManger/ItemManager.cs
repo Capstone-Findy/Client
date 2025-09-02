@@ -39,6 +39,10 @@ public class ItemManager : MonoBehaviour
     private float coinSpinDuration = 0.8f;
     [SerializeField]
     private float coinResultDuration = 0.5f;
+    [SerializeField]
+    private Sprite frontSentense;
+    [SerializeField]
+    private Sprite backSentense;
 
     [Header("Control")]
     private bool isUsed = false;
@@ -176,28 +180,10 @@ public class ItemManager : MonoBehaviour
         }
         float chance = Random.value;
 
-        if (chance < 0.5f)
-        {
-            if (inGameManager.currentTime < maxTime)
-            {
-                inGameManager.currentTime += timeBonus;
-                if (inGameManager.currentTime > maxTime)
-                {
-                    inGameManager.currentTime = maxTime;
-                }
-            }
-        }
-        else
-        {
-            inGameManager.currentTime -= timeMinus;
-            if (inGameManager.currentTime < 0f)
-            {
-                inGameManager.currentTime = 0f;
-            }
-        }
         gambleItemCount--;
         bool showBack = chance >= 0.5f;
         ShowGambleAnimation(showBack);
+        return;
     }
 
 
@@ -243,6 +229,25 @@ public class ItemManager : MonoBehaviour
         }
         yield return new WaitForSeconds(coinSpinDuration);
 
+        if (!showBack)
+        {
+            if (inGameManager.currentTime < maxTime)
+            {
+                inGameManager.currentTime += timeBonus;
+                if (inGameManager.currentTime > maxTime)
+                {
+                    inGameManager.currentTime = maxTime;
+                }
+            }
+        }
+        else
+        {
+            inGameManager.currentTime -= timeMinus;
+            if (inGameManager.currentTime < 0f)
+            {
+                inGameManager.currentTime = 0f;
+            }
+        }
         if (anim != null)
         {
             anim.enabled = false;
@@ -251,6 +256,20 @@ public class ItemManager : MonoBehaviour
         {
             img.sprite = showBack ? coinBackSprite : coinFrontSprite;
         }
+
+        GameObject labelGO = new GameObject("CoinResultLabel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        var labelRect = labelGO.GetComponent<RectTransform>();
+        labelRect.SetParent(coinFx.transform, false);
+        labelRect.anchorMin = new Vector2(0.5f, 0.5f);
+        labelRect.anchorMax = new Vector2(0.5f, 0.5f);
+        labelRect.pivot     = new Vector2(0.5f, 0.5f);
+        labelRect.anchoredPosition = new Vector2(0f, 250f); 
+
+        var labelImage = labelGO.GetComponent<Image>();
+        labelImage.raycastTarget = false;
+        labelImage.preserveAspect = true;
+        labelImage.sprite = showBack ? backSentense : frontSentense; 
+        labelRect.sizeDelta = new Vector2(500, 500);
         yield return new WaitForSeconds(coinResultDuration);
         Destroy(coinFx);
     }
@@ -264,4 +283,3 @@ public class ItemManager : MonoBehaviour
     public int GetUsedGambleCount() => 5 - gambleItemCount;
 
 }
-
