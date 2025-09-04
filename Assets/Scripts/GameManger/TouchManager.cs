@@ -18,14 +18,15 @@ public class TouchManager : MonoBehaviour
     private List<Vector2> foundAnswer;
     private bool isChecking = false;
 
-    [Header("Stage Information")]
+    [Header("UI")]
     [SerializeField]
     private GameObject correctImgPrefab;
     [SerializeField]
     private GameObject wrongImgPrefab;
-
-    [Header("UI")]
-    [SerializeField] private RectTransform uiRoot; // Canvas 또는 Canvas 하위의 UI 루트
+    [SerializeField]
+    private GameObject alreadyfoundImgPrefab;
+    [SerializeField]
+    private RectTransform uiRoot;
 
     private enum CheckResult { None, Correct, AlreadyFound }
 
@@ -64,8 +65,7 @@ public class TouchManager : MonoBehaviour
         }
         else if (resultOriginal == CheckResult.AlreadyFound || resultWrong == CheckResult.AlreadyFound)
         {
-            // TODO : UI 추가 -> 화면에 텍스트로 이미 찾은 곳임을 알림
-            Debug.Log("이미 찾은곳 입니다.");
+            ShowCurStateImage(alreadyfoundImgPrefab);
         }
         else
         {

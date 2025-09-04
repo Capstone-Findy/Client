@@ -4081,6 +4081,7 @@ MonoBehaviour:
   wrongImageArea: {fileID: 531090585}
   correctImgPrefab: {fileID: 4249952395853444295, guid: 9f7d6c39436f84b15923211a3bcd1586, type: 3}
   wrongImgPrefab: {fileID: 5861813910717982743, guid: ac2c2ac34aca440fa817a5f173d9e1fb, type: 3}
+  alreadyfoundImgPrefab: {fileID: 7274306991834808639, guid: c950530d6e2414e2ca42657cee5ad9b0, type: 3}
   uiRoot: {fileID: 1506180275}
 --- !u!4 &1116087099
 Transform:
