@@ -149,7 +149,7 @@ public class TouchManager : MonoBehaviour
         }
         return Vector2.zero;
     }
-    private void ShowCurStateImage(GameObject imgPrefab)
+    public void ShowCurStateImage(GameObject imgPrefab)
     {
         GameObject obj = Instantiate(imgPrefab, uiRoot);
         var rt = obj.GetComponent<RectTransform>();

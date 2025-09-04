@@ -5,10 +5,8 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     [Header("GameManager")]
-    [SerializeField]
-    private InGameManager inGameManager;
-    [SerializeField]
-    private TouchManager touchManager;
+    [SerializeField] private InGameManager inGameManager;
+    [SerializeField] private TouchManager touchManager;
     public StageData currentStage;
 
     [Header("TimeInfo")]
@@ -17,32 +15,20 @@ public class ItemManager : MonoBehaviour
     private const float timeMinus = 3f;
 
     [Header("UI")]
-    [SerializeField]
-    private GameObject hintMarkerPrefab;
-    [SerializeField]
-    private GameObject wrongMarkerPrefab;
-    [SerializeField]
-    private RectTransform originalImageArea;
-    [SerializeField]
-    private RectTransform wrongImageArea;
-    [SerializeField]
-    private Image overlayBackground;
-    [SerializeField]
-    private GameObject coinAnimPrefab;
-    [SerializeField]
-    private Transform uiCanvas;
-    [SerializeField]
-    private Sprite coinFrontSprite;
-    [SerializeField]
-    private Sprite coinBackSprite;
-    [SerializeField]
-    private float coinSpinDuration = 0.8f;
-    [SerializeField]
-    private float coinResultDuration = 0.5f;
-    [SerializeField]
-    private Sprite frontSentense;
-    [SerializeField]
-    private Sprite backSentense;
+    [SerializeField] private GameObject hintMarkerPrefab;
+    [SerializeField] private GameObject wrongMarkerPrefab;
+    [SerializeField] private RectTransform originalImageArea;
+    [SerializeField] private RectTransform wrongImageArea;
+    [SerializeField] private GameObject noMoreItemPrefab;
+    [SerializeField] private Image overlayBackground;
+    [SerializeField] private GameObject coinAnimPrefab;
+    [SerializeField] private Transform uiCanvas;
+    [SerializeField] private Sprite coinFrontSprite;
+    [SerializeField] private Sprite coinBackSprite;
+    [SerializeField] private float coinSpinDuration = 0.8f;
+    [SerializeField] private float coinResultDuration = 0.5f;
+    [SerializeField] private Sprite frontSentense;
+    [SerializeField] private Sprite backSentense;
 
     [Header("Control")]
     private bool isUsed = false;
@@ -62,7 +48,7 @@ public class ItemManager : MonoBehaviour
     {
         if (hintItemCount <= 0)
         {
-            Debug.Log("보유한 아이템이 없습니다.");
+            touchManager.ShowCurStateImage(noMoreItemPrefab);
             return;
         }
         int remainingAnswer = currentStage.totalAnswerCount - touchManager.GetFoundAnswerCount();
@@ -88,7 +74,7 @@ public class ItemManager : MonoBehaviour
     {
         if (timeAddItemCount <= 0)
         {
-            Debug.Log("보유한 아이템이 없습니다.");
+            touchManager.ShowCurStateImage(noMoreItemPrefab);
             return;
         }
         if (inGameManager.currentTime < maxTime)
@@ -108,7 +94,7 @@ public class ItemManager : MonoBehaviour
     {
         if (overlapItemCount <= 0)
         {
-            Debug.Log("보유한 아이템이 없습니다.");
+            touchManager.ShowCurStateImage(noMoreItemPrefab);
             return;
         }
         if (!isUsed)
@@ -173,13 +159,15 @@ public class ItemManager : MonoBehaviour
 
     public void Gamble()
     {
+        if (isUsed) return;
         if (gambleItemCount <= 0)
         {
-            Debug.Log("보유한 아이템이 없습니다.");
+            touchManager.ShowCurStateImage(noMoreItemPrefab);
             return;
         }
         float chance = Random.value;
 
+        isUsed = true;
         gambleItemCount--;
         bool showBack = chance >= 0.5f;
         ShowGambleAnimation(showBack);
@@ -262,16 +250,17 @@ public class ItemManager : MonoBehaviour
         labelRect.SetParent(coinFx.transform, false);
         labelRect.anchorMin = new Vector2(0.5f, 0.5f);
         labelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        labelRect.pivot     = new Vector2(0.5f, 0.5f);
-        labelRect.anchoredPosition = new Vector2(0f, 250f); 
+        labelRect.pivot = new Vector2(0.5f, 0.5f);
+        labelRect.anchoredPosition = new Vector2(0f, 250f);
 
         var labelImage = labelGO.GetComponent<Image>();
         labelImage.raycastTarget = false;
         labelImage.preserveAspect = true;
-        labelImage.sprite = showBack ? backSentense : frontSentense; 
+        labelImage.sprite = showBack ? backSentense : frontSentense;
         labelRect.sizeDelta = new Vector2(500, 500);
         yield return new WaitForSeconds(coinResultDuration);
         Destroy(coinFx);
+        isUsed = false;
     }
 
     /*
