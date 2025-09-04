@@ -195,7 +195,7 @@ public class ItemManager : MonoBehaviour
         GameObject marker = Instantiate(hintMarkerPrefab, imageArea);
         marker.transform.localScale = Vector3.one;
         marker.GetComponent<RectTransform>().anchoredPosition = localPos;
-        Destroy(marker, 2f);
+        Destroy(marker, 1f);
     }
 
     public void CreateWrongMarker(RectTransform imageArea, Vector2 localPos)

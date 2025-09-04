@@ -18,11 +18,25 @@ public class TouchManager : MonoBehaviour
     private List<Vector2> foundAnswer;
     private bool isChecking = false;
 
+    [Header("Stage Information")]
+    [SerializeField]
+    private GameObject correctImgPrefab;
+    [SerializeField]
+    private GameObject wrongImgPrefab;
+
+    [Header("UI")]
+    [SerializeField] private RectTransform uiRoot; // Canvas 또는 Canvas 하위의 UI 루트
+
     private enum CheckResult { None, Correct, AlreadyFound }
 
     private void Awake()
     {
         foundAnswer = new List<Vector2>();
+        if (uiRoot == null)
+        {
+            var canvas = GetComponentInParent<Canvas>();
+            if (canvas != null) uiRoot = canvas.GetComponent<RectTransform>();
+        }
     }
 
     public void CheckAnswer(Vector2 screenPos)
@@ -39,12 +53,14 @@ public class TouchManager : MonoBehaviour
             Vector2 answerPos = GetAnswerPosition(screenPos, originalImageArea);
             itemManager.CreateHintMarker(originalImageArea, answerPos);
             itemManager.CreateHintMarker(wrongImageArea, answerPos);
+            ShowCurStateImage(correctImgPrefab);
         }
         else if (resultWrong == CheckResult.Correct)
         {
             Vector2 answerPos = GetAnswerPosition(screenPos, wrongImageArea);
             itemManager.CreateHintMarker(originalImageArea, answerPos);
             itemManager.CreateHintMarker(wrongImageArea, answerPos);
+            ShowCurStateImage(correctImgPrefab);
         }
         else if (resultOriginal == CheckResult.AlreadyFound || resultWrong == CheckResult.AlreadyFound)
         {
@@ -64,6 +80,7 @@ public class TouchManager : MonoBehaviour
 
             isChecking = true;
             inGameManager.currentTime -= 3f;
+            ShowCurStateImage(wrongImgPrefab);
             StartCoroutine("CheckingAfterDelay");
         }
     }
@@ -130,7 +147,14 @@ public class TouchManager : MonoBehaviour
                 return answer;
             }
         }
-
         return Vector2.zero;
+    }
+    private void ShowCurStateImage(GameObject imgPrefab)
+    {
+        GameObject obj = Instantiate(imgPrefab, uiRoot);
+        var rt = obj.GetComponent<RectTransform>();
+        obj.SetActive(true);
+        rt.anchoredPosition = new Vector2(0, 200);
+        Destroy(obj, 1f);
     }
 }
