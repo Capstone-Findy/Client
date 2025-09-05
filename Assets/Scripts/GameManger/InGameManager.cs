@@ -175,10 +175,10 @@ public class InGameManager : MonoBehaviour
         int leftOverlapCount = itemManager.overlapItemCount;
         int leftGambleCount = itemManager.gambleItemCount;
 
-        remainHintCountText.text = $"{leftHintCount}개";
-        remainTimeAddCountText.text = $"{leftTimeAddCount}개";
-        remainOverlapCountText.text = $"{leftOverlapCount}개";
-        remainGambleCountText.text = $"{leftGambleCount}개";
+        remainHintCountText.text = $"{leftHintCount}";
+        remainTimeAddCountText.text = $"{leftTimeAddCount}";
+        remainOverlapCountText.text = $"{leftOverlapCount}";
+        remainGambleCountText.text = $"{leftGambleCount}";
     }
 }
 
