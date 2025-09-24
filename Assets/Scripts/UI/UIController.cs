@@ -1,26 +1,36 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
     public TextMeshProUGUI blinkingText;
-    private CanvasGroup canvasGroup;
+    public Button blinkingButton;
     public float blinkInterval = 0.5f; // Blink 되는 간격
     void Start()
     {
-        canvasGroup = blinkingText.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
+        if (blinkingText != null)
         {
-            canvasGroup = blinkingText.gameObject.AddComponent<CanvasGroup>();
+            CanvasGroup textCanvasGroup = blinkingText.GetComponent<CanvasGroup>();
+            if (textCanvasGroup == null)
+            {
+                textCanvasGroup = blinkingText.gameObject.AddComponent<CanvasGroup>();
+            }
+            StartCoroutine(Blink(textCanvasGroup));
         }
-        StartCoroutine("Blink");
+        if (blinkingButton != null)
+        {
+            CanvasGroup buttonCanvasGroup = blinkingButton.GetComponent<CanvasGroup>();
+            if (buttonCanvasGroup == null)
+            {
+                buttonCanvasGroup = blinkingButton.gameObject.AddComponent<CanvasGroup>();
+            }
+            StartCoroutine(Blink(buttonCanvasGroup));
+        }
     }
 
-
-    // 텍스트 깜빡이게 하는 효과
-    IEnumerator Blink()
+    IEnumerator Blink(CanvasGroup canvasGroup)
     {
         while (true)
         {
