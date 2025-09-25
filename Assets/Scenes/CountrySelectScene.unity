@@ -309,7 +309,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &349469263
 MonoBehaviour:
@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 573131315}
   - component: {fileID: 573131314}
   - component: {fileID: 573131317}
+  - component: {fileID: 573131318}
   m_Layer: 5
   m_Name: ChinaBtn
   m_TagString: Untagged
@@ -616,6 +617,20 @@ MonoBehaviour:
   blinkingText: {fileID: 0}
   blinkingButton: {fileID: 573131314}
   blinkInterval: 0.9
+--- !u!114 &573131318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573131312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e901b381281844129b0e9fa8c4c9c0be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryData: {fileID: 11400000, guid: b3992954ca7684f9eb7e2e3fe6642304, type: 2}
+  stageSelectSceneName: StageSelectScene
 --- !u!1 &575519014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,6 +1587,7 @@ GameObject:
   - component: {fileID: 1653316855}
   - component: {fileID: 1653316854}
   - component: {fileID: 1653316857}
+  - component: {fileID: 1653316858}
   m_Layer: 5
   m_Name: FranceBtn
   m_TagString: Untagged
@@ -1696,6 +1712,20 @@ MonoBehaviour:
   blinkingText: {fileID: 0}
   blinkingButton: {fileID: 1653316854}
   blinkInterval: 0.9
+--- !u!114 &1653316858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653316852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e901b381281844129b0e9fa8c4c9c0be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryData: {fileID: 11400000, guid: e87fe6c240ac94a3ebcfa845032cfef1, type: 2}
+  stageSelectSceneName: StageSelectScene
 --- !u!1 &1692112204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,6 +2190,7 @@ GameObject:
   - component: {fileID: 1867542446}
   - component: {fileID: 1867542445}
   - component: {fileID: 1867542448}
+  - component: {fileID: 1867542449}
   m_Layer: 5
   m_Name: JapanBtn
   m_TagString: Untagged
@@ -2284,6 +2315,20 @@ MonoBehaviour:
   blinkingText: {fileID: 0}
   blinkingButton: {fileID: 1867542445}
   blinkInterval: 0.9
+--- !u!114 &1867542449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867542443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e901b381281844129b0e9fa8c4c9c0be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryData: {fileID: 11400000, guid: db9f3b12cddf24e4f9667822153122f9, type: 2}
+  stageSelectSceneName: StageSelectScene
 --- !u!1 &1903538185
 GameObject:
   m_ObjectHideFlags: 0
@@ -2297,6 +2342,7 @@ GameObject:
   - component: {fileID: 1903538188}
   - component: {fileID: 1903538187}
   - component: {fileID: 1903538190}
+  - component: {fileID: 1903538191}
   m_Layer: 5
   m_Name: KoreaBtn
   m_TagString: Untagged
@@ -2421,6 +2467,20 @@ MonoBehaviour:
   blinkingText: {fileID: 0}
   blinkingButton: {fileID: 1903538187}
   blinkInterval: 0.9
+--- !u!114 &1903538191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903538185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e901b381281844129b0e9fa8c4c9c0be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryData: {fileID: 11400000, guid: 88e82ad6c086c4b2f8eac0c7ecfac4e6, type: 2}
+  stageSelectSceneName: StageSelectScene
 --- !u!1 &1983931073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2629,6 +2689,7 @@ GameObject:
   - component: {fileID: 2041182221}
   - component: {fileID: 2041182220}
   - component: {fileID: 2041182223}
+  - component: {fileID: 2041182224}
   m_Layer: 5
   m_Name: USABtn
   m_TagString: Untagged
@@ -2753,6 +2814,20 @@ MonoBehaviour:
   blinkingText: {fileID: 0}
   blinkingButton: {fileID: 2041182220}
   blinkInterval: 0.9
+--- !u!114 &2041182224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041182218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e901b381281844129b0e9fa8c4c9c0be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryData: {fileID: 11400000, guid: 73171f70074ae44aa8e8a1ea32392eb3, type: 2}
+  stageSelectSceneName: StageSelectScene
 --- !u!1 &2111350472
 GameObject:
   m_ObjectHideFlags: 0

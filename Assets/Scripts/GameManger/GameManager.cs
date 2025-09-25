@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static GameManager instance { get; private set; }
+
+    [Header("Selections")]
+    public CountryData selectedCountry;
+    public StageData selectedStage;
+
+    void Awake()
     {
-        
+        if (instance != null) { Destroy(gameObject); return; }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    //-----Country Select Scene-----//
+    public void SelectCountry(CountryData country, bool clearStage = true)
     {
-        
+        selectedCountry = country;
+        if (clearStage) selectedStage = null;
+    }
+
+    public void SelectStage(StageData stage)
+    {
+        selectedStage = stage;
+    }
+
+    public void ClearSelection()
+    {
+        selectedCountry = null;
+        selectedStage = null;
     }
 }
