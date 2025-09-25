@@ -630,7 +630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryData: {fileID: 11400000, guid: b3992954ca7684f9eb7e2e3fe6642304, type: 2}
-  stageSelectSceneName: StageSelectScene
 --- !u!1 &575519014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1287,6 +1286,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310090279}
   m_CullTransparentMesh: 1
+--- !u!1 &1385013796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1385013798}
+  - component: {fileID: 1385013797}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1385013797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385013796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e91fd205b5e04ec2811050425131e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedCountry: {fileID: 0}
+  selectedStage: {fileID: 0}
+--- !u!4 &1385013798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385013796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 806.22253, y: 1007.53265, z: -10.580657}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1439210022
 GameObject:
   m_ObjectHideFlags: 0
@@ -1725,7 +1770,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryData: {fileID: 11400000, guid: e87fe6c240ac94a3ebcfa845032cfef1, type: 2}
-  stageSelectSceneName: StageSelectScene
 --- !u!1 &1692112204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2328,7 +2372,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryData: {fileID: 11400000, guid: db9f3b12cddf24e4f9667822153122f9, type: 2}
-  stageSelectSceneName: StageSelectScene
 --- !u!1 &1903538185
 GameObject:
   m_ObjectHideFlags: 0
@@ -2480,7 +2523,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryData: {fileID: 11400000, guid: 88e82ad6c086c4b2f8eac0c7ecfac4e6, type: 2}
-  stageSelectSceneName: StageSelectScene
 --- !u!1 &1983931073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2827,7 +2869,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryData: {fileID: 11400000, guid: 73171f70074ae44aa8e8a1ea32392eb3, type: 2}
-  stageSelectSceneName: StageSelectScene
 --- !u!1 &2111350472
 GameObject:
   m_ObjectHideFlags: 0
@@ -2949,3 +2990,4 @@ SceneRoots:
   - {fileID: 1737302401}
   - {fileID: 1692112208}
   - {fileID: 575519017}
+  - {fileID: 1385013798}

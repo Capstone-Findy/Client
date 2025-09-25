@@ -8,4 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StartScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/CountrySelectScene.unity
+    guid: ed5dd5e2b800b48b4b0771acf2cd86e1
+  - enabled: 1
+    path: Assets/Scenes/StageSelectScene.unity
+    guid: bb71cfb2cf34146a1a15747cbe555a53
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: c6e3444c2a02b40a683493921cb9f11e
   m_configObjects: {}

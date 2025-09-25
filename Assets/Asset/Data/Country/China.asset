@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: China
   m_EditorClassIdentifier: 
   countryName: China
-  stages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  background: {fileID: 0}
+  stagesSlots:
+  - stage: {fileID: 0}
+    normlizedPos: {x: 0, y: 0}
+  - stage: {fileID: 0}
+    normlizedPos: {x: 0, y: 0}
+  - stage: {fileID: 0}
+    normlizedPos: {x: 0, y: 0}
+  - stage: {fileID: 0}
+    normlizedPos: {x: 0, y: 0}
+  - stage: {fileID: 0}
+    normlizedPos: {x: 0, y: 0}
