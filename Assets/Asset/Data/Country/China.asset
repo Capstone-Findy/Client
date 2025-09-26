@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: China
   m_EditorClassIdentifier: 
   countryName: China
-  background: {fileID: 0}
+  background: {fileID: 21300000, guid: e60f22dfe3ecc4735831697ba0fed3c0, type: 3}
+  backgroundSize: {x: 1024, y: 1024}
   stagesSlots:
-  - stage: {fileID: 0}
-    normlizedPos: {x: 0, y: 0}
-  - stage: {fileID: 0}
-    normlizedPos: {x: 0, y: 0}
-  - stage: {fileID: 0}
-    normlizedPos: {x: 0, y: 0}
-  - stage: {fileID: 0}
-    normlizedPos: {x: 0, y: 0}
-  - stage: {fileID: 0}
-    normlizedPos: {x: 0, y: 0}
+  - stage: {fileID: 11400000, guid: 74d356f5e274c4c1a93ec6de395eb83f, type: 2}
+    normlizedPos: {x: 0.21, y: -2.66}
+  - stage: {fileID: 11400000, guid: 7c13eaec256a64efc83e404b6780064c, type: 2}
+    normlizedPos: {x: -3.06, y: -0.23}
+  - stage: {fileID: 11400000, guid: f61018133072b42fc9dfca8fa618f487, type: 2}
+    normlizedPos: {x: -0.21, y: 1.93}
+  - stage: {fileID: 11400000, guid: 9e63b6c71968847c8992d157b692e666, type: 2}
+    normlizedPos: {x: 3.06, y: 0.3}
+  - stage: {fileID: 11400000, guid: 0c7a75dec9eb84a0fb4f22f557023eef, type: 2}
+    normlizedPos: {x: 4.36, y: 3.75}

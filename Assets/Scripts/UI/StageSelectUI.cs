@@ -13,7 +13,11 @@ public class StageSelectUI : MonoBehaviour
         if (!layoutArea) layoutArea = transform as RectTransform;
         var country = GameManager.instance.selectedCountry;
         int count = Mathf.Min(stageButtons.Length, country.stagesSlots.Count);
-        if (mapImage != null) mapImage.sprite = country.background;
+        if (mapImage != null)
+        {
+            mapImage.sprite = country.background;
+            mapImage.rectTransform.sizeDelta = country.backgroundSize;
+        }    
         for (int i = 0; i < count; i++)
         {
             var slot = country.stagesSlots[i];
@@ -39,7 +43,7 @@ public class StageSelectUI : MonoBehaviour
             btn.onClick.AddListener(() =>
             {
                 GameManager.instance.SelectStage(stage);
-                SceneManager.LoadScene("GameScene");
+                GameManager.instance.LoadScene("GameScene");
             });
             btn.interactable = true;
         }

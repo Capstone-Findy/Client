@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,12 +10,29 @@ public class GameManager : MonoBehaviour
     [Header("Selections")]
     public CountryData selectedCountry;
     public StageData selectedStage;
+    [Header("Util")]
+    private Stack<string> sceneHistory = new Stack<string>();
 
     void Awake()
     {
         if (instance != null) { Destroy(gameObject); return; }
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    //-----Util-----//
+    public void LoadScene(string sceneName)
+    {
+        sceneHistory.Push(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(sceneName);
+    }
+    public void GoBack()
+    {
+        if (sceneHistory.Count > 0)
+        {
+            string previousScene = sceneHistory.Pop();
+            SceneManager.LoadScene(previousScene);
+        }
+        else Application.Quit();
     }
 
     //-----Country Select Scene-----//

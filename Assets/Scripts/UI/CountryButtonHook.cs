@@ -10,7 +10,7 @@ public class CountryButtonHook : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(() =>
         {
             GameManager.instance.SelectCountry(countryData);
-            SceneManager.LoadScene("StageSelectScene");
+            GameManager.instance.LoadScene("StageSelectScene");
         });
     }
 }

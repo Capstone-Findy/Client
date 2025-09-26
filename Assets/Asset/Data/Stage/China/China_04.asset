@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f545edb53ef4e83b87c0bc83a432be, type: 3}
+  m_Name: China_04
+  m_EditorClassIdentifier: 
+  stageName: China_04
+  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
+  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  thumbnail: {fileID: 21300000, guid: f1dcf36caed42461e9211d547a1f7ed0, type: 3}
+  answerPos:
+  - {x: -213, y: 23}
+  - {x: 342, y: -102}
+  - {x: 203, y: -223}
+  correctRange: 40
+  totalAnswerCount: 3
