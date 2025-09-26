@@ -16,12 +16,12 @@ MonoBehaviour:
   background: {fileID: 21300000, guid: 00f42f805752949cb82d0fe370cd2d7d, type: 3}
   stagesSlots:
   - stage: {fileID: 11400000, guid: 2d48df33578d44cfbb0bf4a02c59257e, type: 2}
-    normlizedPos: {x: 1, y: 1}
+    normlizedPos: {x: -2.23, y: -5.22}
   - stage: {fileID: 11400000, guid: 7ed4bb2fa8c0a446fb57046a2b60dc16, type: 2}
-    normlizedPos: {x: -0.2, y: 0.4}
+    normlizedPos: {x: 0.83, y: -2.71}
   - stage: {fileID: 11400000, guid: 1ec4d9a0a9e634d7086dba3b63411fe9, type: 2}
-    normlizedPos: {x: 0.3, y: -0.3}
+    normlizedPos: {x: 4.03, y: -0.03}
   - stage: {fileID: 11400000, guid: 809d07ed3c87e421dad2275f85ec3225, type: 2}
-    normlizedPos: {x: 0.5, y: -0.5}
+    normlizedPos: {x: -0.05, y: 2.09}
   - stage: {fileID: 11400000, guid: b355513553da04a9b97bf7733a3f8330, type: 2}
-    normlizedPos: {x: -0.7, y: 1}
+    normlizedPos: {x: 2.46, y: 4.85}

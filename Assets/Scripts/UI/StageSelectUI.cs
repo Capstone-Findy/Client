@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class StageSelectUI : MonoBehaviour
 {
     [SerializeField] private Button[] stageButtons;
+    [SerializeField] private Image mapImage;
     [SerializeField] private RectTransform layoutArea;
     void Start()
     {
         if (!layoutArea) layoutArea = transform as RectTransform;
         var country = GameManager.instance.selectedCountry;
         int count = Mathf.Min(stageButtons.Length, country.stagesSlots.Count);
+        if (mapImage != null) mapImage.sprite = country.background;
         for (int i = 0; i < count; i++)
         {
             var slot = country.stagesSlots[i];
