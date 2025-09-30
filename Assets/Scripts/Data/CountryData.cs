@@ -7,6 +7,7 @@ public class CountryData : ScriptableObject
 {
     public string countryName;
     public Sprite background;
+    public Sprite arrowImage;
     public Vector2 backgroundSize = new Vector2(1920, 1080);
     public List<StageSlot> stagesSlots = new List<StageSlot>(5);
 }
@@ -15,5 +16,7 @@ public class CountryData : ScriptableObject
 public class StageSlot
 {
     public StageData stage;
-    public Vector2 normlizedPos;
+    public Vector2 StageImagePos;
+    public Vector2 ArrowImagePos;
+
 }

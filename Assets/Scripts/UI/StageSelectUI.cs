@@ -54,7 +54,7 @@ public class StageSelectUI : MonoBehaviour
     {
         Vector2 areaSize = layoutArea.rect.size;
         Vector2 pivot = layoutArea.pivot;
-        Vector2 posPx = new Vector2(slot.normlizedPos.x * areaSize.x, slot.normlizedPos.y * areaSize.y);
+        Vector2 posPx = new Vector2(slot.StageImagePos.x * areaSize.x, slot.StageImagePos.y * areaSize.y);
         Vector2 anchored = posPx - (areaSize * pivot);
 
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
