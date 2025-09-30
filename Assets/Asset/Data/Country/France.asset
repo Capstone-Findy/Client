@@ -14,21 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: France
   background: {fileID: 21300000, guid: e910af930727d46f4a5a38569f4bafd7, type: 3}
-  arrowImage: {fileID: 0}
   backgroundSize: {x: 1080, y: 1058}
   stagesSlots:
   - stage: {fileID: 11400000, guid: cb301f80b380648de89097b7c9a8125b, type: 2}
-    StageImagePos: {x: -2.08, y: -2.8}
-    ArrowImagePos: {x: 0, y: 0}
+    StageImagePos: {x: -2.31, y: -2.99}
   - stage: {fileID: 11400000, guid: c1921ba5bce7447d096b02612150c879, type: 2}
     StageImagePos: {x: 0.79, y: -0.71}
-    ArrowImagePos: {x: 0, y: 0}
   - stage: {fileID: 11400000, guid: 4fe705beffe574410b0fdb3683a9a348, type: 2}
     StageImagePos: {x: 3.6, y: 1.68}
-    ArrowImagePos: {x: 0, y: 0}
   - stage: {fileID: 11400000, guid: 17f11d2b298494d0f9c1e0617b73863b, type: 2}
     StageImagePos: {x: 0.67, y: 4.03}
-    ArrowImagePos: {x: 0, y: 0}
   - stage: {fileID: 11400000, guid: 5e08536e1e91a4b3bbacfb612a0aedf6, type: 2}
     StageImagePos: {x: -2.46, y: 1.89}
-    ArrowImagePos: {x: 0, y: 0}
+  arrowSlots:
+  - ArrowImagePos: {x: -0.8, y: -1.84}
+    rotation: 0
+  - ArrowImagePos: {x: 2.07, y: 0.53}
+    rotation: 0
+  - ArrowImagePos: {x: 2.11, y: 3}
+    rotation: 100
+  - ArrowImagePos: {x: -0.84, y: 3.14}
+    rotation: 170

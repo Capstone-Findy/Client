@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 public class StageSelectUI : MonoBehaviour
 {
     [SerializeField] private Button[] stageButtons;
+    [SerializeField] private Image[] arrowImages;
     [SerializeField] private Image mapImage;
     [SerializeField] private RectTransform layoutArea;
     void Start()
@@ -17,7 +19,7 @@ public class StageSelectUI : MonoBehaviour
         {
             mapImage.sprite = country.background;
             mapImage.rectTransform.sizeDelta = country.backgroundSize;
-        }    
+        }
         for (int i = 0; i < count; i++)
         {
             var slot = country.stagesSlots[i];
@@ -25,7 +27,20 @@ public class StageSelectUI : MonoBehaviour
             var rt = btn.GetComponent<RectTransform>();
 
             WireStageButton(btn, slot.stage, i);
-            ApplyLayout(rt, slot);
+            ApplyStageLayout(rt, slot);
+        }
+
+        int arrowCount = Mathf.Min(arrowImages.Length, GameManager.instance.selectedCountry.arrowSlots.Count);
+        for (int i = 0; i < arrowCount; i++)
+        {
+            var img = arrowImages[i];
+            var aslot = GameManager.instance.selectedCountry.arrowSlots[i];
+            ApplyArrowLayout(img.rectTransform, aslot);
+            img.gameObject.SetActive(false);
+        }
+        for (int i = arrowCount; i < arrowImages.Length; i++)
+        {
+            if(arrowImages[i] != null) arrowImages[i].gameObject.SetActive(false);
         }
     }
 
@@ -50,7 +65,7 @@ public class StageSelectUI : MonoBehaviour
         else btn.interactable = false;
     }
 
-    void ApplyLayout(RectTransform rt, StageSlot slot)
+    void ApplyStageLayout(RectTransform rt, StageSlot slot)
     {
         Vector2 areaSize = layoutArea.rect.size;
         Vector2 pivot = layoutArea.pivot;
@@ -60,5 +75,19 @@ public class StageSelectUI : MonoBehaviour
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = anchored;
+    }
+
+    void ApplyArrowLayout(RectTransform rt, ArrowSlot slot)
+    {
+        Vector2 areaSize = layoutArea.rect.size;
+        Vector2 pivot = layoutArea.pivot;
+        Vector2 posPx = new Vector2(slot.ArrowImagePos.x * areaSize.x, slot.ArrowImagePos.y * areaSize.y);
+        Vector2 anchored = posPx - (areaSize * pivot);
+
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = anchored;
+
+        rt.localRotation = Mathf.Abs(slot.rotation) > 0.01f ? Quaternion.Euler(0, 0, slot.rotation) : Quaternion.identity;
     }
 }
