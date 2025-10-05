@@ -10,6 +10,8 @@ public class InGameManager : MonoBehaviour
     public ItemManager itemManager;
 
     [Header("Game Information")]
+    [SerializeField] private Image originalImage; 
+    [SerializeField] private Image wrongImage;
     public StageData currentStage;
     public bool isGameOver = false;
     public float actualPlayTime = 0f;
@@ -20,43 +22,35 @@ public class InGameManager : MonoBehaviour
     public float currentTime;
 
     [Header("UI")]
-    [SerializeField]
-    private GameObject gameOverPanel;
-    [SerializeField]
-    private GameObject gameVictoryPanel;
-    [SerializeField]
-    private GameObject itemUsagePanel;
-    [SerializeField]
-    private GameObject pausePanel;
-    [SerializeField]
-    private TextMeshProUGUI answerCountText;
-    [SerializeField]
-    private TextMeshProUGUI remainCountText;
-    [SerializeField]
-    private TextMeshProUGUI FirstClearTimeText;
-    [SerializeField]
-    private TextMeshProUGUI NonFirstClearTimeText;
-    [SerializeField]
-    private TextMeshProUGUI usedHintCountText;
-    [SerializeField]
-    private TextMeshProUGUI usedTimeAddCountText;
-    [SerializeField]
-    private TextMeshProUGUI usedOverlapCountText;
-    [SerializeField]
-    private TextMeshProUGUI usedGambleCountText;
-    [SerializeField]
-    private TextMeshProUGUI remainHintCountText;
-    [SerializeField]
-    private TextMeshProUGUI remainTimeAddCountText;
-    [SerializeField]
-    private TextMeshProUGUI remainOverlapCountText;
-    [SerializeField]
-    private TextMeshProUGUI remainGambleCountText;
-    [SerializeField]
-    private TextMeshProUGUI timeLeftText;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject gameVictoryPanel;
+    [SerializeField] private GameObject itemUsagePanel;
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private TextMeshProUGUI answerCountText;
+    [SerializeField] private TextMeshProUGUI remainCountText;
+    [SerializeField] private TextMeshProUGUI FirstClearTimeText;
+    [SerializeField] private TextMeshProUGUI NonFirstClearTimeText;
+    [SerializeField] private TextMeshProUGUI usedHintCountText;
+    [SerializeField] private TextMeshProUGUI usedTimeAddCountText;
+    [SerializeField] private TextMeshProUGUI usedOverlapCountText;
+    [SerializeField] private TextMeshProUGUI usedGambleCountText;
+    [SerializeField] private TextMeshProUGUI remainHintCountText;
+    [SerializeField] private TextMeshProUGUI remainTimeAddCountText;
+    [SerializeField] private TextMeshProUGUI remainOverlapCountText;
+    [SerializeField] private TextMeshProUGUI remainGambleCountText;
+    [SerializeField] private TextMeshProUGUI timeLeftText;
 
     void Start()
     {
+        currentStage = GameManager.instance.selectedStage;
+        touchManager.currentStage = GameManager.instance.selectedStage;
+    
+        if (originalImage != null && wrongImage != null && currentStage != null)
+        {
+            originalImage.sprite = currentStage.originalImage;
+            wrongImage.sprite = currentStage.wrongImage;
+        }
+
         currentTime = totalTime;
         timeSlider.maxValue = totalTime;
         timeSlider.value = currentTime;
@@ -69,6 +63,17 @@ public class InGameManager : MonoBehaviour
         && !gameOverPanel.activeInHierarchy && !gameVictoryPanel.activeInHierarchy)
         {
             Vector2 pos = Input.mousePosition;
+            ///// 추후 제거 /////
+            Vector2 localPoint;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                originalImage.rectTransform, 
+                pos,                 
+                null,                     
+                out localPoint             
+            );
+
+            Debug.Log($"Clicked Local Coords: new Vector2({localPoint.x}f, {localPoint.y}f)");
+            /////-----/////
             touchManager.CheckAnswer(pos);
 
             if (touchManager.GetFoundAnswerCount() == currentStage.totalAnswerCount)

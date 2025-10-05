@@ -3809,6 +3809,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   touchManager: {fileID: 1116087098}
   itemManager: {fileID: 1017418622}
+  originalImage: {fileID: 1965288245}
+  wrongImage: {fileID: 531090586}
   currentStage: {fileID: 11400000, guid: 2d48df33578d44cfbb0bf4a02c59257e, type: 2}
   isGameOver: 0
   actualPlayTime: 0
