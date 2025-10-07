@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: Korea_05
   m_EditorClassIdentifier: 
   stageName: Korea_05
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  originalImage: {fileID: 21300000, guid: a2ee5926b972a4b9790bd275c5e99aa6, type: 3}
+  wrongImage: {fileID: 21300000, guid: 1342a466893ed4fb18b00ce1d7a1f66a, type: 3}
   thumbnail: {fileID: 21300000, guid: 995250047bfbe4533a39ce872ee9ca8e, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: 130, y: -73}
+  - {x: -137, y: -196}
+  - {x: -6, y: -194}
+  - {x: 253, y: -192}
+  - {x: -200, y: -170}
+  - {x: -339, y: -159}
+  - {x: 237, y: -161}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 7
