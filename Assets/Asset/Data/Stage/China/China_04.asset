@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: China_04
   m_EditorClassIdentifier: 
   stageName: China_04
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  originalImage: {fileID: 21300000, guid: fe3cc384caef14a8284d22486dfbb36d, type: 3}
+  wrongImage: {fileID: 21300000, guid: 94f2e22c72445421a829f3a61d885161, type: 3}
   thumbnail: {fileID: 21300000, guid: f1dcf36caed42461e9211d547a1f7ed0, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: 339, y: -258}
+  - {x: -3, y: 174}
+  - {x: -248, y: 168}
+  - {x: 227, y: -187}
+  - {x: -280, y: -181}
+  - {x: 131, y: 51}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 6
