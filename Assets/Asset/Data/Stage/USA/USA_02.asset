@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: USA_02
   m_EditorClassIdentifier: 
   stageName: USA_02
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  originalImage: {fileID: 21300000, guid: 744ec647c27b0475e961116813863014, type: 3}
+  wrongImage: {fileID: 21300000, guid: 71e1de2d10c2a42ea98ab39b1a43a8fb, type: 3}
   thumbnail: {fileID: 21300000, guid: 41412602a4b7a4c4f9bff1919582c4a7, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: -9, y: 135}
+  - {x: -103, y: 71}
+  - {x: -17, y: -99}
+  - {x: 321, y: -114}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 4
