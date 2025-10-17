@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: France_04
   m_EditorClassIdentifier: 
   stageName: France_04
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  originalImage: {fileID: 21300000, guid: d2bb2c9bb8e8540b3a9232ea5bb51bd7, type: 3}
+  wrongImage: {fileID: 21300000, guid: 2af13e0344d814b4ebc9179a31ad102c, type: 3}
   thumbnail: {fileID: 21300000, guid: 03d83e3fd06ba4fd5a0a9536c3043c3b, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: -106, y: 253}
+  - {x: 80, y: 140}
+  - {x: -17, y: -127}
+  - {x: 16, y: -271}
+  - {x: 69, y: -127}
+  - {x: 36, y: 54}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 6
