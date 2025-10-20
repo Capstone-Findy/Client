@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     //-----Util-----//
     public void LoadScene(string sceneName)
     {
+        Time.timeScale = 1f;
         sceneHistory.Push(SceneManager.GetActiveScene().name);
         SceneManager.LoadScene(sceneName);
     }
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     {
         if (sceneHistory.Count > 0)
         {
+            Time.timeScale = 1f;
             string previousScene = sceneHistory.Pop();
             SceneManager.LoadScene(previousScene);
         }

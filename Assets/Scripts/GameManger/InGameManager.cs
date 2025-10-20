@@ -101,25 +101,6 @@ public class InGameManager : MonoBehaviour
         }
     }
 
-    public void LoadNextStage()
-    {
-        var country = GameManager.instance.selectedCountry;
-        var stages = country.stagesSlots;
-
-        int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
-
-        if (currentIndex >= stages.Count - 1)
-        {
-            GameManager.instance.LoadScene("StageSelectScene");            
-        }
-        else
-        {
-            StageData nextStage = stages[currentIndex + 1].stage;
-            GameManager.instance.SelectStage(nextStage);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-    }
-
     private void GameOver()
     {
         isGameOver = true;
@@ -161,6 +142,29 @@ public class InGameManager : MonoBehaviour
         ShowUsedItem();
 
     }
+    public void LoadNextStage()
+    {
+        var country = GameManager.instance.selectedCountry;
+        var stages = country.stagesSlots;
+
+        int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
+
+        if (currentIndex >= stages.Count - 1)
+        {
+            GameManager.instance.LoadScene("StageSelectScene");
+        }
+        else
+        {
+            StageData nextStage = stages[currentIndex + 1].stage;
+            GameManager.instance.SelectStage(nextStage);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+    
+    public void ReturnToMain()
+    {
+        GameManager.instance.GoBack();
+    }
 
     public void Pause()
     {
@@ -175,7 +179,8 @@ public class InGameManager : MonoBehaviour
     }
     public void Retry()
     {
-        SceneManager.LoadScene("GameScene");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ToggleMasterVolume(bool isOn)
     {
