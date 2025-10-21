@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: USA_03
   m_EditorClassIdentifier: 
   stageName: USA_03
+  stageDescription: "\uBBF8\uAD6D LA\uC758 \uC0C1\uC9D5, '\uD560\uB9AC\uC6B0\uB4DC
+    \uC0AC\uC778'\uC785\uB2C8\uB2E4. \uC0B0 \uC911\uD131\uC5D0 \uB298\uC5B4\uC120
+    9\uAC1C\uC758 \uAC70\uB300\uD55C \uD770\uC0C9 \uAE00\uC790\uAC00 \uC778\uC0C1\uC801\uC774\uB124\uC694.\n\n\uD558\uC9C0\uB9CC
+    \uB450 \uADF8\uB9BC\uC774 \uC644\uBCBD\uD558\uAC8C \uAC19\uC9C0\uB294 \uC54A\uC2B5\uB2C8\uB2E4.
+    \uC9D1\uC911\uD574\uC11C \uB2E4\uB978 \uBD80\uBD84\uC744 \uCC3E\uC544\uBCF4\uC138\uC694!"
+  stageMission: "\uBBF8\uC158: '\uD560\uB9AC\uC6B0\uB4DC \uC0AC\uC778'\uC758 \uC228\uC740
+    \uCC28\uC774\uC810\uC744 \uCC3E\uC544\uB77C!"
   originalImage: {fileID: 21300000, guid: 96e3dbbf8a2d741e692aa4eff9542ffc, type: 3}
   wrongImage: {fileID: 21300000, guid: 06c148e72f5964d0cbe62a019982bb16, type: 3}
   thumbnail: {fileID: 21300000, guid: 853d2058644464598b6de5f4c99bb9a1, type: 3}

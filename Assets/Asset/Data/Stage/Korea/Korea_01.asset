@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: Korea_01
   m_EditorClassIdentifier: 
   stageName: Korea_01
+  stageDescription: "\uB208\uC55E\uC5D0 \uD3BC\uCCD0\uC9C4 \uC7A5\uC5C4\uD55C \uACBD\uBCF5\uAD81\uC758
+    \uD48D\uACBD. \uD558\uC9C0\uB9CC \uC774 \uC5ED\uC0AC\uC801\uC778 \uACF5\uAC04
+    \uC18D\uC5D0 \uBB34\uC5B8\uAC00 \uB2EC\uB77C\uC9C4 \uBD80\uBD84\uC774 \uC228\uC5B4\uC788\uC2B5\uB2C8\uB2E4.\n\n\uB2F9\uC2E0\uC758
+    \uB9E4\uC11C\uC6B4 \uB208\uC73C\uB85C \uB450 \uC0AC\uC9C4\uC758 \uCC28\uC774\uC810\uC744
+    \uBAA8\uB450 \uBC1D\uD600\uB0B4 \uC8FC\uC138\uC694!"
+  stageMission: "\uBBF8\uC158: \uC655\uC758 \uAD81\uAD90, \uACBD\uBCF5\uAD81\uC758
+    \uBE44\uBC00\uC744 \uCC3E\uC544\uB77C!"
   originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
   wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
   thumbnail: {fileID: 21300000, guid: 723356e9b3f24449f82d527b8fa6a6ff, type: 3}

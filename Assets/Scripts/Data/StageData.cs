@@ -5,6 +5,10 @@ using UnityEngine;
 public class StageData : ScriptableObject
 {
     public string stageName;
+    [TextArea(3, 10)]
+    public string stageDescription;
+    [TextArea(3, 10)]
+    public string stageMission;
     public Sprite originalImage;
     public Sprite wrongImage;
     public Sprite thumbnail;

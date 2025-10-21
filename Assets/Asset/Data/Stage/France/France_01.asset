@@ -13,6 +13,16 @@ MonoBehaviour:
   m_Name: France_01
   m_EditorClassIdentifier: 
   stageName: France_01
+  stageDescription: "\uC138\uACC4\uC5D0\uC11C \uAC00\uC7A5 \uB0AD\uB9CC\uC801\uC778
+    \uB3C4\uC2DC, \uD30C\uB9AC\uC758 \uC2EC\uC7A5 '\uC5D0\uD3A0\uD0D1'\uC785\uB2C8\uB2E4.
+    \uBC31 \uB144 \uB118\uAC8C \uC218\uB9CE\uC740 \uC5F0\uC778\uB4E4\uC758 \uC0AC\uB791\uC744
+    \uC18D\uC0AD\uC774\uBA70 \uC6B0\uB69D \uC11C \uC788\uC8E0.\n\n\uC544\uB984\uB2E4\uC6B4
+    \uD30C\uB9AC\uC758 \uD48D\uACBD\uACFC \uACBD\uC774\uB85C\uC6B4 \uCCA0\uD0D1\uC758
+    \uBAA8\uC2B5\uC744 \uAC10\uC0C1\uD574 \uBCF4\uC138\uC694. \uD639\uC2DC... \uB450
+    \uADF8\uB9BC \uC0AC\uC774\uC5D0 \uBB34\uC5B8\uAC00 \uB2EC\uB77C\uC9C4 \uC810\uC774
+    \uBCF4\uC774\uC2DC\uB098\uC694?"
+  stageMission: "\uBBF8\uC158: \uD30C\uB9AC\uC758 \uC0C1\uC9D5, \uC5D0\uD3A0\uD0D1\uC758
+    \uC228\uC740 \uCC28\uC774\uC810 \uCC3E\uAE30!"
   originalImage: {fileID: 21300000, guid: 7d454acbd53364df391bc8605f297c04, type: 3}
   wrongImage: {fileID: 21300000, guid: 8b40cb645862b40589c21379c5bdbd0d, type: 3}
   thumbnail: {fileID: 21300000, guid: c11737134ba2c43f8af8a24bd520f0e1, type: 3}
