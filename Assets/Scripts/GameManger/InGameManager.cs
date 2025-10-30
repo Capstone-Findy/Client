@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -39,6 +40,7 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI remainOverlapCountText;
     [SerializeField] private TextMeshProUGUI remainGambleCountText;
     [SerializeField] private TextMeshProUGUI timeLeftText;
+    [SerializeField] private TextMeshProUGUI moveToMainText;
 
     void Start()
     {
@@ -99,11 +101,6 @@ public class InGameManager : MonoBehaviour
         }
     }
 
-    private void LoadNextStage()
-    {
-        // TODO : 다음 스테이지 이동 구현 및 패널 제외한 인게임은 터치 불가하도록 설정
-    }
-
     private void GameOver()
     {
         isGameOver = true;
@@ -113,6 +110,12 @@ public class InGameManager : MonoBehaviour
         if (foundCount == currentStage.totalAnswerCount)
         {
             gameVictoryPanel.SetActive(true);
+
+            var country = GameManager.instance.selectedCountry;
+            var stages = country.stagesSlots;
+            int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
+
+            if (currentIndex >= stages.Count - 1) moveToMainText.text = "메인으로 이동";
 
             if (!DataManager.HasClearTime())
             {
@@ -139,6 +142,29 @@ public class InGameManager : MonoBehaviour
         ShowUsedItem();
 
     }
+    public void LoadNextStage()
+    {
+        var country = GameManager.instance.selectedCountry;
+        var stages = country.stagesSlots;
+
+        int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
+
+        if (currentIndex >= stages.Count - 1)
+        {
+            GameManager.instance.LoadScene("StageSelectScene");
+        }
+        else
+        {
+            StageData nextStage = stages[currentIndex + 1].stage;
+            GameManager.instance.SelectStage(nextStage);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+    
+    public void ReturnToMain()
+    {
+        GameManager.instance.GoBack();
+    }
 
     public void Pause()
     {
@@ -153,7 +179,8 @@ public class InGameManager : MonoBehaviour
     }
     public void Retry()
     {
-        SceneManager.LoadScene("GameScene");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ToggleMasterVolume(bool isOn)
     {

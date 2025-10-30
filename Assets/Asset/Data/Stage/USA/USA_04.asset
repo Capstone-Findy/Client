@@ -13,12 +13,23 @@ MonoBehaviour:
   m_Name: USA_04
   m_EditorClassIdentifier: 
   stageName: USA_04
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  stageDescription: "\uB208\uC55E\uC5D0 \uC9C0\uAD6C\uC758 \uC18D\uC0B4\uC744 \uB4DC\uB7EC\uB0B8
+    \uAC70\uB300\uD55C \uB300\uD611\uACE1\uC774 \uD3BC\uCCD0\uC9D1\uB2C8\uB2E4. \uD558\uC9C0\uB9CC
+    \uC774 \uACBD\uC774\uB85C\uC6B4 \uC790\uC5F0\uC758 \uBAA8\uC2B5 \uC5B4\uB518\uAC00\uC5D0
+    \uBB34\uC5B8\uAC00 \uC5B4\uC0C9\uD55C \uBD80\uBD84\uC774 \uC228\uC5B4\uC788\uC2B5\uB2C8\uB2E4.\n\n\uB2F9\uC2E0\uC758
+    \uB9E4\uC11C\uC6B4 \uB208\uC73C\uB85C \uB450 \uC0AC\uC9C4\uC758 \uCC28\uC774\uC810\uC744
+    \uBAA8\uB450 \uCC3E\uC544\uB0B4 \uC8FC\uC138\uC694!"
+  stageMission: "\uBBF8\uC158: '\uADF8\uB79C\uB4DC \uCE90\uB2C8\uC5B8'\uC758 \uC228\uACA8\uC9C4
+    \uCC28\uC774\uC810\uC744 \uCC3E\uC544\uB77C!"
+  originalImage: {fileID: 21300000, guid: 66dd585bca93e4a0996a0e5c20b5cc49, type: 3}
+  wrongImage: {fileID: 21300000, guid: 127c80b9833084e16838b030559fa279, type: 3}
   thumbnail: {fileID: 21300000, guid: 0b596881802694fc7a800e93f70b3fa0, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: -233, y: 19}
+  - {x: -57, y: -1}
+  - {x: 263, y: 130}
+  - {x: 145, y: -24}
+  - {x: 27, y: -133}
+  - {x: -13, y: -153}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 6

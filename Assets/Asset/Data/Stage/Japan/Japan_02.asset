@@ -13,12 +13,20 @@ MonoBehaviour:
   m_Name: Japan_02
   m_EditorClassIdentifier: 
   stageName: Japan_02
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  stageDescription: "\uB3C4\uCFC4\uC758 \uC0C1\uC9D5, '\uB3C4\uCFC4 \uD0C0\uC6CC'\uC785\uB2C8\uB2E4.
+    \uC120\uBA85\uD55C \uBD89\uC740\uC0C9 \uCCA0\uACE8 \uAD6C\uC870\uC640 \uBA4B\uC9C4
+    \uC804\uB9DD\uB300\uAC00 \uC778\uC0C1\uC801\uC774\uB124\uC694.\n\n\uD558\uC9C0\uB9CC
+    \uB450 \uADF8\uB9BC\uC774 \uC644\uBCBD\uD558\uAC8C \uAC19\uC9C0\uB294 \uC54A\uC2B5\uB2C8\uB2E4.
+    \uC9D1\uC911\uD574\uC11C \uB2E4\uB978 \uBD80\uBD84\uC744 \uCC3E\uC544\uBCF4\uC138\uC694!"
+  stageMission: "\uBBF8\uC158: \uB3C4\uCFC4\uC758 \uB79C\uB4DC\uB9C8\uD06C, \uB3C4\uCFC4
+    \uD0C0\uC6CC\uC758 \uC228\uC740 \uCC28\uC774\uC810 \uCC3E\uAE30!"
+  originalImage: {fileID: 21300000, guid: b7e44ce88e1c8410596cc813ca71b5d6, type: 3}
+  wrongImage: {fileID: 21300000, guid: 84d8658fbf4e54b85972407e7712eb27, type: 3}
   thumbnail: {fileID: 21300000, guid: e292752e319a24a8cb64c87fb4fd49f8, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: 5, y: 237}
+  - {x: -361, y: -146}
+  - {x: -85, y: -198}
+  - {x: 56, y: -197}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 4

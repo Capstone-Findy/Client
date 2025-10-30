@@ -13,12 +13,24 @@ MonoBehaviour:
   m_Name: China_05
   m_EditorClassIdentifier: 
   stageName: China_05
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  stageDescription: "\uC911\uAD6D \uCD5C\uB300 \uADDC\uBAA8\uC758 \uD669\uC2E4 \uC815\uC6D0,
+    '\uC774\uD654\uC6D0'\uC785\uB2C8\uB2E4. \uB4DC\uB113\uC740 \uACE4\uBA85\uD638\uC640
+    \uC5B8\uB355 \uC704\uC758 \uBD88\uD5A5\uAC01, \uC138\uACC4\uC5D0\uC11C \uAC00\uC7A5
+    \uAE34 '\uC7A5\uB791(\uBCF5\uB3C4)'\uC774 \uC778\uC0C1\uC801\uC774\uB124\uC694.\n\n\uD558\uC9C0\uB9CC
+    \uB450 \uADF8\uB9BC\uC774 \uC644\uBCBD\uD558\uAC8C \uAC19\uC9C0\uB294 \uC54A\uC2B5\uB2C8\uB2E4.
+    \uC9D1\uC911\uD574\uC11C \uB2E4\uB978 \uBD80\uBD84\uC744 \uCC3E\uC544\uBCF4\uC138\uC694!"
+  stageMission: "\uBBF8\uC158: \uD669\uC2E4\uC758 \uC815\uC6D0, \uC774\uD654\uC6D0\uC758
+    \uC228\uC740 \uCC28\uC774\uC810 \uCC3E\uAE30!"
+  originalImage: {fileID: 21300000, guid: 4583f9df5a2564b3483fac478a1587ec, type: 3}
+  wrongImage: {fileID: 21300000, guid: 3cf7e1c48041041e6844e43116af0320, type: 3}
   thumbnail: {fileID: 21300000, guid: c9996f55556084a398354cf5337de52f, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: -83, y: 99}
+  - {x: 95, y: 153}
+  - {x: 171, y: 134}
+  - {x: 59, y: -238}
+  - {x: -1, y: -186}
+  - {x: -154, y: -40}
+  - {x: 182, y: 89}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 7

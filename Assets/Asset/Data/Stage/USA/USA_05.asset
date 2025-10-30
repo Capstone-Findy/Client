@@ -13,12 +13,25 @@ MonoBehaviour:
   m_Name: USA_05
   m_EditorClassIdentifier: 
   stageName: USA_05
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  stageDescription: "\uC138\uACC4\uC5D0\uC11C \uAC00\uC7A5 \uC7A5\uC5C4\uD55C \uC790\uC5F0\uC758
+    \uAC78\uC791, '\uB098\uC774\uC544\uAC00\uB77C \uD3ED\uD3EC'\uC785\uB2C8\uB2E4.
+    \uCC9C\uB465 \uAC19\uC740 \uAD49\uC74C\uACFC \uD568\uAED8 \uC3DF\uC544\uC9C0\uB294
+    \uAC70\uB300\uD55C \uBB3C\uC904\uAE30\uAC00 \uC555\uB3C4\uC801\uC774\uC8E0.\n\n\uC774
+    \uACBD\uC774\uB86D\uACE0 \uAC15\uB825\uD55C \uC790\uC5F0\uC758 \uD798\uC744 \uCC9C\uCC9C\uD788
+    \uAC10\uC0C1\uD574 \uBCF4\uC138\uC694. \uD639\uC2DC... \uB450 \uADF8\uB9BC \uC0AC\uC774\uC5D0
+    \uBB34\uC5B8\uAC00 \uB2EC\uB77C\uC9C4 \uC810\uC774 \uBCF4\uC774\uC2DC\uB098\uC694?"
+  stageMission: "\uBBF8\uC158: \uAC70\uB300\uD55C '\uB098\uC774\uC544\uAC00\uB77C
+    \uD3ED\uD3EC'\uC758 \uC228\uC740 \uCC28\uC774\uC810 \uCC3E\uAE30!"
+  originalImage: {fileID: 21300000, guid: 963d4c580fbec47628fd41a8b2546771, type: 3}
+  wrongImage: {fileID: 21300000, guid: 2dc79f287339b45d8ba3d67a2a94678b, type: 3}
   thumbnail: {fileID: 21300000, guid: 75a43c9235c4d43f8a1075eef9d43dff, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: -317, y: 72}
+  - {x: -65, y: 113}
+  - {x: 69, y: 145}
+  - {x: 264, y: -67}
+  - {x: 151, y: -86}
+  - {x: -73, y: -214}
+  - {x: 19, y: 253}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 7

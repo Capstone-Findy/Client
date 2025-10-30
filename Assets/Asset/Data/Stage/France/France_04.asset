@@ -13,12 +13,22 @@ MonoBehaviour:
   m_Name: France_04
   m_EditorClassIdentifier: 
   stageName: France_04
-  originalImage: {fileID: 21300000, guid: 4b1c2ab5829d247388c67c6af2c504d8, type: 3}
-  wrongImage: {fileID: 21300000, guid: 63f78d86a6e98432bbe2d693815b32eb, type: 3}
+  stageDescription: "\uD504\uB791\uC2A4 \uD30C\uB9AC\uC758 \uC0C1\uC9D5, '\uAC1C\uC120\uBB38'\uC785\uB2C8\uB2E4.
+    \uAC70\uB300\uD55C \uC544\uCE58 \uD615\uD0DC\uC640 \uC12C\uC138\uD558\uAC8C \uC870\uAC01\uB41C
+    \uBD80\uC870\uB4E4\uC774 \uC778\uC0C1\uC801\uC774\uB124\uC694.\n\n\uD558\uC9C0\uB9CC
+    \uB450 \uADF8\uB9BC\uC774 \uC644\uBCBD\uD558\uAC8C \uAC19\uC9C0\uB294 \uC54A\uC2B5\uB2C8\uB2E4.
+    \uC9D1\uC911\uD574\uC11C \uB2E4\uB978 \uBD80\uBD84\uC744 \uCC3E\uC544\uBCF4\uC138\uC694!"
+  stageMission: "\uBBF8\uC158: \uD30C\uB9AC\uC758 \uC601\uAD11, \uAC1C\uC120\uBB38\uC758
+    \uC228\uC740 \uCC28\uC774\uC810 \uCC3E\uAE30!"
+  originalImage: {fileID: 21300000, guid: d2bb2c9bb8e8540b3a9232ea5bb51bd7, type: 3}
+  wrongImage: {fileID: 21300000, guid: 2af13e0344d814b4ebc9179a31ad102c, type: 3}
   thumbnail: {fileID: 21300000, guid: 03d83e3fd06ba4fd5a0a9536c3043c3b, type: 3}
   answerPos:
-  - {x: -213, y: 23}
-  - {x: 342, y: -102}
-  - {x: 203, y: -223}
+  - {x: -106, y: 253}
+  - {x: 80, y: 140}
+  - {x: -17, y: -127}
+  - {x: 16, y: -271}
+  - {x: 69, y: -127}
+  - {x: 36, y: 54}
   correctRange: 40
-  totalAnswerCount: 3
+  totalAnswerCount: 6

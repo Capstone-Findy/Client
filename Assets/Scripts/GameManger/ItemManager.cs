@@ -40,6 +40,10 @@ public class ItemManager : MonoBehaviour
     public int overlapItemCount = 5;
     public int gambleItemCount = 5;
 
+    void Start()
+    {
+        currentStage = GameManager.instance.selectedStage;
+    }
 
     /*
     Main Item Function

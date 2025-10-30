@@ -10,6 +10,15 @@ public class StageSelectUI : MonoBehaviour
     [SerializeField] private Image[] arrowImages;
     [SerializeField] private Image mapImage;
     [SerializeField] private RectTransform layoutArea;
+
+    [Header("Stage Info Panel")]
+    [SerializeField] private GameObject stageInfoPanel;
+    [SerializeField] private TextMeshProUGUI panelStageTitle;
+    [SerializeField] private TextMeshProUGUI panelMissionText;
+    [SerializeField] private Image panelStageImage;
+    [SerializeField] private TextMeshProUGUI panelStageDescription;
+    [SerializeField] private Button panelStartButton;
+    [SerializeField] private Button panelCloseButton;
     void Start()
     {
         if (!layoutArea) layoutArea = transform as RectTransform;
@@ -40,7 +49,12 @@ public class StageSelectUI : MonoBehaviour
         }
         for (int i = arrowCount; i < arrowImages.Length; i++)
         {
-            if(arrowImages[i] != null) arrowImages[i].gameObject.SetActive(false);
+            if (arrowImages[i] != null) arrowImages[i].gameObject.SetActive(false);
+        }
+
+        if(panelCloseButton != null)
+        {
+            panelCloseButton.onClick.AddListener(() => stageInfoPanel.SetActive(false));
         }
     }
 
@@ -58,11 +72,38 @@ public class StageSelectUI : MonoBehaviour
             btn.onClick.AddListener(() =>
             {
                 GameManager.instance.SelectStage(stage);
-                GameManager.instance.LoadScene("GameScene");
+                ShowStageInfoPanel(stage, index);
             });
             btn.interactable = true;
         }
         else btn.interactable = false;
+    }
+
+    void ShowStageInfoPanel(StageData stage, int index)
+    {
+        if (stageInfoPanel == null || stage == null) return;
+
+        if (panelStageTitle != null)
+            panelStageTitle.text = $"Stage {index + 1}";
+
+        if (panelMissionText != null)
+            panelMissionText.text = stage.stageMission;
+
+        if (panelStageImage != null)
+            panelStageImage.sprite = stage.originalImage;
+
+        if (panelStageDescription != null)
+            panelStageDescription.text = stage.stageDescription;
+
+        if (panelStartButton != null)
+        {
+            panelStartButton.onClick.RemoveAllListeners();
+            panelStartButton.onClick.AddListener(() =>
+            {
+                GameManager.instance.LoadScene("GameScene");
+            });
+        }
+        stageInfoPanel.SetActive(true);
     }
 
     void ApplyStageLayout(RectTransform rt, StageSlot slot)
