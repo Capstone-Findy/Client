@@ -4564,7 +4564,7 @@ MonoBehaviour:
   wrongMarkerPrefab: {fileID: 6414373462705947980, guid: 69ad4e84188cc4e07bca786b8c12f6c8, type: 3}
   originalImageArea: {fileID: 1965288244}
   wrongImageArea: {fileID: 531090585}
-  noMoreItemPrefab: {fileID: 7274306991834808639, guid: c950530d6e2414e2ca42657cee5ad9b0, type: 3}
+  noMoreItemPrefab: {fileID: 7742627720806953352, guid: b3a000b9fb2cf4995ac58da21cd2f052, type: 3}
   overlayBackground: {fileID: 992521214}
   coinAnimPrefab: {fileID: 8477130758618809714, guid: 398af6eea33ef43fcba28e1da9f6ee73, type: 3}
   uiCanvas: {fileID: 1506180275}
