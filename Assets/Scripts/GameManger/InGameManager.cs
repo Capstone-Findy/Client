@@ -115,6 +115,11 @@ public class InGameManager : MonoBehaviour
             var stages = country.stagesSlots;
             int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
 
+            if (country != null)
+            {
+                DataManager.UnlockNextStage(country.countryName, currentIndex);
+            }
+            
             if (currentIndex >= stages.Count - 1) moveToMainText.text = "메인으로 이동";
 
             if (!DataManager.HasClearTime())

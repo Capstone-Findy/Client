@@ -23,6 +23,7 @@ public class StageSelectUI : MonoBehaviour
     {
         if (!layoutArea) layoutArea = transform as RectTransform;
         var country = GameManager.instance.selectedCountry;
+        int unlockedIndex = DataManager.GetUnlockedStageIndex(country.countryName);
         int count = Mathf.Min(stageButtons.Length, country.stagesSlots.Count);
         if (mapImage != null)
         {
@@ -35,7 +36,7 @@ public class StageSelectUI : MonoBehaviour
             var btn = stageButtons[i];
             var rt = btn.GetComponent<RectTransform>();
 
-            WireStageButton(btn, slot.stage, i);
+            WireStageButton(btn, slot.stage, i, unlockedIndex);
             ApplyStageLayout(rt, slot);
         }
 
@@ -58,17 +59,26 @@ public class StageSelectUI : MonoBehaviour
         }
     }
 
-    void WireStageButton(Button btn, StageData stage, int index)
+    void WireStageButton(Button btn, StageData stage, int index, int unlockedIndex)
     {
         Image thumb = btn.GetComponentInChildren<Image>(true);
         TextMeshProUGUI title = btn.GetComponentInChildren<TextMeshProUGUI>();
+
+        Transform lockImage = btn.transform.Find("LockImage");
 
         thumb.sprite = stage.thumbnail;
         title.text = $"Stage {index + 1}";
 
         btn.onClick.RemoveAllListeners();
-        if (stage != null)
+
+        bool isUnlocked = (index <= unlockedIndex);
+        if (isUnlocked && stage != null)
         {
+            btn.interactable = true;
+            if(lockImage != null)
+            {
+                lockImage.gameObject.SetActive(false);
+            }
             btn.onClick.AddListener(() =>
             {
                 GameManager.instance.SelectStage(stage);
@@ -76,7 +86,14 @@ public class StageSelectUI : MonoBehaviour
             });
             btn.interactable = true;
         }
-        else btn.interactable = false;
+        else
+        {
+            btn.interactable = false;
+            if(lockImage != null)
+            {
+                lockImage.gameObject.SetActive(true);
+            }
+        }    
     }
 
     void ShowStageInfoPanel(StageData stage, int index)

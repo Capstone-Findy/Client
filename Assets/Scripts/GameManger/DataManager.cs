@@ -4,7 +4,10 @@ using UnityEngine;
 public static class DataManager
 {
     private const string CLEAR_TIME_KEY = "ClearTime";
+    private const string UNLOCK_KEY_PREFIX = "UnlockedStageIndex_";
 
+
+    // ----- Clear Time in Game -----//
     public static bool HasClearTime()
     {
         return PlayerPrefs.HasKey(CLEAR_TIME_KEY);
@@ -30,5 +33,24 @@ public static class DataManager
     {
         // TODO : 서버에서 클리어 시간 받아오기
         return null;
+    }
+
+    //----- Unlock Stage ----- //
+
+    public static int GetUnlockedStageIndex(string countryName)
+    {
+        return PlayerPrefs.GetInt(UNLOCK_KEY_PREFIX + countryName, 0);
+    }
+
+    public static void UnlockNextStage(string countryName, int clearedStageIndex)
+    {
+        int currentlyUnlockedIndex = GetUnlockedStageIndex(countryName);
+        int nextStageIndex = clearedStageIndex + 1;
+
+        if(nextStageIndex > currentlyUnlockedIndex)
+        {
+            PlayerPrefs.SetInt(UNLOCK_KEY_PREFIX + countryName, nextStageIndex);
+            PlayerPrefs.Save();
+        }
     }
 }
