@@ -5,6 +5,7 @@ public static class DataManager
 {
     private const string CLEAR_TIME_KEY = "ClearTime";
     private const string UNLOCK_KEY_PREFIX = "UnlockedStageIndex_";
+    private const string UNLOCK_COUNTRY_KEY = "UnlockedCountryIndex";
 
 
     // ----- Clear Time in Game -----//
@@ -47,9 +48,26 @@ public static class DataManager
         int currentlyUnlockedIndex = GetUnlockedStageIndex(countryName);
         int nextStageIndex = clearedStageIndex + 1;
 
-        if(nextStageIndex > currentlyUnlockedIndex)
+        if (nextStageIndex > currentlyUnlockedIndex)
         {
             PlayerPrefs.SetInt(UNLOCK_KEY_PREFIX + countryName, nextStageIndex);
+            PlayerPrefs.Save();
+        }
+    }
+
+    //----- Unlock Country -----//
+    public static int GetUnlockedCountryIndex()
+    {
+        return PlayerPrefs.GetInt(UNLOCK_COUNTRY_KEY, 0);
+    }
+    public static void UnlockNextCountry(int clearedCountryIndex)
+    {
+        int currentlyUnlockedIndex = GetUnlockedCountryIndex();
+        int nextCountryIndex = clearedCountryIndex + 1;
+
+        if(nextCountryIndex > currentlyUnlockedIndex)
+        {
+            PlayerPrefs.SetInt(UNLOCK_COUNTRY_KEY, nextCountryIndex);
             PlayerPrefs.Save();
         }
     }

@@ -9,12 +9,19 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI blinkingText;
     public Button blinkingButton;
     public float blinkInterval = 0.5f;
+    private Image iconImage;
 
     [Header("Arrow Blink")]
     public Image[] arrows;
     public float arrowInterval = 0.6f;
     void Start()
     {
+        Transform iconTransform = transform.Find("IconImg");
+
+        if(iconTransform != null)
+        {
+            iconImage = iconTransform.GetComponent<Image>();
+        }
         if (blinkingText != null)
         {
             CanvasGroup textCanvasGroup = blinkingText.GetComponent<CanvasGroup>();
@@ -31,7 +38,7 @@ public class UIController : MonoBehaviour
             {
                 buttonCanvasGroup = blinkingButton.gameObject.AddComponent<CanvasGroup>();
             }
-            StartCoroutine(Blink(buttonCanvasGroup));
+            StartCoroutine(Blink(buttonCanvasGroup));           
         }
         if (arrows != null && arrows.Length > 0)
         {
@@ -56,21 +63,36 @@ public class UIController : MonoBehaviour
     {
         while (true)
         {
-            for (float t = 0; t < blinkInterval; t += Time.deltaTime)
+            if (blinkingButton != null && !blinkingButton.interactable)
             {
-                canvasGroup.alpha = Mathf.Lerp(1f, 0f, t / blinkInterval);
+                canvasGroup.alpha = 1f;
+                if (iconImage != null)
+                    iconImage.enabled = false;
+
                 yield return null;
             }
-
-            canvasGroup.alpha = 0f;
-
-            for (float t = 0; t < blinkInterval; t += Time.deltaTime)
+            else
             {
-                canvasGroup.alpha = Mathf.Lerp(0f, 1f, t / blinkInterval);
-                yield return null;
-            }
+                if (iconImage != null)
+                    iconImage.enabled = true;
+                    
+                for (float t = 0; t < blinkInterval; t += Time.deltaTime)
+                {
+                    canvasGroup.alpha = Mathf.Lerp(1f, 0f, t / blinkInterval);
+                    yield return null;
+                }
 
-            canvasGroup.alpha = 1f;
+                canvasGroup.alpha = 0f;
+
+                for (float t = 0; t < blinkInterval; t += Time.deltaTime)
+                {
+                    canvasGroup.alpha = Mathf.Lerp(0f, 1f, t / blinkInterval);
+                    yield return null;
+                }
+
+                canvasGroup.alpha = 1f;
+            }
+            
         }
     }
 

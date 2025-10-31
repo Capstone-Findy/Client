@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [Header("Selections")]
     public CountryData selectedCountry;
     public StageData selectedStage;
+    [Header("Game Data")]
+    [SerializeField] private List<CountryData> allcountries = new List<CountryData>();
     [Header("Util")]
     private Stack<string> sceneHistory = new Stack<string>();
 
@@ -38,6 +40,14 @@ public class GameManager : MonoBehaviour
     }
 
     //-----Country Select Scene-----//
+    public int GetCountryIndex(CountryData country)
+    {
+        return allcountries.FindIndex(c => c == country);
+    }
+    public int GetCountryCount()
+    {
+        return allcountries.Count;
+    }
     public void SelectCountry(CountryData country, bool clearStage = true)
     {
         selectedCountry = country;

@@ -119,6 +119,17 @@ public class InGameManager : MonoBehaviour
             {
                 DataManager.UnlockNextStage(country.countryName, currentIndex);
             }
+
+            bool isLastStageOfCountry = (currentIndex == stages.Count - 1);
+
+            if(isLastStageOfCountry)
+            {
+                int currentCountryIndex = GameManager.instance.GetCountryIndex(country);
+                if(currentCountryIndex != - 1)
+                {
+                    DataManager.UnlockNextCountry(currentCountryIndex);
+                }
+            }
             
             if (currentIndex >= stages.Count - 1) moveToMainText.text = "메인으로 이동";
 
