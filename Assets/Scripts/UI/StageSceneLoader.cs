@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StageSceneLoader : MonoBehaviour
 {
-    public void LoadBasicMode()
+    void Awake()
     {
-        SceneManager.LoadScene("CountrySelectScene");
+        GetComponent<Button>().onClick.AddListener(() =>
+        {
+            GameManager.instance.LoadScene("CountrySelectScene");
+        });
     }
 }
 

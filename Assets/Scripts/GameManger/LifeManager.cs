@@ -19,7 +19,6 @@ public class LifeManager : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.DeleteAll();
         // 저장된 목숨 불러오기
         currentLife = PlayerPrefs.GetInt(CurrentLifeKey, maxLife);
 
