@@ -312,7 +312,6 @@ GameObject:
   - component: {fileID: 877539281}
   - component: {fileID: 877539285}
   - component: {fileID: 877539284}
-  - component: {fileID: 877539283}
   - component: {fileID: 877539282}
   m_Layer: 5
   m_Name: Button
@@ -384,7 +383,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 877539283}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GoogleLoginButton, Assembly-CSharp
         m_MethodName: OnClickGoogleLogin
         m_Mode: 1
@@ -396,18 +395,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &877539283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877539280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2156d2ca4b76147bcb17c7a91b258c08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &877539284
 MonoBehaviour:
   m_ObjectHideFlags: 0
