@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -65,7 +64,7 @@ public class InGameManager : MonoBehaviour
         && !gameOverPanel.activeInHierarchy && !gameVictoryPanel.activeInHierarchy)
         {
             Vector2 pos = Input.mousePosition;
-            ///// 추후 제거 /////
+            ///// 추후 제거 (위치 탐색 코드)/////
             Vector2 localPoint;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 originalImage.rectTransform, 
@@ -133,17 +132,61 @@ public class InGameManager : MonoBehaviour
             
             if (currentIndex >= stages.Count - 1) moveToMainText.text = "메인으로 이동";
 
-            if (!DataManager.HasClearTime())
+            if (DataManager.instance != null && DataManager.instance.HasJwt() && country != null && currentIndex >= 0)
             {
-                // TODO : 로그인 시스템 추가 이후 UploadClearTimeToServer로 함수 변경
-                DataManager.SaveClearTime(actualPlayTime);
-                FirstClearTimeText.text = $"최초 시도 걸린 시간 : {actualPlayTime:F2}초";
+                DataManager.instance.GetProgressForStage(
+                    country.countryName,
+                    currentIndex,
+                    onSuccess: (prevClearTime) =>
+                    {
+                        if (prevClearTime.HasValue)
+                        {
+                            if (FirstClearTimeText != null)
+                                FirstClearTimeText.text = $"최초 시도 걸린 시간 : {prevClearTime.Value:F2}초";
+                            if (NonFirstClearTimeText != null)
+                                NonFirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
+                        }
+                        else
+                        {
+                            if (FirstClearTimeText != null)
+                                FirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
+                            if (NonFirstClearTimeText != null)
+                                NonFirstClearTimeText.text = string.Empty;
+                            DataManager.instance.SaveProgress(
+                            country.countryName,
+                            currentIndex,
+                            actualPlayTime,
+                            onSuccess: () =>
+                            {
+                                Debug.Log("Save Success!");
+                            },
+                            onError: (code, msg) =>
+                            {
+                                Debug.Log("Save Failed");
+                            }
+                          );
+                        }
+                    },
+                    onError: (code, msg) =>
+                    {
+                        Debug.Log("Save Failed");
+                        if (FirstClearTimeText != null) FirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
+                        if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = string.Empty;
+
+                        DataManager.instance.SaveProgress(
+                            country.countryName,
+                            currentIndex,
+                            actualPlayTime,
+                            onSuccess: () => { Debug.Log("Save success!"); },
+                            onError: (c, m) => { Debug.Log("Save Failed"); }
+                        );
+                    }
+                );
             }
             else
             {
-                float firstTime = DataManager.GetClearTime();
-                FirstClearTimeText.text = $"최초 시도 걸린 시간 : {firstTime:F2}초";
-                NonFirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
+                if (FirstClearTimeText != null) FirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
+                if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = string.Empty;
             }
         }
         else
