@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Text;
-using Findy.ServerData;
+using Findy.Auth;
+using Findy.Define;
+using Findy.JsonHelper;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -56,41 +58,60 @@ public class DataManager : MonoBehaviour
     }
 
     //----- JWT Exchange -----//
-    public void AuthenticateWithServer(string authCode, Action onSuccess, Action<long, string> onError)
+    public void AuthenticateWithProvider(
+        IAuthProvider provider,
+        string codeVerifier,
+        Action onSuccess,
+        Action<long, string> onError)
     {
-        StartCoroutine(CoAuthenticateWithServer(authCode, onSuccess, onError));
-    }
-
-    private IEnumerator CoAuthenticateWithServer(string authCode, Action onSuccess, Action<long, string> onError)
-    {
-        WWWForm form = new WWWForm();
-
-        form.AddField("authCode", authCode);
-
-        using (UnityWebRequest req = UnityWebRequest.Post(BASE_URL + AUTH_EXCHANGE_PATH, form))
-        {
-            yield return req.SendWebRequest();
-
-            if (req.result == UnityWebRequest.Result.Success)
+        provider.GetAuthorizationCode(
+            onSuccess: (authCode) =>
             {
-                var json = req.downloadHandler.text;
-                AuthResponse ar = JsonUtility.FromJson<AuthResponse>(WrapJsonIfBare(json));
-                if (ar != null && !string.IsNullOrEmpty(ar.token))
-                {
-                    SaveJwt(ar.token);
-                    onSuccess?.Invoke();
-                }
-                else
-                {
-                    onError?.Invoke(req.responseCode, "Token missing in response");
-                }
+                StartCoroutine(CoExchangeCode(provider.ProviderName, "", codeVerifier, onSuccess, onError));
+            },
+            onError: (msg) => onError?.Invoke(0, msg)
+        );
+    }
+    
+    private IEnumerator CoExchangeCode(
+        string provider,
+        string authCode,
+        string codeVerifier,
+        Action onSuccess,
+        Action<long, string> onError)
+    {
+        string url = BASE_URL + $"{AUTH_EXCHANGE_PATH}/{provider}";
+        WWWForm form = new WWWForm();
+        form.AddField("authCode", authCode);
+        if (!string.IsNullOrEmpty(codeVerifier))
+            form.AddField("codeVerifier", codeVerifier);
+        
+        using (UnityWebRequest req = UnityWebRequest.Post(url, form))
+        {
+        req.timeout = 15;
+        req.SetRequestHeader("Accept", "application/json");
+        yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.Success)
+        {
+            var json = req.downloadHandler.text;
+            AuthResponse ar = JsonUtility.FromJson<AuthResponse>(JsonHelper.WrapJsonIfBare(json));
+            if (ar != null && !string.IsNullOrEmpty(ar.token))
+            {
+                SaveJwt(ar.token);
+                onSuccess?.Invoke();
             }
             else
             {
-                onError?.Invoke(req.responseCode, req.error);
+                onError?.Invoke(req.responseCode, "Token missing in response");
             }
         }
+        else
+        {
+            onError?.Invoke(req.responseCode, $"{req.error} | {req.downloadHandler.text}");
+        }
     }
+}
 
     public void SaveProgress(string country, int stage, float clearTime, Action onSuccess = null, Action<long, string> onError = null)
     {
@@ -167,12 +188,6 @@ public class DataManager : MonoBehaviour
             }
         }
     }
-    private void HandleAuthExpired()
-    {
-        Debug.LogWarning("[Auth] JWT expired or invalid. Clearing token.");
-        ClearJwt();
-        OnAuthExpired?.Invoke();
-    }
 
     public void GetProgressForStage(string country, int stage, Action<float?> onSuccess, Action<long, string> onError = null)
     {
@@ -182,7 +197,7 @@ public class DataManager : MonoBehaviour
             {
                 try
                 {
-                    var resp = JsonUtility.FromJson<StageProgressDto>(WrapJsonIfObject(txt));
+                    var resp = JsonUtility.FromJson<StageProgressDto>(JsonHelper.WrapJsonIfObject(txt));
                     if (resp != null && !string.IsNullOrEmpty(resp.country))
                     {
                         onSuccess?.Invoke(resp.clearTime);
@@ -209,19 +224,11 @@ public class DataManager : MonoBehaviour
         ));
     }
 
-    private string WrapJsonIfObject(string input)
+    private void HandleAuthExpired()
     {
-        string trimmed = input?.Trim();
-        if (string.IsNullOrEmpty(trimmed)) return "{}";
-        if (trimmed.StartsWith("{")) return trimmed;
-        return "{}";
-    }
-    private string WrapJsonIfBare(string input)
-    {
-        string trimmed = input?.Trim();
-        if (string.IsNullOrEmpty(trimmed)) return "{}";
-        if (trimmed.StartsWith("{")) return trimmed;
-        return $"{{\"token\":\"{trimmed}\"}}";
+        Debug.LogWarning("[Auth] JWT expired or invalid. Clearing token.");
+        ClearJwt();
+        OnAuthExpired?.Invoke();
     }
 
     //----- Unlock Stage ----- //
