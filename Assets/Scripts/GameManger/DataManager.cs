@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 using System.Text;
-using System.Threading.Tasks;
-using GooglePlayGames.BasicApi;
+using Findy.ServerData;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,7 +10,7 @@ public class DataManager : MonoBehaviour
     public static DataManager instance { get; private set; }
 
     //----- Setting -----//
-    private const string BASE_URL = ""; // 호스트 주소 기입
+    private const string BASE_URL = ""; // 서버 주소
     private const string AUTH_EXCHANGE_PATH = "/api/auth/google"; // authCode 교환 엔드포인트
     private const string SAVE_PROGRESS_PATH = "/api/me/progress";  // 진행도 저장/갱신
     private const string GET_PROGRESS_PATH = "/api/me/progress";
@@ -59,7 +58,7 @@ public class DataManager : MonoBehaviour
     //----- JWT Exchange -----//
     public void AuthenticateWithServer(string authCode, Action onSuccess, Action<long, string> onError)
     {
-        StartCoroutine("");
+        StartCoroutine(CoAuthenticateWithServer(authCode, onSuccess, onError));
     }
 
     private IEnumerator CoAuthenticateWithServer(string authCode, Action onSuccess, Action<long, string> onError)
@@ -223,20 +222,6 @@ public class DataManager : MonoBehaviour
         if (string.IsNullOrEmpty(trimmed)) return "{}";
         if (trimmed.StartsWith("{")) return trimmed;
         return $"{{\"token\":\"{trimmed}\"}}";
-    }
-    
-    [Serializable]
-    private class AuthResponse
-    {
-        public string token;
-        public long userId;
-    }
-    [Serializable]
-    public class StageProgressDto
-    {
-        public string country;
-        public int stage;
-        public float clearTime;
     }
 
     //----- Unlock Stage ----- //

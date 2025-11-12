@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public class GoogleLogin : MonoBehaviour
 {
-    public Button loginButtonl;
+    public Button loginButton;
     public GameObject loadingSpinner;
     void Awake()
     {
         PlayGamesPlatform.Activate();
-        if (loginButtonl != null)
+        if (loginButton != null)
         {
-            loginButtonl.onClick.AddListener(OnClickGoogleLogin);
+            loginButton.onClick.AddListener(OnClickGoogleLogin);
         }
         SetLoading(false);
     }
@@ -59,7 +59,7 @@ public class GoogleLogin : MonoBehaviour
     private void SetLoading(bool isOn)
     {
         if (loadingSpinner != null) loadingSpinner.SetActive(isOn);
-        if(loginButtonl != null) loginButtonl.interactable = !isOn;
+        if(loginButton != null) loginButton.interactable = !isOn;
     }
 
 }
