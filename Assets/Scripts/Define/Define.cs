@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Findy.ServerData
+namespace Findy.Define
 {
     [Serializable]
     public class AuthResponse
