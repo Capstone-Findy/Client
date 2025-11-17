@@ -34,39 +34,15 @@ public class ItemManager : MonoBehaviour
     private bool isUsed = false;
 
     [Header("Data")]
+    // TODO : 사용자마다 다른 아이템 개수 및 서버에 존재하는 아이템 개수를 갖고와 초기화
     public int hintItemCount = 5;
     public int timeAddItemCount = 5;
     public int overlapItemCount = 5;
     public int gambleItemCount = 5;
 
-    public int initHintCount = 0;
-    public int initTimeAddCount = 0;
-    public int initOverlapCount = 0;
-    public int initGambleCount = 0;
-
     void Start()
     {
         currentStage = GameManager.instance.selectedStage;
-
-        if (DataManager.instance != null && DataManager.instance.HasJwt())
-        {
-            hintItemCount = DataManager.instance.userHintCount;
-            timeAddItemCount = DataManager.instance.userTimeAddCount;
-            overlapItemCount = DataManager.instance.userOverlapCount;
-            gambleItemCount = DataManager.instance.userGambleCount;
-        }
-        else
-        {
-            // 서버 연결 후 삭제
-            hintItemCount = 5;
-            timeAddItemCount = 5;
-            overlapItemCount = 5;
-            gambleItemCount = 5;
-        }
-        initHintCount = hintItemCount;
-        initTimeAddCount = timeAddItemCount;
-        initOverlapCount = overlapItemCount;
-        initGambleCount = gambleItemCount;
     }
 
     /*
@@ -96,10 +72,6 @@ public class ItemManager : MonoBehaviour
             }
         }
         hintItemCount--;
-        if(DataManager.instance != null)
-        {
-            DataManager.instance.UpdateUserItem("hint", hintItemCount);
-        }
     }
 
     public void AddTimeItem()
@@ -120,10 +92,6 @@ public class ItemManager : MonoBehaviour
             inGameManager.timeSlider.value = inGameManager.currentTime;
         }
         timeAddItemCount--;
-        if(DataManager.instance != null)
-        {
-            DataManager.instance.UpdateUserItem("timeAdd", timeAddItemCount);
-        }
     }
 
     public void ScreenOverlap()
@@ -144,11 +112,6 @@ public class ItemManager : MonoBehaviour
 
         isUsed = true;
         overlapItemCount--;
-
-        if(DataManager.instance != null)
-        {
-            DataManager.instance.UpdateUserItem("overlap", overlapItemCount);
-        }
 
         Vector2 originalPos1 = originalImageArea.anchoredPosition;
         Vector2 originalPos2 = wrongImageArea.anchoredPosition;
@@ -210,12 +173,6 @@ public class ItemManager : MonoBehaviour
 
         isUsed = true;
         gambleItemCount--;
-
-        if (DataManager.instance != null)
-        {
-            DataManager.instance.UpdateUserItem("gamble", gambleItemCount);
-        }
-        
         bool showBack = chance >= 0.5f;
         ShowGambleAnimation(showBack);
         return;
@@ -313,9 +270,9 @@ public class ItemManager : MonoBehaviour
     /*
     Getter
     */
-    public int GetUsedHintCount() => initHintCount - hintItemCount;
-    public int GetUsedTimeAddCount() => initTimeAddCount - timeAddItemCount;
-    public int GetUsedOverlapCount() => initOverlapCount - overlapItemCount;
-    public int GetUsedGambleCount() => initGambleCount - gambleItemCount;
+    public int GetUsedHintCount() => 5 - hintItemCount;
+    public int GetUsedTimeAddCount() => 5 - timeAddItemCount;
+    public int GetUsedOverlapCount() => 5 - overlapItemCount;
+    public int GetUsedGambleCount() => 5 - gambleItemCount;
 
 }

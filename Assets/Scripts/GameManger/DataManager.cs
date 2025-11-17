@@ -14,10 +14,9 @@ public class DataManager : MonoBehaviour
     //----- Setting -----//
     private const string BASE_URL = ""; // 서버 주소
     private const string AUTH_EXCHANGE_PATH = "/api/auth/google"; // authCode 교환 엔드포인트
-    private const string SAVE_PROGRESS_PATH = "/api/me/progress";  // 진행도 저장
-    private const string GET_PROGRESS_PATH = "/api/me/progress";   // 진행도 갱신
-    private const string GET_ITEMS_PATH = "";                      // 아이템 정보 가져오기
-    private const string UPDATE_ITEM_PATH = "";                     // 단일 아이템 업데이트
+    private const string SAVE_PROGRESS_PATH = "/api/me/progress";  // 진행도 저장/갱신
+    private const string GET_PROGRESS_PATH = "/api/me/progress";
+    
     private const string PLAYERPREFS_JWT_KEY = "APP_JWT";
 
     //----- Event/Callback -----//
@@ -26,13 +25,6 @@ public class DataManager : MonoBehaviour
     //----- Key -----//
     private const string UNLOCK_KEY_PREFIX = "UnlockedStageIndex_";
     private const string UNLOCK_COUNTRY_KEY = "UnlockedCountryIndex";
-
-    //----- Init -----//
-    [Header("User Data")]
-    public int userHintCount = 0;
-    public int userTimeAddCount = 0;
-    public int userOverlapCount = 0;
-    public int userGambleCount = 0;
 
     private void Awake()
     {
@@ -43,8 +35,6 @@ public class DataManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-
-        if (HasJwt()) FetchUserItems();
     }
 
     //----- JWT Control -----//
@@ -109,17 +99,7 @@ public class DataManager : MonoBehaviour
             if (ar != null && !string.IsNullOrEmpty(ar.token))
             {
                 SaveJwt(ar.token);
-                    FetchUserItems(
-                        onSuccess: () =>
-                        {
-                            onSuccess?.Invoke();
-                        },
-                        onError: (code, msg) =>
-                        {
-                            Debug.Log("Failed to Fetch Items!");
-                            onSuccess?.Invoke();
-                        }
-                    );
+                onSuccess?.Invoke();
             }
             else
             {
@@ -243,6 +223,7 @@ public class DataManager : MonoBehaviour
             }
         ));
     }
+
     private void HandleAuthExpired()
     {
         Debug.LogWarning("[Auth] JWT expired or invalid. Clearing token.");
@@ -250,64 +231,8 @@ public class DataManager : MonoBehaviour
         OnAuthExpired?.Invoke();
     }
 
-    //----- Items -----//
-    public void FetchUserItems(Action onSuccess = null, Action<long, string> onError = null)
-    {
-        StartCoroutine(CoGetAuthorized(GET_ITEMS_PATH,
-            onSuccess: (json) =>
-            {
-                try
-                {
-                    UserItemsDto items = JsonUtility.FromJson<UserItemsDto>(JsonHelper.WrapJsonIfObject(json));
-                    if (items != null)
-                    {
-                        userHintCount = items.hintCount;
-                        userTimeAddCount = items.timeAddCount;
-                        userOverlapCount = items.overlapCount;
-                        userGambleCount = items.gambleCount;
-                        Debug.Log("User items loaded Successfully");
-                        onSuccess?.Invoke();
-                    }
-                    else onError?.Invoke(0, "Failed to parse items response");
-                }
-                catch (Exception e)
-                {
-                    onError?.Invoke(0, $"Error parsing items: {e.Message}");
-                }
-            },
-            onError: (code, msg) =>
-            {
-                Debug.LogError($"Failed to fetch items. Code: {code}, Msg: {msg}");
-                onError?.Invoke(code, msg);
-            }));
-    }
-    public void UpdateUserItem(string itemType, int newCount, Action onSuccess = null, Action<long, string> onError = null)
-    {
-        switch (itemType)
-        {
-            case "hint": userHintCount = newCount; break;
-            case "timeAdd": userTimeAddCount = newCount; break;
-            case "overlap": userOverlapCount = newCount; break;
-            case "gamble": userGambleCount = newCount; break;
-            default:
-                return;
-        }
-
-        var payload = new UpdateItemDto { itemType = itemType, count = newCount };
-        StartCoroutine(CoPostJsonAuthorized(UPDATE_ITEM_PATH, payload,
-        onSuccess: (txt) =>
-        {
-            onSuccess?.Invoke();
-        },
-        onError: (code, msg) =>
-        {
-            onError?.Invoke(code, msg);
-        }));
-    }
-
-
-
     //----- Unlock Stage ----- //
+
     public static int GetUnlockedStageIndex(string countryName)
     {
         return PlayerPrefs.GetInt(UNLOCK_KEY_PREFIX + countryName, 0);
