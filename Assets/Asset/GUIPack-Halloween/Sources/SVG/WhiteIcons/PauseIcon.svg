@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 228 255" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g transform="matrix(1,0,0,1,-36,-23)">
+        <g id="PauseIcon" transform="matrix(3,0,0,2.5698,0.615331,20.0336)">
+            <g transform="matrix(1.15717,0,0,1,-2.64996,0)">
+                <path d="M34.54,8.815L30.244,7.582L22.954,7.582L18.843,8.459L16.86,11.76L17.692,23.068L16.86,31.089L17.692,47.376L16.86,64.623L17.692,75.382L16.86,84.883L17.483,90.362L20.526,93.567L30.426,93.567L35.137,90.843L35.872,83.774L35.311,74.594L35.872,65.626L35.311,57.139L35.872,46.717L35.311,38.135L35.872,27.264L35.123,20.02L35.491,12.605L34.54,8.815Z" style="fill:white;"/>
+            </g>
+            <g transform="matrix(1.15717,0,0,1,41.2195,0)">
+                <path d="M34.54,8.815L30.244,7.582L22.954,7.582L18.843,8.459L16.86,11.76L17.692,23.068L16.86,31.089L17.692,47.376L16.86,64.623L17.692,75.382L16.86,84.883L17.483,90.362L20.526,93.567L30.426,93.567L35.137,90.843L35.872,83.774L35.311,74.594L35.872,65.626L35.311,57.139L35.872,46.717L35.311,38.135L35.872,27.264L35.123,20.02L35.491,12.605L34.54,8.815Z" style="fill:white;"/>
+            </g>
+        </g>
+    </g>
+</svg>

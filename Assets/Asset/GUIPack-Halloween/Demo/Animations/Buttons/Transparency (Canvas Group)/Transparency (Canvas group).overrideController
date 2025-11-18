@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Transparency (Canvas group)
+  m_Controller: {fileID: 9100000, guid: c0ba975c17fcf42edbf5a0d104ac0b44, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: -1978453663127928582, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+    m_OverrideClip: {fileID: -1978453663127928582, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+  - m_OriginalClip: {fileID: 975390373368724436, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b82782b299aef4c3aa5921860a67fd9d, type: 2}
+  - m_OriginalClip: {fileID: -4336803595447195318, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9b47cb048b4a347b3b1ab2d5588164ed, type: 2}
+  - m_OriginalClip: {fileID: -102015459474387339, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+    m_OverrideClip: {fileID: -102015459474387339, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+  - m_OriginalClip: {fileID: 645316959743639708, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}
+    m_OverrideClip: {fileID: 645316959743639708, guid: c0ba975c17fcf42edbf5a0d104ac0b44,
+      type: 2}

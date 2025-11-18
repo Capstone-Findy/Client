@@ -1,0 +1,14 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: StarPop3
+  m_Controller: {fileID: 9100000, guid: 87a3424edd40847239630a3ccdb5f91c, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 24590e8c56dd14098ae9b071d28808df, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 49e5de7f0e2ac4804baba83355377bed, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9347ef22eb7e24803be9ebc7790db725, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 9347ef22eb7e24803be9ebc7790db725, type: 2}

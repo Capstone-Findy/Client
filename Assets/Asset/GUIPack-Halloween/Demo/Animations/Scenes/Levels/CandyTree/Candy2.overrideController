@@ -1,0 +1,14 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Candy2
+  m_Controller: {fileID: 9100000, guid: a0b648d9df2414a9aac65f993556e341, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 60960fc550f54480d891f37235f15d7a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 34fd20f5ca7654e1f9f1e021f984a5a3, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 89e31240575c14dd1949352190e4daaa, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 89e31240575c14dd1949352190e4daaa, type: 2}

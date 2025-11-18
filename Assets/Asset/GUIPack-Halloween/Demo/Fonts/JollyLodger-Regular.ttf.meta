@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 48cdb38005146443e8e2daf67a37afb1
+timeCreated: 1505764818
+licenseType: Store
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Jolly Lodger
+  fontNames:
+  - Jolly Lodger
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 276 235" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g transform="matrix(1,0,0,1,-22,-41)">
+        <g id="BonesIcon" transform="matrix(1.98501,0,0,2.23972,-2518.64,-1834.19)">
+            <g transform="matrix(0.391306,-0.677762,0.677762,0.391306,220.752,1385.51)">
+                <g>
+                    <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    <g transform="matrix(1,0,0,1,-27.6802,0)">
+                        <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    </g>
+                </g>
+                <g>
+                    <g transform="matrix(1,0,0,1,0,138.326)">
+                        <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    </g>
+                    <g transform="matrix(1,0,0,1,-27.6802,138.326)">
+                        <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    </g>
+                </g>
+                <g transform="matrix(1,5.88734e-17,-6.00658e-18,1.47069,6.30003,-406.167)">
+                    <rect x="1255.65" y="856.351" width="17.58" height="94.012" style="fill:white;"/>
+                </g>
+            </g>
+            <g transform="matrix(-0.391306,-0.677762,-0.677762,0.391306,2468.04,1385.51)">
+                <g>
+                    <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    <g transform="matrix(1,0,0,1,-27.6802,0)">
+                        <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    </g>
+                </g>
+                <g>
+                    <g transform="matrix(1,0,0,1,0,138.326)">
+                        <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    </g>
+                    <g transform="matrix(1,0,0,1,-27.6802,138.326)">
+                        <circle cx="1284.58" cy="855.053" r="15.289" style="fill:white;"/>
+                    </g>
+                </g>
+                <g transform="matrix(1,5.88734e-17,-6.00658e-18,1.47069,6.30003,-406.167)">
+                    <rect x="1255.65" y="856.351" width="17.58" height="94.012" style="fill:white;"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
