@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
+using Findy.Define;
 
 public class ItemManager : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class ItemManager : MonoBehaviour
     */
     public void FindOne()
     {
+        SoundManager.instance.PlaySFX(SoundType.SFX_Item);
         if (hintItemCount <= 0)
         {
             touchManager.ShowCurStateImage(noMoreItemPrefab);
@@ -76,6 +78,7 @@ public class ItemManager : MonoBehaviour
 
     public void AddTimeItem()
     {
+        SoundManager.instance.PlaySFX(SoundType.SFX_Item);
         if (timeAddItemCount <= 0)
         {
             touchManager.ShowCurStateImage(noMoreItemPrefab);
@@ -96,6 +99,7 @@ public class ItemManager : MonoBehaviour
 
     public void ScreenOverlap()
     {
+        SoundManager.instance.PlaySFX(SoundType.SFX_Item);
         if (overlapItemCount <= 0)
         {
             touchManager.ShowCurStateImage(noMoreItemPrefab);
@@ -163,6 +167,7 @@ public class ItemManager : MonoBehaviour
 
     public void Gamble()
     {
+        SoundManager.instance.PlaySFX(SoundType.SFX_Item);
         if (isUsed) return;
         if (gambleItemCount <= 0)
         {

@@ -16,4 +16,19 @@ namespace Findy.Define
         public int stage;
         public float clearTime;
     }
+
+    //----- Sound -----//
+    public enum SoundType
+    {
+        BGM_Main1,
+        BGM_Main2,
+        BGM_InGame,
+        SFX_Click,
+        SFX_Correct,
+        SFX_Wrong,
+        SFX_AlreadyFound,
+        SFX_Item,
+        SFX_GameWin,
+        SFX_GameOver
+    }
 }

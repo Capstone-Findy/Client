@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Findy.Define;
 using TMPro;
 using UnityEngine;
 public class TouchManager : MonoBehaviour
@@ -55,6 +56,7 @@ public class TouchManager : MonoBehaviour
             itemManager.CreateHintMarker(originalImageArea, answerPos);
             itemManager.CreateHintMarker(wrongImageArea, answerPos);
             ShowCurStateImage(correctImgPrefab);
+            SoundManager.instance.PlaySFX(SoundType.SFX_Correct);
         }
         else if (resultWrong == CheckResult.Correct)
         {
@@ -62,10 +64,12 @@ public class TouchManager : MonoBehaviour
             itemManager.CreateHintMarker(originalImageArea, answerPos);
             itemManager.CreateHintMarker(wrongImageArea, answerPos);
             ShowCurStateImage(correctImgPrefab);
+            SoundManager.instance.PlaySFX(SoundType.SFX_Correct);
         }
         else if (resultOriginal == CheckResult.AlreadyFound || resultWrong == CheckResult.AlreadyFound)
         {
             ShowCurStateImage(alreadyfoundImgPrefab);
+            SoundManager.instance.PlaySFX(SoundType.SFX_AlreadyFound);
         }
         else
         {
@@ -81,6 +85,8 @@ public class TouchManager : MonoBehaviour
             isChecking = true;
             inGameManager.currentTime -= 3f;
             ShowCurStateImage(wrongImgPrefab);
+            SoundManager.instance.PlaySFX(SoundType.SFX_Wrong);
+
             StartCoroutine("CheckingAfterDelay");
         }
     }

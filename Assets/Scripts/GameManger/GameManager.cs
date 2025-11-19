@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Findy.Define;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +21,32 @@ public class GameManager : MonoBehaviour
         if (instance != null) { Destroy(gameObject); return; }
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    //----- Sound -----//
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        switch (scene.name)
+        {
+            case "MainScene":
+                SoundManager.instance.PlayBGM(SoundType.BGM_Main1);
+                break;
+            case "CountrySelectScene":
+            case "StageSelectScene":
+                SoundManager.instance.PlayBGM(SoundType.BGM_Main2);
+                break;
+            case "GameScene":
+                SoundManager.instance.PlayBGM(SoundType.BGM_InGame);
+                break;
+        }
     }
     //-----Util-----//
     public void LoadScene(string sceneName)

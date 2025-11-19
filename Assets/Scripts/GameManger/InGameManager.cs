@@ -1,3 +1,4 @@
+using Findy.Define;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -104,11 +105,14 @@ public class InGameManager : MonoBehaviour
     {
         isGameOver = true;
         timeSlider.value = 0;
+        SoundManager.instance.StopBGM();
+
         int foundCount = touchManager.GetFoundAnswerCount();
 
         if (foundCount == currentStage.totalAnswerCount)
         {
             gameVictoryPanel.SetActive(true);
+            SoundManager.instance.PlaySFX(SoundType.SFX_GameWin);
 
             var country = GameManager.instance.selectedCountry;
             var stages = country.stagesSlots;
@@ -193,6 +197,8 @@ public class InGameManager : MonoBehaviour
         {
             int remainCountAnswer = currentStage.totalAnswerCount - foundCount;
             gameOverPanel.SetActive(true);
+            SoundManager.instance.PlaySFX(SoundType.SFX_GameOver);
+
             answerCountText.text = $"찾은 정답 개수 : {foundCount}개";
             remainCountText.text = $"남은 정답 개수 : {remainCountAnswer}개";
 
