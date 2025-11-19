@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
+// using GooglePlayGames;
+// using GooglePlayGames.BasicApi;
 using UnityEngine;
 using UnityEngine.UI;
 
