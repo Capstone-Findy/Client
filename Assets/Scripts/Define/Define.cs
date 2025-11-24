@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Findy.Define
 {
+    //----- Login/SignUp -----//
     [Serializable]
     public class SignUpRequestDto
     {
@@ -23,6 +24,18 @@ namespace Findy.Define
     {
         public string token;
         public string refreshToken;
+    }
+    //----- User Info -----//
+    [Serializable]
+    public class UserDataDto
+    {
+        public string name;
+        public int money;
+        public int heart;
+        public int item1;
+        public int item2;
+        public int item3;
+        public int item4;
     }
     [Serializable]
     public class StageProgressDto

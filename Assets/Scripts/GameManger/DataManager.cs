@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Text;
-using Findy.Auth;
 using Findy.Define;
 using Findy.JsonHelper;
 using UnityEngine;
@@ -13,7 +12,10 @@ public class DataManager : MonoBehaviour
 
     //----- Setting -----//
     private const string BASE_URL = "http://54.116.10.1:8080"; // 서버 주소
-    private const string SAVE_PROGRESS_PATH = "/api/me/progress";  // 진행도 저장/갱신
+    private const string POST_SIGNUP_URL = "/sign-up";
+    private const string POST_LOGIN_URL = "/sign-in";
+    private const string GET_USER_INFO_PATH = "/auth/user";
+    private const string SAVE_PROGRESS_PATH = "/api/me/progress";
     private const string GET_PROGRESS_PATH = "/api/me/progress";
     
     private const string PLAYERPREFS_JWT_KEY = "APP_JWT";
@@ -184,7 +186,7 @@ public class DataManager : MonoBehaviour
             password = password
         };
 
-        StartCoroutine(CoPostJson("/sign-up", payload,
+        StartCoroutine(CoPostJson(POST_SIGNUP_URL, payload,
             onSuccess: (txt) =>
             {
                 Debug.Log($"[API] SignUp Success: {txt}");
@@ -207,7 +209,7 @@ public class DataManager : MonoBehaviour
             rememberMe = rememberMe
         };
 
-        StartCoroutine(CoPostJson("/login", payload,
+        StartCoroutine(CoPostJson(POST_LOGIN_URL, payload,
             onSuccess: (txt) =>
             {
                 var ar = JsonUtility.FromJson<AuthResponse>(JsonHelper.WrapJsonIfBare(txt));
@@ -215,7 +217,18 @@ public class DataManager : MonoBehaviour
                 {
                     SaveJwt(ar.token);
                     Debug.Log($"[API] Login Success. JWT Saved.");
-                    onSuccess?.Invoke();
+                    GetUserInfo(
+                        onSuccess: (userData) =>
+                        {
+                            GameManager.instance.currentUserData = userData;
+                            Debug.Log($"User Data Fetched for: {userData.name}, Money: {userData.money}");
+                            onSuccess?.Invoke();
+                        },
+                        onError: (code, msg) =>
+                        {
+                            onError?.Invoke(code, $"로그인은 성공했으나 유저 정보 로드 실패: {msg}");
+                        }
+                    );
                 }
                 else
                 {
@@ -225,6 +238,39 @@ public class DataManager : MonoBehaviour
             onError: (code, msg) =>
             {
                 Debug.LogError($"[API] Login Failed: Code {code}, Msg {msg}");
+                onError?.Invoke(code, msg);
+            }
+        ));
+    }
+
+    public void GetUserInfo(Action<Findy.Define.UserDataDto> onSuccess, Action<long, string> onError)
+    {
+        StartCoroutine(CoGetAuthorized(GET_USER_INFO_PATH,
+            onSuccess: (txt) =>
+            {
+                try
+                {
+                    var resp = JsonUtility.FromJson<Findy.Define.UserDataDto>(txt);
+
+                    if(resp != null && !string.IsNullOrEmpty(resp.name))
+                    {
+                        Debug.Log($"[API] User Info Success: {resp.name}");
+                        onSuccess?.Invoke(resp);
+                    }
+                    else
+                    {
+                        onError?.Invoke(0, "유저 정보 응답 형식이 잘못되었습니다.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"[API] User Info JSON Parse Error: {e.Message}");
+                    onError?.Invoke(0, "유저 정보 파싱 오류");
+                }
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] Get User Info Failed: Code {code}, Msg {msg}");
                 onError?.Invoke(code, msg);
             }
         ));

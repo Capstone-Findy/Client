@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
 
+    [Header("User Data")]
+    public Findy.Define.UserDataDto currentUserData;
     [Header("Selections")]
     public CountryData selectedCountry;
     public StageData selectedStage;
