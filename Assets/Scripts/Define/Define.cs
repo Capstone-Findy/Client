@@ -4,10 +4,25 @@ using UnityEngine;
 namespace Findy.Define
 {
     [Serializable]
+    public class SignUpRequestDto
+    {
+        public string name;
+        public string file;
+        public string email;
+        public string password;
+    }
+    [Serializable]
+    public class LoginRequestDto
+    {
+        public string email;
+        public string password;
+        public bool rememberMe;
+    }
+    [Serializable]
     public class AuthResponse
     {
         public string token;
-        public long userId;
+        public string refreshToken;
     }
     [Serializable]
     public class StageProgressDto

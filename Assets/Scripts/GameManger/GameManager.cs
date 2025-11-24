@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         switch (scene.name)
         {
             case "MainScene":
+            case "LoginScene":
                 SoundManager.instance.PlayBGM(SoundType.BGM_Main1);
                 break;
             case "CountrySelectScene":

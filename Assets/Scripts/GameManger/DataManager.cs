@@ -12,8 +12,7 @@ public class DataManager : MonoBehaviour
     public static DataManager instance { get; private set; }
 
     //----- Setting -----//
-    private const string BASE_URL = ""; // 서버 주소
-    private const string AUTH_EXCHANGE_PATH = "/api/auth/google"; // authCode 교환 엔드포인트
+    private const string BASE_URL = "http://54.116.10.1:8080"; // 서버 주소
     private const string SAVE_PROGRESS_PATH = "/api/me/progress";  // 진행도 저장/갱신
     private const string GET_PROGRESS_PATH = "/api/me/progress";
     
@@ -56,62 +55,6 @@ public class DataManager : MonoBehaviour
         PlayerPrefs.DeleteKey(PLAYERPREFS_JWT_KEY);
         PlayerPrefs.Save();
     }
-
-    //----- JWT Exchange -----//
-    public void AuthenticateWithProvider(
-        IAuthProvider provider,
-        string codeVerifier,
-        Action onSuccess,
-        Action<long, string> onError)
-    {
-        provider.GetAuthorizationCode(
-            onSuccess: (authCode) =>
-            {
-                StartCoroutine(CoExchangeCode(provider.ProviderName, "", codeVerifier, onSuccess, onError));
-            },
-            onError: (msg) => onError?.Invoke(0, msg)
-        );
-    }
-    
-    private IEnumerator CoExchangeCode(
-        string provider,
-        string authCode,
-        string codeVerifier,
-        Action onSuccess,
-        Action<long, string> onError)
-    {
-        string url = BASE_URL + $"{AUTH_EXCHANGE_PATH}/{provider}";
-        WWWForm form = new WWWForm();
-        form.AddField("authCode", authCode);
-        if (!string.IsNullOrEmpty(codeVerifier))
-            form.AddField("codeVerifier", codeVerifier);
-        
-        using (UnityWebRequest req = UnityWebRequest.Post(url, form))
-        {
-        req.timeout = 15;
-        req.SetRequestHeader("Accept", "application/json");
-        yield return req.SendWebRequest();
-
-        if (req.result == UnityWebRequest.Result.Success)
-        {
-            var json = req.downloadHandler.text;
-            AuthResponse ar = JsonUtility.FromJson<AuthResponse>(JsonHelper.WrapJsonIfBare(json));
-            if (ar != null && !string.IsNullOrEmpty(ar.token))
-            {
-                SaveJwt(ar.token);
-                onSuccess?.Invoke();
-            }
-            else
-            {
-                onError?.Invoke(req.responseCode, "Token missing in response");
-            }
-        }
-        else
-        {
-            onError?.Invoke(req.responseCode, $"{req.error} | {req.downloadHandler.text}");
-        }
-    }
-}
 
     public void SaveProgress(string country, int stage, float clearTime, Action onSuccess = null, Action<long, string> onError = null)
     {
@@ -230,6 +173,89 @@ public class DataManager : MonoBehaviour
         ClearJwt();
         OnAuthExpired?.Invoke();
     }
+
+    public void SignUp(string name, string file, string email, string password, Action onSuccess, Action<long, string> onError)
+    {
+        var payload = new Findy.Define.SignUpRequestDto
+        {
+            name = name,
+            file = file,
+            email = email,
+            password = password
+        };
+
+        StartCoroutine(CoPostJson("/sign-up", payload,
+            onSuccess: (txt) =>
+            {
+                Debug.Log($"[API] SignUp Success: {txt}");
+                onSuccess?.Invoke();
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] SignUp Failed: Code {code}, Msg {msg}");
+                onError?.Invoke(code, msg);
+            }
+        ));
+    }
+
+    public void Login(string email, string password, bool rememberMe, Action onSuccess, Action<long, string> onError)
+    {
+        var payload = new Findy.Define.LoginRequestDto
+        {
+            email = email,
+            password = password,
+            rememberMe = rememberMe
+        };
+
+        StartCoroutine(CoPostJson("/login", payload,
+            onSuccess: (txt) =>
+            {
+                var ar = JsonUtility.FromJson<AuthResponse>(JsonHelper.WrapJsonIfBare(txt));
+                if(ar != null && !string.IsNullOrEmpty(ar.token))
+                {
+                    SaveJwt(ar.token);
+                    Debug.Log($"[API] Login Success. JWT Saved.");
+                    onSuccess?.Invoke();
+                }
+                else
+                {
+                    onError?.Invoke(0, "로그인 응답에서 토큰을 찾을 수 없습니다.");
+                }
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] Login Failed: Code {code}, Msg {msg}");
+                onError?.Invoke(code, msg);
+            }
+        ));
+    }
+
+    private IEnumerator CoPostJson(string path, object bodyObj, Action<string> onSuccess, Action<long, string> onError)
+    {
+        string json = JsonUtility.ToJson(bodyObj);
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+
+        using(UnityWebRequest req = new UnityWebRequest(BASE_URL + path, "POST"))
+        {
+            req.uploadHandler = new UploadHandlerRaw(jsonBytes);
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            yield return req.SendWebRequest();
+
+            if(req.result == UnityWebRequest.Result.Success)
+            {
+                onSuccess?.Invoke(req.downloadHandler.text);
+            }
+            else
+            {
+                string errorMsg = string.IsNullOrEmpty(req.downloadHandler.text) ? req.error : req.downloadHandler.text;
+                onError?.Invoke(req.responseCode, errorMsg);
+            }
+        }
+    }
+
+    
 
     //----- Unlock Stage ----- //
 
