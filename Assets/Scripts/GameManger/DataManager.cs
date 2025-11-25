@@ -15,6 +15,8 @@ public class DataManager : MonoBehaviour
     private const string POST_SIGNUP_URL = "/sign-up";
     private const string POST_LOGIN_URL = "/sign-in";
     private const string GET_USER_INFO_PATH = "/auth/user";
+    private const string HEART_UPDATE_PATH = "/auth/user/heart/1";
+    private const string POST_GAME_RESULT_PATH = "/auth/origin/result";
     private const string SAVE_PROGRESS_PATH = "/api/me/progress";
     private const string GET_PROGRESS_PATH = "/api/me/progress";
     
@@ -96,8 +98,6 @@ public class DataManager : MonoBehaviour
             }
         }
     }
-
-    // ========= 공통: Authorized POST(JSON) =========
     private IEnumerator CoPostJsonAuthorized(string path, object bodyObj,
                                              Action<string> onSuccess, Action<long, string> onError)
     {
@@ -276,6 +276,29 @@ public class DataManager : MonoBehaviour
         ));
     }
 
+    public void UpdateHeart(int delta, Action onSuccess = null, Action<long, string> onError = null)
+    {
+        var payload = new HeartUpdateDto {heart = delta};
+        StartCoroutine(CoPostJsonAuthorized(HEART_UPDATE_PATH, payload,
+            onSuccess: (txt) => onSuccess?.Invoke(),
+            onError: (code, msg) => onError?.Invoke(code, msg)));
+    }
+
+    public void UploadGameResult(GameResultDto result, Action onSuccess = null, Action<long, string> onError = null)
+    {
+        StartCoroutine(CoPostJsonAuthorized(POST_GAME_RESULT_PATH, result,
+            onSuccess: (txt) =>
+            {
+                Debug.Log($"[API] Game Result Upload Success: {txt}");
+                onSuccess?.Invoke();
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] Game Result Upload Failed: Code {code}, Msg {msg}");
+                onError?.Invoke(code, msg);
+            }));
+    }
+
     private IEnumerator CoPostJson(string path, object bodyObj, Action<string> onSuccess, Action<long, string> onError)
     {
         string json = JsonUtility.ToJson(bodyObj);
@@ -301,10 +324,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    
-
     //----- Unlock Stage ----- //
-
     public static int GetUnlockedStageIndex(string countryName)
     {
         return PlayerPrefs.GetInt(UNLOCK_KEY_PREFIX + countryName, 0);

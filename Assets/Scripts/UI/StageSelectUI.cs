@@ -117,7 +117,15 @@ public class StageSelectUI : MonoBehaviour
             panelStartButton.onClick.RemoveAllListeners();
             panelStartButton.onClick.AddListener(() =>
             {
+                // TODO : 데이터 연결 시 추후 제거
                 GameManager.instance.LoadScene("GameScene");
+
+                // GameManager.instance.TryStartStage(
+                //     onError: (code, msg) =>
+                //     {
+                //         // TODO : 하트 부족 UI 패널 띄우기
+                //     }
+                // );
             });
         }
         stageInfoPanel.SetActive(true);

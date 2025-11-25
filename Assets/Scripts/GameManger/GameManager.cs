@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Findy.Define;
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance { get; private set; }
 
     [Header("User Data")]
-    public Findy.Define.UserDataDto currentUserData;
+    public UserDataDto currentUserData;
     [Header("Selections")]
     public CountryData selectedCountry;
     public StageData selectedStage;
@@ -82,6 +83,23 @@ public class GameManager : MonoBehaviour
     {
         selectedCountry = country;
         if (clearStage) selectedStage = null;
+    }
+
+    public void TryStartStage(Action<long, string> onError)
+    {
+        if(currentUserData == null || currentUserData.heart <= 0) return;
+
+        DataManager.instance.UpdateHeart(-1,
+            onSuccess: () =>
+            {
+                currentUserData.heart--;
+                LoadScene("GameScene");
+            },
+            onError: (code, msg) =>
+            {
+                onError?.Invoke(code, msg);
+            }
+        );
     }
 
     public void SelectStage(StageData stage)

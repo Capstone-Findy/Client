@@ -19,6 +19,7 @@ namespace Findy.Define
         public string password;
         public bool rememberMe;
     }
+
     [Serializable]
     public class AuthResponse
     {
@@ -38,11 +39,29 @@ namespace Findy.Define
         public int item4;
     }
     [Serializable]
+    public class HeartUpdateDto
+    {
+        public int heart;
+    }
+
+    //----- Game Result -----//
+    [Serializable]
     public class StageProgressDto
     {
         public string country;
         public int stage;
         public float clearTime;
+    }
+    [Serializable]
+    public class GameResultDto
+    {
+        public int gameId;
+        public int remainTime;
+        public int correct;
+        public int item1;
+        public int item2;
+        public int item3;
+        public int item4;
     }
 
     //----- Sound -----//
