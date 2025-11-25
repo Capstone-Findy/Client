@@ -1356,8 +1356,9 @@ GameObject:
   m_Component:
   - component: {fileID: 455511867}
   - component: {fileID: 455511866}
+  - component: {fileID: 455511868}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1406,6 +1407,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &455511868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455511865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d004c7680b94f49a33e11304b7ae24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 122659380}
+  moneyText: {fileID: 1041667494}
+  heartText: {fileID: 220258242}
+  itemTexts:
+  - {fileID: 1681038544}
+  - {fileID: 1317995050}
+  - {fileID: 607534570}
+  - {fileID: 1455415191}
 --- !u!1 &500490573
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,7 +2626,7 @@ GameObject:
   - component: {fileID: 1041667495}
   - component: {fileID: 1041667494}
   m_Layer: 5
-  m_Name: GoldText
+  m_Name: MoneyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
