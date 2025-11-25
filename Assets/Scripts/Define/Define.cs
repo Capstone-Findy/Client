@@ -46,13 +46,6 @@ namespace Findy.Define
 
     //----- Game Result -----//
     [Serializable]
-    public class StageProgressDto
-    {
-        public string country;
-        public int stage;
-        public float clearTime;
-    }
-    [Serializable]
     public class GameResultDto
     {
         public int gameId;

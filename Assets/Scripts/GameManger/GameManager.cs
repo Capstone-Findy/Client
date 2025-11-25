@@ -53,10 +53,13 @@ public class GameManager : MonoBehaviour
         }
     }
     //-----Util-----//
-    public void LoadScene(string sceneName)
+    public void LoadScene(string sceneName, bool recordHistory = true)
     {
         Time.timeScale = 1f;
-        sceneHistory.Push(SceneManager.GetActiveScene().name);
+        if(recordHistory)
+        {
+            sceneHistory.Push(SceneManager.GetActiveScene().name);
+        }
         SceneManager.LoadScene(sceneName);
     }
     public void GoBack()

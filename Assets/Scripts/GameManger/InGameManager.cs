@@ -111,7 +111,7 @@ public class InGameManager : MonoBehaviour
         int foundCount = touchManager.GetFoundAnswerCount();
         int remainingTime = Mathf.FloorToInt(currentTime);
 
-        var resultData = new Findy.Define.GameResultDto
+        var resultData = new GameResultDto
         {
             gameId = gameId,
             remainTime = remainingTime < 0 ? 0 : remainingTime,
@@ -122,16 +122,16 @@ public class InGameManager : MonoBehaviour
             item4 = itemManager.GetUsedOverlapCount()
         };
 
-        DataManager.instance.UploadGameResult(resultData,
-            onSuccess: () =>
-            {
-                Debug.Log("게임 결과 서버 업로드 완료.");
-            },
-            onError: (code, msg) =>
-            {
-                Debug.LogError($"게임 결과 업로드 실패: {msg}");
-            }
-        );        
+        // DataManager.instance.UploadGameResult(resultData,
+        //     onSuccess: () =>
+        //     {
+        //         Debug.Log("게임 결과 서버 업로드 완료.");
+        //     },
+        //     onError: (code, msg) =>
+        //     {
+        //         Debug.LogError($"게임 결과 업로드 실패: {msg}");
+        //     }
+        // );        
 
         if (foundCount == currentStage.totalAnswerCount)
         {
@@ -160,61 +160,39 @@ public class InGameManager : MonoBehaviour
             
             if (currentIndex >= stages.Count - 1) moveToMainText.text = "메인으로 이동";
 
-            if (DataManager.instance != null && DataManager.instance.HasJwt() && country != null && currentIndex >= 0)
+            if(country != null)
             {
-                DataManager.instance.GetProgressForStage(
-                    country.countryName,
-                    currentIndex,
-                    onSuccess: (prevClearTime) =>
+                float? prevClearTime = DataManager.GetLocalBestClearTime(country.countryName, currentIndex);
+                
+                if(prevClearTime.HasValue)
+                {
+                    float bestTime = prevClearTime.Value;
+                    if(actualPlayTime < bestTime)
                     {
-                        if (prevClearTime.HasValue)
-                        {
-                            if (FirstClearTimeText != null)
-                                FirstClearTimeText.text = $"최초 시도 걸린 시간 : {prevClearTime.Value:F2}초";
-                            if (NonFirstClearTimeText != null)
-                                NonFirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
-                        }
-                        else
-                        {
-                            if (FirstClearTimeText != null)
-                                FirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
-                            if (NonFirstClearTimeText != null)
-                                NonFirstClearTimeText.text = string.Empty;
-                            DataManager.instance.SaveProgress(
-                            country.countryName,
-                            currentIndex,
-                            actualPlayTime,
-                            onSuccess: () =>
-                            {
-                                Debug.Log("Save Success!");
-                            },
-                            onError: (code, msg) =>
-                            {
-                                Debug.Log("Save Failed");
-                            }
-                          );
-                        }
-                    },
-                    onError: (code, msg) =>
-                    {
-                        Debug.Log("Save Failed");
-                        if (FirstClearTimeText != null) FirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
-                        if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = string.Empty;
+                        DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
 
-                        DataManager.instance.SaveProgress(
-                            country.countryName,
-                            currentIndex,
-                            actualPlayTime,
-                            onSuccess: () => { Debug.Log("Save success!"); },
-                            onError: (c, m) => { Debug.Log("Save Failed"); }
-                        );
+                        if (FirstClearTimeText != null)
+                            FirstClearTimeText.text = $"최고 기록 달성! : {actualPlayTime:F2}초";
+                        if (NonFirstClearTimeText != null)
+                            NonFirstClearTimeText.text = $"이전 최고 기록 : {bestTime:F2}초";
                     }
-                );
-            }
-            else
-            {
-                if (FirstClearTimeText != null) FirstClearTimeText.text = $"이번 시도 걸린 시간 : {actualPlayTime:F2}초";
-                if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = string.Empty;
+                    else
+                    {
+                        if (FirstClearTimeText != null)
+                            FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
+                        if (NonFirstClearTimeText != null)
+                            NonFirstClearTimeText.text = $"이번 시도 기록 : {actualPlayTime:F2}초";
+                    }
+                }
+                else
+                {
+                    DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
+
+                    if (FirstClearTimeText != null)
+                        FirstClearTimeText.text = $"첫 클리어 기록 : {actualPlayTime:F2}초";
+                    if (NonFirstClearTimeText != null)
+                        NonFirstClearTimeText.text = string.Empty;
+                }
             }
         }
         else
@@ -246,13 +224,13 @@ public class InGameManager : MonoBehaviour
         {
             StageData nextStage = stages[currentIndex + 1].stage;
             GameManager.instance.SelectStage(nextStage);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GameManager.instance.LoadScene(SceneManager.GetActiveScene().name, false);
         }
     }
     
     public void ReturnToMain()
     {
-        GameManager.instance.GoBack();
+        GameManager.instance.LoadScene("StageSelectScene", false);
     }
 
     public void Pause()

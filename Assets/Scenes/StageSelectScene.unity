@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 47556973}
   - component: {fileID: 47556975}
   - component: {fileID: 47556974}
+  - component: {fileID: 47556976}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -197,6 +198,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47556972}
   m_CullTransparentMesh: 1
+--- !u!95 &47556976
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47556972}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6437a2afa18844598ba28f410e0b5509, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &71062407
 GameObject:
   m_ObjectHideFlags: 0
@@ -3050,6 +3072,7 @@ GameObject:
   - component: {fileID: 1057174702}
   - component: {fileID: 1057174704}
   - component: {fileID: 1057174703}
+  - component: {fileID: 1057174705}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -3114,6 +3137,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057174701}
   m_CullTransparentMesh: 1
+--- !u!95 &1057174705
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057174701}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6437a2afa18844598ba28f410e0b5509, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1077397298
 GameObject:
   m_ObjectHideFlags: 0
@@ -4231,6 +4275,7 @@ GameObject:
   - component: {fileID: 1796466115}
   - component: {fileID: 1796466117}
   - component: {fileID: 1796466116}
+  - component: {fileID: 1796466118}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -4295,6 +4340,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796466114}
   m_CullTransparentMesh: 1
+--- !u!95 &1796466118
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796466114}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6437a2afa18844598ba28f410e0b5509, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1841885888
 GameObject:
   m_ObjectHideFlags: 0
@@ -4793,6 +4859,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e91fd205b5e04ec2811050425131e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentUserData:
+    name: 
+    money: 0
+    heart: 0
+    item1: 0
+    item2: 0
+    item3: 0
+    item4: 0
   selectedCountry: {fileID: 0}
   selectedStage: {fileID: 0}
   allcountries: []

@@ -17,8 +17,6 @@ public class DataManager : MonoBehaviour
     private const string GET_USER_INFO_PATH = "/auth/user";
     private const string HEART_UPDATE_PATH = "/auth/user/heart/1";
     private const string POST_GAME_RESULT_PATH = "/auth/origin/result";
-    private const string SAVE_PROGRESS_PATH = "/api/me/progress";
-    private const string GET_PROGRESS_PATH = "/api/me/progress";
     
     private const string PLAYERPREFS_JWT_KEY = "APP_JWT";
 
@@ -28,6 +26,7 @@ public class DataManager : MonoBehaviour
     //----- Key -----//
     private const string UNLOCK_KEY_PREFIX = "UnlockedStageIndex_";
     private const string UNLOCK_COUNTRY_KEY = "UnlockedCountryIndex";
+    private const string BEST_TIME_KEY_PREFIX = "StageBestTime_";
 
     private void Awake()
     {
@@ -60,17 +59,6 @@ public class DataManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void SaveProgress(string country, int stage, float clearTime, Action onSuccess = null, Action<long, string> onError = null)
-    {
-        var payload = new StageProgressDto { country = country, stage = stage, clearTime = clearTime };
-        StartCoroutine(CoPostJsonAuthorized(SAVE_PROGRESS_PATH, payload,
-            onSuccess: (txt) => onSuccess?.Invoke(),
-            onError: (code, msg) => onError?.Invoke(code, msg)));
-    }
-    public void GetProgress(Action<string> onSuccess, Action<long, string> onError = null)
-    {
-        StartCoroutine(CoGetAuthorized(GET_PROGRESS_PATH, onSuccess, onError));
-    }
     private IEnumerator CoGetAuthorized(string path, Action<string> onSuccess, Action<long, string> onError)
     {
         if (!HasJwt())
@@ -133,40 +121,29 @@ public class DataManager : MonoBehaviour
             }
         }
     }
-
-    public void GetProgressForStage(string country, int stage, Action<float?> onSuccess, Action<long, string> onError = null)
+    private IEnumerator CoPostJson(string path, object bodyObj, Action<string> onSuccess, Action<long, string> onError)
     {
-        string qs = $"?country={UnityWebRequest.EscapeURL(country)}&stage={stage}";
-        StartCoroutine(CoGetAuthorized(GET_PROGRESS_PATH + qs,
-            onSuccess: (txt) =>
+        string json = JsonUtility.ToJson(bodyObj);
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+
+        using(UnityWebRequest req = new UnityWebRequest(BASE_URL + path, "POST"))
+        {
+            req.uploadHandler = new UploadHandlerRaw(jsonBytes);
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            yield return req.SendWebRequest();
+
+            if(req.result == UnityWebRequest.Result.Success)
             {
-                try
-                {
-                    var resp = JsonUtility.FromJson<StageProgressDto>(JsonHelper.WrapJsonIfObject(txt));
-                    if (resp != null && !string.IsNullOrEmpty(resp.country))
-                    {
-                        onSuccess?.Invoke(resp.clearTime);
-                    }
-                    else
-                    {
-                        onSuccess?.Invoke(null);
-                    }
-                }
-                catch
-                {
-                    onSuccess?.Invoke(null);
-                }
-            },
-            onError: (code, msg) =>
-            {
-                if (code == 404)
-                {
-                    onSuccess?.Invoke(null);
-                    return;
-                }
-                onError?.Invoke(code, msg);
+                onSuccess?.Invoke(req.downloadHandler.text);
             }
-        ));
+            else
+            {
+                string errorMsg = string.IsNullOrEmpty(req.downloadHandler.text) ? req.error : req.downloadHandler.text;
+                onError?.Invoke(req.responseCode, errorMsg);
+            }
+        }
     }
 
     private void HandleAuthExpired()
@@ -178,7 +155,7 @@ public class DataManager : MonoBehaviour
 
     public void SignUp(string name, string file, string email, string password, Action onSuccess, Action<long, string> onError)
     {
-        var payload = new Findy.Define.SignUpRequestDto
+        var payload = new SignUpRequestDto
         {
             name = name,
             file = file,
@@ -202,7 +179,7 @@ public class DataManager : MonoBehaviour
 
     public void Login(string email, string password, bool rememberMe, Action onSuccess, Action<long, string> onError)
     {
-        var payload = new Findy.Define.LoginRequestDto
+        var payload = new LoginRequestDto
         {
             email = email,
             password = password,
@@ -299,31 +276,6 @@ public class DataManager : MonoBehaviour
             }));
     }
 
-    private IEnumerator CoPostJson(string path, object bodyObj, Action<string> onSuccess, Action<long, string> onError)
-    {
-        string json = JsonUtility.ToJson(bodyObj);
-        byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
-
-        using(UnityWebRequest req = new UnityWebRequest(BASE_URL + path, "POST"))
-        {
-            req.uploadHandler = new UploadHandlerRaw(jsonBytes);
-            req.downloadHandler = new DownloadHandlerBuffer();
-            req.SetRequestHeader("Content-Type", "application/json");
-
-            yield return req.SendWebRequest();
-
-            if(req.result == UnityWebRequest.Result.Success)
-            {
-                onSuccess?.Invoke(req.downloadHandler.text);
-            }
-            else
-            {
-                string errorMsg = string.IsNullOrEmpty(req.downloadHandler.text) ? req.error : req.downloadHandler.text;
-                onError?.Invoke(req.responseCode, errorMsg);
-            }
-        }
-    }
-
     //----- Unlock Stage ----- //
     public static int GetUnlockedStageIndex(string countryName)
     {
@@ -357,5 +309,22 @@ public class DataManager : MonoBehaviour
             PlayerPrefs.SetInt(UNLOCK_COUNTRY_KEY, nextCountryIndex);
             PlayerPrefs.Save();
         }
+    }
+
+    //----- Stage Best Time -----//
+    public static float? GetLocalBestClearTime(string countryName, int stageIndex)
+    {
+        string key = BEST_TIME_KEY_PREFIX + countryName + "_" + stageIndex;
+        if(PlayerPrefs.HasKey(key))
+        {
+            return PlayerPrefs.GetFloat(key);
+        }
+        return null;
+    }
+    public static void SaveLocalBestClearTime(string countryName, int stageIndex, float clearTime)
+    {
+        string key = BEST_TIME_KEY_PREFIX + countryName + "_" + stageIndex;
+        PlayerPrefs.SetFloat(key, clearTime);
+        PlayerPrefs.Save();
     }
 }
