@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Korea_05
   m_EditorClassIdentifier: 
   stageName: Korea_05
+  gameId: 5
   stageDescription: "\uB208\uC55E\uC5D0 \uBCF4\uC774\uB294 \uACBD\uC8FC\uC758 \uACE0\uC694\uD55C
     \uD48D\uACBD. \uD558\uC9C0\uB9CC \uC774 \uC624\uB79C \uC5ED\uC0AC\uB97C \uAC04\uC9C1\uD55C
     \uC11D\uD0D1 \uC18D\uC5D0 \uBB34\uC5B8\uAC00 \uC5B4\uC0C9\uD55C \uBD80\uBD84\uC774

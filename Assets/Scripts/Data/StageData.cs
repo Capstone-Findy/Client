@@ -5,6 +5,7 @@ using UnityEngine;
 public class StageData : ScriptableObject
 {
     public string stageName;
+    public int gameId;
     [TextArea(3, 10)]
     public string stageDescription;
     [TextArea(3, 10)]

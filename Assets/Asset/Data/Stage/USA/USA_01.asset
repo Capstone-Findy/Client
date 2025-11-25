@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: USA_01
   m_EditorClassIdentifier: 
   stageName: USA_01
+  gameId: 16
   stageDescription: "\uBBF8\uAD6D\uC758 \uC0C1\uC9D5, '\uC790\uC720\uC758 \uC5EC\uC2E0\uC0C1'\uC785\uB2C8\uB2E4.
     \uB192\uC774 \uB4E0 '\uD683\uBD88'\uACFC 7\uAC1C\uC758 \uBFD4\uC774 \uB2EC\uB9B0
     '\uC655\uAD00'\uC774 \uC778\uC0C1\uC801\uC774\uB124\uC694.\n\n\uD558\uC9C0\uB9CC

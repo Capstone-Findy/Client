@@ -107,7 +107,31 @@ public class InGameManager : MonoBehaviour
         timeSlider.value = 0;
         SoundManager.instance.StopBGM();
 
+        int gameId = currentStage != null ? currentStage.gameId : 0;
         int foundCount = touchManager.GetFoundAnswerCount();
+        int remainingTime = Mathf.FloorToInt(currentTime);
+
+        var resultData = new Findy.Define.GameResultDto
+        {
+            gameId = gameId,
+            remainTime = remainingTime < 0 ? 0 : remainingTime,
+            correct = foundCount,
+            item1 = itemManager.GetUsedHintCount(),
+            item2 = itemManager.GetUsedTimeAddCount(),
+            item3 = itemManager.GetUsedOverlapCount(),
+            item4 = itemManager.GetUsedOverlapCount()
+        };
+
+        DataManager.instance.UploadGameResult(resultData,
+            onSuccess: () =>
+            {
+                Debug.Log("게임 결과 서버 업로드 완료.");
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"게임 결과 업로드 실패: {msg}");
+            }
+        );        
 
         if (foundCount == currentStage.totalAnswerCount)
         {

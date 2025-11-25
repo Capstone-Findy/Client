@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: China_05
   m_EditorClassIdentifier: 
   stageName: China_05
+  gameId: 15
   stageDescription: "\uC911\uAD6D \uCD5C\uB300 \uADDC\uBAA8\uC758 \uD669\uC2E4 \uC815\uC6D0,
     '\uC774\uD654\uC6D0'\uC785\uB2C8\uB2E4. \uB4DC\uB113\uC740 \uACE4\uBA85\uD638\uC640
     \uC5B8\uB355 \uC704\uC758 \uBD88\uD5A5\uAC01, \uC138\uACC4\uC5D0\uC11C \uAC00\uC7A5

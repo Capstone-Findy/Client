@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: France_03
   m_EditorClassIdentifier: 
   stageName: France_03
+  gameId: 23
   stageDescription: "\uD504\uB791\uC2A4 \uACE0\uB515 \uAC74\uCD95\uC758 \uC815\uC218,
     '\uB178\uD2B8\uB974\uB2F4 \uB300\uC131\uB2F9'\uC785\uB2C8\uB2E4. \uC6C5\uC7A5\uD55C
     \uB450 \uAC1C\uC758 \uD0D1\uACFC \uAC70\uB300\uD558\uACE0 \uD654\uB824\uD55C

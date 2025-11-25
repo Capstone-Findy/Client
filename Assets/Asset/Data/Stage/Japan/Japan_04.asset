@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Japan_04
   m_EditorClassIdentifier: 
   stageName: Japan_04
+  gameId: 9
   stageDescription: "\uC774 \uACBD\uC774\uB85C\uC6B4 \uAC74\uCD95\uBB3C\uACFC \uB3C4\uC2DC\uC758
     \uC804\uACBD\uC744 \uCC9C\uCC9C\uD788 \uAC10\uC0C1\uD574 \uBCF4\uC138\uC694.
     \uD639\uC2DC... \uB450 \uADF8\uB9BC \uC0AC\uC774\uC5D0 \uBB34\uC5B8\uAC00 \uB2EC\uB77C\uC9C4
