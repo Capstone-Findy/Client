@@ -490,6 +490,7 @@ GameObject:
   - component: {fileID: 532214771}
   - component: {fileID: 532214773}
   - component: {fileID: 532214772}
+  - component: {fileID: 532214774}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -554,6 +555,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532214770}
   m_CullTransparentMesh: 1
+--- !u!95 &532214774
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532214770}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 6584025bcea444038b37e12a06ca0765, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &564563498
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,6 +587,7 @@ GameObject:
   - component: {fileID: 564563499}
   - component: {fileID: 564563501}
   - component: {fileID: 564563500}
+  - component: {fileID: 564563502}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -629,6 +652,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564563498}
   m_CullTransparentMesh: 1
+--- !u!95 &564563502
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564563498}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 6584025bcea444038b37e12a06ca0765, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &573131312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1433,7 @@ GameObject:
   - component: {fileID: 1329071404}
   - component: {fileID: 1329071406}
   - component: {fileID: 1329071405}
+  - component: {fileID: 1329071407}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -1453,6 +1498,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329071403}
   m_CullTransparentMesh: 1
+--- !u!95 &1329071407
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329071403}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 6584025bcea444038b37e12a06ca0765, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1385013796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,6 +1548,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e91fd205b5e04ec2811050425131e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentUserData:
+    name: 
+    money: 0
+    heart: 0
+    item1: 0
+    item2: 0
+    item3: 0
+    item4: 0
   selectedCountry: {fileID: 0}
   selectedStage: {fileID: 0}
   allcountries:
@@ -2546,6 +2620,7 @@ GameObject:
   - component: {fileID: 1795084317}
   - component: {fileID: 1795084319}
   - component: {fileID: 1795084318}
+  - component: {fileID: 1795084320}
   m_Layer: 5
   m_Name: LockImage
   m_TagString: Untagged
@@ -2610,6 +2685,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1795084316}
   m_CullTransparentMesh: 1
+--- !u!95 &1795084320
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795084316}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 6584025bcea444038b37e12a06ca0765, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1867542443
 GameObject:
   m_ObjectHideFlags: 0

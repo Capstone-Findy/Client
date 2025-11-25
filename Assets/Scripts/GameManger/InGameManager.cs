@@ -218,7 +218,8 @@ public class InGameManager : MonoBehaviour
 
         if (currentIndex >= stages.Count - 1)
         {
-            GameManager.instance.LoadScene("StageSelectScene");
+            GameManager.instance.PopSceneHistory();
+            GameManager.instance.LoadScene("StageSelectScene", false);
         }
         else
         {
@@ -230,6 +231,7 @@ public class InGameManager : MonoBehaviour
     
     public void ReturnToMain()
     {
+        GameManager.instance.PopSceneHistory();
         GameManager.instance.LoadScene("StageSelectScene", false);
     }
 

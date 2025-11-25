@@ -53,6 +53,13 @@ public class GameManager : MonoBehaviour
         }
     }
     //-----Util-----//
+    public void PopSceneHistory()
+    {
+        if(sceneHistory.Count > 0)
+        {
+            sceneHistory.Pop();
+        }
+    }
     public void LoadScene(string sceneName, bool recordHistory = true)
     {
         Time.timeScale = 1f;
