@@ -1,6 +1,7 @@
 using Findy.Define;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour
 {
@@ -10,9 +11,36 @@ public class MainUI : MonoBehaviour
     public TextMeshProUGUI heartText;
     public TextMeshProUGUI[] itemTexts = new TextMeshProUGUI[4];
 
+    [Header("UI")]
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public Button settingButton;
+    public Button exitButton;
+    public GameObject settingPanel;
+
+
     void OnEnable()
     {
         UpdateUserInfoUI();
+
+        if (settingButton != null) settingButton.onClick.RemoveAllListeners();
+        if (exitButton != null) exitButton.onClick.RemoveAllListeners();
+
+        if (settingButton != null) 
+            settingButton.onClick.AddListener(() => settingPanel.SetActive(true));
+        
+        if (exitButton != null) 
+            exitButton.onClick.AddListener(() => settingPanel.SetActive(false));
+
+        if (bgmSlider != null)
+        {
+            bgmSlider.value = PlayerPrefs.GetFloat("BGM_Volume", 1f);
+        }
+
+        if (sfxSlider != null)
+        {
+            sfxSlider.value = PlayerPrefs.GetFloat("SFX_Volume", 1f);
+        }
     }
 
     private void UpdateUserInfoUI()
