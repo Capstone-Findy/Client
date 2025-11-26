@@ -38,6 +38,9 @@ public class SoundManager : MonoBehaviour
 
         SetBGMVolume(bgmVol);
         SetSFXVolume(sfxVol);
+
+        bool isMute = PlayerPrefs.GetInt("MasterMute", 0) == 1;
+        SetMasterMute(isMute);
     }
     private void Initialize()
     {
@@ -67,6 +70,8 @@ public class SoundManager : MonoBehaviour
     {
         float volume = isMute ? -80f : 0f;
         audioMixer.SetFloat("Master", volume);
+
+        PlayerPrefs.SetInt("MasterMute", isMute ? 1: 0);
     }
     public void PlaySFX(SoundType type)
     {

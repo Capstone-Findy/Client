@@ -12,16 +12,39 @@ public class MainUI : MonoBehaviour
     public TextMeshProUGUI[] itemTexts = new TextMeshProUGUI[4];
 
     [Header("UI")]
-    public Slider bgmSlider;
-    public Slider sfxSlider;
     public Button settingButton;
     public Button exitButton;
     public GameObject settingPanel;
 
+    [Header("Volume")]
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public Toggle onToggle;
+    public Toggle offToggle;
 
     void OnEnable()
     {
         UpdateUserInfoUI();
+
+        bool isMute = PlayerPrefs.GetInt("MasterMute", 0) == 1;
+        if(isMute)
+        {   
+            onToggle.isOn = false;
+            offToggle.isOn = true;
+        } 
+        else
+        {
+            onToggle.isOn = true;
+            offToggle.isOn = false;
+        } 
+
+        onToggle.onValueChanged.AddListener((isOn) =>
+        {
+            if(isOn)
+                SoundManager.instance.SetMasterMute(false);
+            else
+                SoundManager.instance.SetMasterMute(true);
+        });
 
         if (settingButton != null) settingButton.onClick.RemoveAllListeners();
         if (exitButton != null) exitButton.onClick.RemoveAllListeners();
