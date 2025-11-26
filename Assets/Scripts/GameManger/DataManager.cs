@@ -17,6 +17,7 @@ public class DataManager : MonoBehaviour
     private const string GET_USER_INFO_PATH = "/auth/user";
     private const string HEART_UPDATE_PATH = "/auth/user/heart/1";
     private const string POST_GAME_RESULT_PATH = "/auth/origin/result";
+    private const string GET_GAME_SCORE_PATH = "/auth/origin";
     
     private const string PLAYERPREFS_JWT_KEY = "APP_JWT";
 
@@ -274,6 +275,43 @@ public class DataManager : MonoBehaviour
                 Debug.LogError($"[API] Game Result Upload Failed: Code {code}, Msg {msg}");
                 onError?.Invoke(code, msg);
             }));
+    }
+
+    public void GetGameScore(string countryCode, int currentStageGameId, Action<int> onSuccess, Action<long, string> onError)
+    {
+        string pathWithQuery = $"{GET_GAME_SCORE_PATH}?country={countryCode}";
+
+        StartCoroutine(CoGetAuthorized(pathWithQuery,
+            onSuccess: (txt) =>
+            {
+                try
+                {
+                    string wrapperJson = $"{{ \"scores\": {txt} }}";
+
+                    var wrapper = JsonUtility.FromJson<StageScoreListWrapper>(wrapperJson);
+                    var allScores = wrapper?.scores;
+
+                    if(allScores != null)
+                    {
+                        var targetScoreData = System.Array.Find(allScores, s => s.gameId == currentStageGameId);
+                        if(targetScoreData != null)
+                            onSuccess?.Invoke(targetScoreData.score);
+                        else
+                            onSuccess?.Invoke(0);
+                    }
+                    else
+                    {
+                        onError?.Invoke(0, "유효한 점수 응답 데이터 없음");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError($"오류 발생 : {e.Message}");
+                    onError?.Invoke(0, "점수 파싱 오류");
+                }
+            },
+            onError: onError
+        ));
     }
 
     //----- Unlock Stage ----- //

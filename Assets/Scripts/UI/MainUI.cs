@@ -24,7 +24,7 @@ public class MainUI : MonoBehaviour
 
         if(nameText != null) nameText.text = userData.name;
         if(moneyText != null) moneyText.text = $"{userData.money}";
-        if(heartText != null) heartText.text = $"5 / {userData.heart}";
+        if(heartText != null) heartText.text = $"{userData.heart} / 5";
 
         if(itemTexts.Length >= 4)
         {

@@ -16,6 +16,7 @@ public class InGameManager : MonoBehaviour
     public StageData currentStage;
     public bool isGameOver = false;
     public float actualPlayTime = 0f;
+    private string[] countryCodes = { "Korea", "Japan", "China", "USA", "France" };
 
     [Header("Slider")]
     public Slider timeSlider;
@@ -41,6 +42,7 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI remainGambleCountText;
     [SerializeField] private TextMeshProUGUI timeLeftText;
     [SerializeField] private TextMeshProUGUI moveToMainText;
+    [SerializeField] private TextMeshProUGUI stageScoreText;
 
     void Start()
     {
@@ -139,8 +141,26 @@ public class InGameManager : MonoBehaviour
             SoundManager.instance.PlaySFX(SoundType.SFX_GameWin);
 
             var country = GameManager.instance.selectedCountry;
+            int countryIndex = GameManager.instance.GetCountryIndex(country);
+            string countryCode = countryCodes[countryIndex];
             var stages = country.stagesSlots;
             int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
+
+            if(gameId > 0 && countryIndex != -1)
+            {
+                DataManager.instance.GetGameScore(countryCode, gameId,
+                    onSuccess: (score) =>
+                    {
+                        if (stageScoreText != null)
+                            stageScoreText.text = $"획득 점수: {score}점";
+                    },
+                    onError: (code, msg) =>
+                    {
+                        if (stageScoreText != null)
+                            stageScoreText.text = "점수 로드 실패";
+                    }
+                );
+            }
 
             if (country != null)
             {

@@ -56,6 +56,17 @@ namespace Findy.Define
         public int item3;
         public int item4;
     }
+    [Serializable]
+    public class StageScoreDto
+    {
+        public int gameId;
+        public int score;
+    }
+    [Serializable]
+    public class StageScoreListWrapper
+    {
+        public StageScoreDto[] scores;
+    }
 
     //----- Sound -----//
     public enum SoundType
