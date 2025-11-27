@@ -109,6 +109,9 @@ public class InGameManager : MonoBehaviour
         timeSlider.value = 0;
         SoundManager.instance.StopBGM();
 
+        itemUsagePanel.SetActive(true);
+        ShowUsedItem();
+
         int gameId = currentStage != null ? currentStage.gameId : 0;
         int foundCount = touchManager.GetFoundAnswerCount();
         int remainingTime = Mathf.FloorToInt(currentTime);
@@ -223,11 +226,7 @@ public class InGameManager : MonoBehaviour
 
             answerCountText.text = $"찾은 정답 개수 : {foundCount}개";
             remainCountText.text = $"남은 정답 개수 : {remainCountAnswer}개";
-
         }
-        itemUsagePanel.SetActive(true);
-        ShowUsedItem();
-
     }
     public void LoadNextStage()
     {
