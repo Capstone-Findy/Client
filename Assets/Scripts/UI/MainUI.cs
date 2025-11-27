@@ -15,6 +15,7 @@ public class MainUI : MonoBehaviour
     public Button settingButton;
     public Button exitButton;
     public GameObject settingPanel;
+    public GameObject[] objects;
 
     [Header("Volume")]
     public Slider bgmSlider;
@@ -50,10 +51,18 @@ public class MainUI : MonoBehaviour
         if (exitButton != null) exitButton.onClick.RemoveAllListeners();
 
         if (settingButton != null) 
-            settingButton.onClick.AddListener(() => settingPanel.SetActive(true));
+            settingButton.onClick.AddListener(() =>
+            {
+                settingPanel.SetActive(true);
+                SetObjectsActive(false);
+            });
         
         if (exitButton != null) 
-            exitButton.onClick.AddListener(() => settingPanel.SetActive(false));
+            exitButton.onClick.AddListener(() =>
+            {
+                settingPanel.SetActive(false);
+                SetObjectsActive(true);
+            });
 
         if (bgmSlider != null)
         {
@@ -89,6 +98,19 @@ public class MainUI : MonoBehaviour
                 }
             }
         }
-        
     }
+    private void SetObjectsActive(bool isActive)
+    {
+        if(objects != null)
+        {
+            for(int i = 0; i < objects.Length; i++)
+            {
+                if(objects[i] != null)
+                {
+                    objects[i].SetActive(isActive);
+                }
+            }
+        }
+    }
+    
 }
