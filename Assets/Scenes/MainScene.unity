@@ -9707,9 +9707,9 @@ GameObject:
   - component: {fileID: 2003743821}
   - component: {fileID: 2003743820}
   - component: {fileID: 2003743822}
-  - component: {fileID: 2003743823}
   - component: {fileID: 2003743824}
   - component: {fileID: 2003743825}
+  - component: {fileID: 2003743826}
   m_Layer: 5
   m_Name: BasicMode
   m_TagString: Untagged
@@ -9819,18 +9819,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2003743823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003743818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f0ccccd48a3c49a7b494475e1e616d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2003743824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9865,6 +9853,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2003743826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003743818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595d3ac113e224351868271d46f11e85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: CountrySelectScene
 --- !u!1 &2013704465
 GameObject:
   m_ObjectHideFlags: 0
@@ -10271,6 +10272,7 @@ GameObject:
   - component: {fileID: 2102958906}
   - component: {fileID: 2102958905}
   - component: {fileID: 2102958904}
+  - component: {fileID: 2102958909}
   m_Layer: 5
   m_Name: CustomMode
   m_TagString: Untagged
@@ -10414,6 +10416,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102958902}
   m_CullTransparentMesh: 1
+--- !u!114 &2102958909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102958902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595d3ac113e224351868271d46f11e85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: CustomSelectScene
 --- !u!1 &2111796088
 GameObject:
   m_ObjectHideFlags: 0
