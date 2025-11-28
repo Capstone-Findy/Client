@@ -3328,6 +3328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c11ea011effa44de96968ddf2312bdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 71f9fc2609daa419ab110194322928df, type: 2}
   audioData: {fileID: 11400000, guid: 3307e95e0e7fa425f995dc7221a8944a, type: 2}
   bgmSource: {fileID: 219951070}
   sfxSource: {fileID: 113972093}
@@ -3819,6 +3820,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e91fd205b5e04ec2811050425131e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentUserData:
+    name: 
+    money: 0
+    heart: 0
+    item1: 0
+    item2: 0
+    item3: 0
+    item4: 0
   selectedCountry: {fileID: 0}
   selectedStage: {fileID: 0}
   allcountries: []

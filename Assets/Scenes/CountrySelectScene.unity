@@ -3053,6 +3053,8 @@ MonoBehaviour:
   - {fileID: 573131314}
   - {fileID: 2041182220}
   - {fileID: 1653316854}
+  heartText: {fileID: 816419455}
+  moneyText: {fileID: 1617217890}
 --- !u!4 &1423259098
 Transform:
   m_ObjectHideFlags: 0

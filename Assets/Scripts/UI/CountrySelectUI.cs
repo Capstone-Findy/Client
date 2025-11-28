@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CountrySelectUI : MonoBehaviour
 {
     [SerializeField] private Button[] countryButtons;
-    void Awake()
+    [Header("User Info")]
+    public TextMeshProUGUI heartText;
+    public TextMeshProUGUI moneyText;
+    void Start()
     {
+        UpdateUserInfo();
         int unlockedCountryIndex = DataManager.GetUnlockedCountryIndex();
 
         for (int i = 0; i < countryButtons.Length; i++)
@@ -21,14 +24,27 @@ public class CountrySelectUI : MonoBehaviour
             {
                 btn.interactable = true;
                 if (lockImage != null) lockImage.gameObject.SetActive(false);
-
-                // TODO : StageSelectScene으로 이동하는 로직 병합(CountryButtonHook)
             }
             else
             {
                 btn.interactable = false;
                 if (lockImage != null) lockImage.gameObject.SetActive(true);
             }
+        }
+    }
+    
+    private void UpdateUserInfo()
+    {
+        if(GameManager.instance != null && GameManager.instance.currentUserData != null)
+        {
+            var data = GameManager.instance.currentUserData;
+            if(heartText != null) heartText.text = $"{data.heart} / 5";
+            if(moneyText != null) moneyText.text = $"{data.money}";
+        }
+        else
+        {
+            if(heartText != null) heartText.text = "- / 5";
+            if(moneyText != null) moneyText.text = "-";
         }
     }
 }

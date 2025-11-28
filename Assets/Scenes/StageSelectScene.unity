@@ -2908,6 +2908,8 @@ MonoBehaviour:
   - {fileID: 71062409}
   mapImage: {fileID: 1651320765}
   layoutArea: {fileID: 1175232592}
+  heartText: {fileID: 226669614}
+  moneyText: {fileID: 398590923}
   stageInfoPanel: {fileID: 76379633}
   panelStageTitle: {fileID: 795016885}
   panelMissionText: {fileID: 1841885890}

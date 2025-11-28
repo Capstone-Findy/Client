@@ -10,6 +10,9 @@ public class StageSelectUI : MonoBehaviour
     [SerializeField] private Image[] arrowImages;
     [SerializeField] private Image mapImage;
     [SerializeField] private RectTransform layoutArea;
+    [Header("User Info")]
+    public TextMeshProUGUI heartText;
+    public TextMeshProUGUI moneyText;
 
     [Header("Stage Info Panel")]
     [SerializeField] private GameObject stageInfoPanel;
@@ -21,6 +24,8 @@ public class StageSelectUI : MonoBehaviour
     [SerializeField] private Button panelCloseButton;
     void Start()
     {
+        UpdateUserInfo();
+
         if (!layoutArea) layoutArea = transform as RectTransform;
         var country = GameManager.instance.selectedCountry;
         int unlockedIndex = DataManager.GetUnlockedStageIndex(country.countryName);
@@ -155,5 +160,21 @@ public class StageSelectUI : MonoBehaviour
         rt.anchoredPosition = anchored;
 
         rt.localRotation = Mathf.Abs(slot.rotation) > 0.01f ? Quaternion.Euler(0, 0, slot.rotation) : Quaternion.identity;
+    }
+
+    private void UpdateUserInfo()
+    {
+        if (GameManager.instance != null && GameManager.instance.currentUserData != null)
+        {
+            var data = GameManager.instance.currentUserData;
+
+            if (heartText != null) heartText.text = $"{data.heart} / 5";
+            if (moneyText != null) moneyText.text = $"{data.money}";
+        }
+        else
+        {
+            if (heartText != null) heartText.text = "- / 5";
+            if (moneyText != null) moneyText.text = "-";
+        }
     }
 }
