@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using Findy.Define;
-
 public class ItemManager : MonoBehaviour
 {
     [Header("GameManager")]
@@ -35,17 +34,37 @@ public class ItemManager : MonoBehaviour
     private bool isUsed = false;
 
     [Header("Data")]
-    // TODO : 사용자마다 다른 아이템 개수 및 서버에 존재하는 아이템 개수를 갖고와 초기화
-    public int hintItemCount = 5;
-    public int timeAddItemCount = 5;
-    public int overlapItemCount = 5;
-    public int gambleItemCount = 5;
+    public int hintItemCount;
+    public int timeAddItemCount;
+    public int overlapItemCount;
+    public int gambleItemCount;
+
+    private int usedHintCount = 0;
+    private int usedTimeAddCount = 0;
+    private int usedOverlapCount = 0;
+    private int usedGambleCount = 0;
 
     void Start()
     {
-        currentStage = GameManager.instance.selectedStage;
-    }
+        if (GameManager.instance != null)
+        {
+            currentStage = GameManager.instance.selectedStage;
 
+            var userData = GameManager.instance.currentUserData;
+
+            if (userData != null && !string.IsNullOrEmpty(userData.name))
+            {
+                hintItemCount = userData.item1;
+                timeAddItemCount = userData.item2;
+                overlapItemCount = userData.item3;
+                gambleItemCount = userData.item4;
+            }
+            else
+            {
+                SetDefaultItemCount();
+            }
+        }
+    }
     /*
     Main Item Function
     */
@@ -74,6 +93,7 @@ public class ItemManager : MonoBehaviour
             }
         }
         hintItemCount--;
+        usedHintCount++;
     }
 
     public void AddTimeItem()
@@ -95,6 +115,7 @@ public class ItemManager : MonoBehaviour
             inGameManager.timeSlider.value = inGameManager.currentTime;
         }
         timeAddItemCount--;
+        usedTimeAddCount++;
     }
 
     public void ScreenOverlap()
@@ -116,6 +137,7 @@ public class ItemManager : MonoBehaviour
 
         isUsed = true;
         overlapItemCount--;
+        usedOverlapCount++;
 
         Vector2 originalPos1 = originalImageArea.anchoredPosition;
         Vector2 originalPos2 = wrongImageArea.anchoredPosition;
@@ -178,6 +200,7 @@ public class ItemManager : MonoBehaviour
 
         isUsed = true;
         gambleItemCount--;
+        usedGambleCount++;
         bool showBack = chance >= 0.5f;
         ShowGambleAnimation(showBack);
         return;
@@ -272,12 +295,20 @@ public class ItemManager : MonoBehaviour
         isUsed = false;
     }
 
+    private void SetDefaultItemCount()
+    {
+        hintItemCount = 3;
+        timeAddItemCount = 3;
+        overlapItemCount = 3;
+        gambleItemCount = 3;
+    }
+
     /*
     Getter
     */
-    public int GetUsedHintCount() => 5 - hintItemCount;
-    public int GetUsedTimeAddCount() => 5 - timeAddItemCount;
-    public int GetUsedOverlapCount() => 5 - overlapItemCount;
-    public int GetUsedGambleCount() => 5 - gambleItemCount;
+    public int GetUsedHintCount() => usedHintCount;
+    public int GetUsedTimeAddCount() => usedTimeAddCount;
+    public int GetUsedOverlapCount() => usedOverlapCount;
+    public int GetUsedGambleCount() => usedGambleCount;
 
 }
