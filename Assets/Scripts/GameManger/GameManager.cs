@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
             case "CountrySelectScene":
             case "StageSelectScene":
             case "CustomSelectScene":
+            case "CustomMakeScene1":
+            case "CustomMakeScene2":
                 SoundManager.instance.PlayBGM(SoundType.BGM_Main2);
                 break;
             case "GameScene":
