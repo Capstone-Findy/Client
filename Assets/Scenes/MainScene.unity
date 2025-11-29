@@ -2524,10 +2524,6 @@ MonoBehaviour:
   - {fileID: 447951291}
   - {fileID: 1027878699}
   - {fileID: 220046928}
-  bgmSlider: {fileID: 7348318}
-  sfxSlider: {fileID: 1459170248}
-  onToggle: {fileID: 476478679}
-  offToggle: {fileID: 1992986251}
 --- !u!4 &398514300
 Transform:
   m_ObjectHideFlags: 0
@@ -4383,6 +4379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 693847087}
   - component: {fileID: 693847086}
+  - component: {fileID: 693847088}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -4423,6 +4420,22 @@ Transform:
   - {fileID: 833765651}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &693847088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693847085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce309e451e65949b48fc337da56dce4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmSlider: {fileID: 7348318}
+  sfxSlider: {fileID: 1459170248}
+  onToggle: {fileID: 476478679}
+  offToggle: {fileID: 1992986251}
 --- !u!1 &734737984
 GameObject:
   m_ObjectHideFlags: 0

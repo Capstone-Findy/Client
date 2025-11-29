@@ -8,7 +8,7 @@ public class CountrySelectUI : MonoBehaviour
     [Header("User Info")]
     public TextMeshProUGUI heartText;
     public TextMeshProUGUI moneyText;
-    void Start()
+    void Awake()
     {
         UpdateUserInfo();
         int unlockedCountryIndex = DataManager.GetUnlockedCountryIndex();
@@ -38,13 +38,16 @@ public class CountrySelectUI : MonoBehaviour
         if(GameManager.instance != null && GameManager.instance.currentUserData != null)
         {
             var data = GameManager.instance.currentUserData;
-            if(heartText != null) heartText.text = $"{data.heart} / 5";
-            if(moneyText != null) moneyText.text = $"{data.money}";
-        }
-        else
-        {
-            if(heartText != null) heartText.text = "- / 5";
-            if(moneyText != null) moneyText.text = "-";
+            if (!string.IsNullOrEmpty(data.name))
+            {
+                if (heartText != null) heartText.text = $"{data.heart} / 5";
+                if (moneyText != null) moneyText.text = $"{data.money}";
+            }
+            else
+            {
+                if (heartText != null) heartText.text = "- / 5"; 
+                if (moneyText != null) moneyText.text = "-";    
+            }
         }
     }
 }

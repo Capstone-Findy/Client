@@ -164,17 +164,19 @@ public class StageSelectUI : MonoBehaviour
 
     private void UpdateUserInfo()
     {
-        if (GameManager.instance != null && GameManager.instance.currentUserData != null)
+        if(GameManager.instance != null && GameManager.instance.currentUserData != null)
         {
             var data = GameManager.instance.currentUserData;
-
-            if (heartText != null) heartText.text = $"{data.heart} / 5";
-            if (moneyText != null) moneyText.text = $"{data.money}";
-        }
-        else
-        {
-            if (heartText != null) heartText.text = "- / 5";
-            if (moneyText != null) moneyText.text = "-";
+            if (!string.IsNullOrEmpty(data.name))
+            {
+                if (heartText != null) heartText.text = $"{data.heart} / 5";
+                if (moneyText != null) moneyText.text = $"{data.money}";
+            }
+            else
+            {
+                if (heartText != null) heartText.text = "- / 5"; 
+                if (moneyText != null) moneyText.text = "-";    
+            }
         }
     }
 }
