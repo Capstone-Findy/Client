@@ -26,4 +26,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CustomMakeScene2.unity
     guid: cc5e9e2de51724eecace2406b152657a
+  - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: d1b75bdea7a264237b9699c1bb54d903
+  - enabled: 1
+    path: Assets/Scenes/LoginScene.unity
+    guid: d117c07ade3cc4a19b36d707d4458939
   m_configObjects: {}
