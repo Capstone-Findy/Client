@@ -14,12 +14,15 @@ public class DataManager : MonoBehaviour
     private const string BASE_URL = "http://54.116.10.1:8080"; // 서버 주소
     private const string POST_SIGNUP_URL = "/sign-up";
     private const string POST_LOGIN_URL = "/sign-in";
+    private const string POST_EMAIL_VALID_PATH = "/valid";
+    private const string POST_REFRESH_PATH = "/auth/refresh";
     private const string GET_USER_INFO_PATH = "/auth/user";
     private const string HEART_UPDATE_PATH = "/auth/user/heart/1";
     private const string POST_GAME_RESULT_PATH = "/auth/origin/result";
     private const string GET_GAME_SCORE_PATH = "/auth/origin";
     
     private const string PLAYERPREFS_JWT_KEY = "APP_JWT";
+    private const string PLAYERPREFS_REFRESH_KEY = "APP_REFRESH_TOKEN";
 
     //----- Event/Callback -----//
     public event Action OnAuthExpired;
@@ -60,6 +63,26 @@ public class DataManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public bool HasRefreshToken()
+    {
+        return !string.IsNullOrEmpty(PlayerPrefs.GetString(PLAYERPREFS_REFRESH_KEY, ""));
+    }
+    public string GetRefreshToken()
+    {
+        return PlayerPrefs.GetString(PLAYERPREFS_REFRESH_KEY, "");
+    }
+    private void SaveRefreshToken(string token)
+    {
+        PlayerPrefs.SetString(PLAYERPREFS_REFRESH_KEY, token);
+        PlayerPrefs.Save();
+    }
+    public void ClearRefreshToken()
+    {
+        PlayerPrefs.DeleteKey(PLAYERPREFS_REFRESH_KEY);
+        PlayerPrefs.Save();
+    }
+
+    //----- Tools -----//
     private IEnumerator CoGetAuthorized(string path, Action<string> onSuccess, Action<long, string> onError)
     {
         if (!HasJwt())
@@ -146,14 +169,14 @@ public class DataManager : MonoBehaviour
             }
         }
     }
-
     private void HandleAuthExpired()
     {
         Debug.LogWarning("[Auth] JWT expired or invalid. Clearing token.");
         ClearJwt();
         OnAuthExpired?.Invoke();
     }
-
+    
+    //----- Function -----//
     public void SignUp(string name, string base64File, string email, string password, Action onSuccess, Action<long, string> onError)
     {
         var payload = new SignUpRequestDto
@@ -191,9 +214,17 @@ public class DataManager : MonoBehaviour
             onSuccess: (txt) =>
             {
                 var ar = JsonUtility.FromJson<AuthResponse>(JsonHelper.WrapJsonIfBare(txt));
-                if(ar != null && !string.IsNullOrEmpty(ar.token))
+                if(ar != null && !string.IsNullOrEmpty(ar.accessToken))
                 {
-                    SaveJwt(ar.token);
+                    SaveJwt(ar.accessToken);
+                    if (rememberMe && !string.IsNullOrEmpty(ar.refreshToken))
+                    {
+                        SaveRefreshToken(ar.refreshToken); 
+                    }
+                    else if (!rememberMe)
+                    {
+                        ClearRefreshToken();
+                    }
                     Debug.Log($"[API] Login Success. JWT Saved.");
                     GetUserInfo(
                         onSuccess: (userData) =>
@@ -216,6 +247,56 @@ public class DataManager : MonoBehaviour
             onError: (code, msg) =>
             {
                 Debug.LogError($"[API] Login Failed: Code {code}, Msg {msg}");
+                onError?.Invoke(code, msg);
+            }
+        ));
+    }
+    public void SendValidationEmail(string email, Action onSuccess, Action<long, string> onError)
+    {
+        var payload = new EmailValidationDto { email = email };
+
+        StartCoroutine(CoPostJson(POST_EMAIL_VALID_PATH, payload,
+            onSuccess: (txt) =>
+            {
+                Debug.Log($"[API] Validation Email Sent to {email}");
+                onSuccess?.Invoke();
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] Failed to Send Validation Email: {code}, {msg}");
+                onError?.Invoke(code, msg);
+            }));
+    }
+    public void RefreshToken(Action onSuccess, Action<long, string> onError)
+    {
+        string currentRefreshToken = GetRefreshToken();
+        if(string.IsNullOrEmpty(currentRefreshToken))
+        {
+            onError?.Invoke(0, "Refresh 토큰이 없습니다.");
+            return;
+        }
+        var payload = new RefreshRequestDto { refreshToken = currentRefreshToken};
+        StartCoroutine(CoPostJson(POST_REFRESH_PATH, payload,
+            onSuccess: (txt) =>
+            {
+                var ar = JsonUtility.FromJson<AuthResponse>(txt);
+
+                if(ar != null && !string.IsNullOrEmpty(ar.accessToken) && !string.IsNullOrEmpty(ar.refreshToken))
+                {
+                    SaveJwt(ar.accessToken);
+                    SaveRefreshToken(ar.refreshToken);
+                    onSuccess?.Invoke();
+                }
+                else
+                {
+                    onError?.Invoke(0, "토큰 재발급 응답 형식이 잘못되었습니다.");
+                }
+            },
+            onError: (code, msg) =>
+            {
+                ClearJwt();
+                ClearRefreshToken();
+                Debug.LogError($"[Auth] Token Refresh Failed: {msg}. Clearing tokens.");
                 onError?.Invoke(code, msg);
             }
         ));

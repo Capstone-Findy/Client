@@ -19,11 +19,28 @@ namespace Findy.Define
         public string password;
         public bool rememberMe;
     }
+    [Serializable]
+    public class LoginResponseWrapper
+    {
+        public bool error;
+        public string message;
+        public AuthResponse data;
+    }
+    [Serializable]
+    public class EmailValidationDto
+    {
+        public string email;
+    }
+    [Serializable]
+    public class RefreshRequestDto
+    {
+        public string refreshToken;
+    }
 
     [Serializable]
     public class AuthResponse
     {
-        public string token;
+        public string accessToken;
         public string refreshToken;
     }
     //----- User Info -----//

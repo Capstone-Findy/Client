@@ -7,10 +7,14 @@ using UnityEngine.UI;
 public class LoginUI : MonoBehaviour
 {
     private EncodeImageHelper imageEncoder;
+    [Header("Button")]
+    public Button SignUpButton;
+    public Button LoginButton;
     [Header("Login Panel")]
     public GameObject LoginPanel;
     public InputField LoginEmailInput;
     public InputField LoginPasswordInput;
+    public Toggle RememberMeToggle;
 
     [Header("SignUp Panel")]
     public GameObject SignUpPanel;
@@ -21,12 +25,17 @@ public class LoginUI : MonoBehaviour
     private Texture2D selectedProfileTexture;
 
     void Start()
-{
-    if (imageEncoder == null)
     {
-        imageEncoder = FindObjectOfType<EncodeImageHelper>();
+        if (imageEncoder == null)
+        {
+            imageEncoder = FindObjectOfType<EncodeImageHelper>();
+        }
+        if (SignUpButton != null)
+                SignUpButton.onClick.AddListener(ShowSignUpPanel);
+            
+        if (LoginButton != null)
+            LoginButton.onClick.AddListener(ShowLoginPanel);
     }
-}
 
     public void ShowLoginPanel()
     {
@@ -53,7 +62,7 @@ public class LoginUI : MonoBehaviour
     {
         string email = LoginEmailInput.text;
         string password = LoginPasswordInput.text;
-        bool rememberMe = false;
+        bool rememberMe = (RememberMeToggle != null) ? RememberMeToggle.isOn : false;
 
         if(string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
@@ -80,6 +89,7 @@ public class LoginUI : MonoBehaviour
         string name = SignUpNameInput.text;
         string email = SignUpEmailInput.text;
         string password = SignUpPasswordInput.text;
+        string file = "Dummy_Data";
         
         if(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
@@ -87,13 +97,13 @@ public class LoginUI : MonoBehaviour
             return;
         }
 
-        string base64File = "";
-        if(selectedProfileTexture != null && imageEncoder != null)
-        {
-            base64File = imageEncoder.EncodeTextureToBase64(selectedProfileTexture);
-        }
+        // string base64File = "";
+        // if(selectedProfileTexture != null && imageEncoder != null)
+        // {
+        //     base64File = imageEncoder.EncodeTextureToBase64(selectedProfileTexture);
+        // }
 
-        DataManager.instance.SignUp(name, base64File, email, password,
+        DataManager.instance.SignUp(name, file, email, password,
             onSuccess: () =>
             {
                 // TODO : 회원가입 성공 팝업 띄우기
@@ -107,13 +117,27 @@ public class LoginUI : MonoBehaviour
             });
     }
 
+    public void OnClickSendValidationEmail()
+    {
+        string email = SignUpEmailInput.text;
+        DataManager.instance.SendValidationEmail(email,
+            onSuccess: () =>
+            {
+                Debug.Log("인증 메일 발송 성공! 메일함을 확인해주세요.");
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"인증 메일 발송 실패: {msg}");
+            });
+    }
+
     public void OnClickSelectProfileImage()
     {
         NativeGallery.GetImageFromGallery((path) =>
         {
             if(path != null)
             {
-                Texture2D texture = NativeGallery.LoadImageAtPath(path, 1024, false, true);
+                Texture2D texture = NativeGallery.LoadImageAtPath(path, 256, false, true);
                 if(texture != null)
                 {
                     if(selectedProfileTexture != null) Destroy(selectedProfileTexture);
