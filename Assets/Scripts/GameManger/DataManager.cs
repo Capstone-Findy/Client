@@ -154,12 +154,12 @@ public class DataManager : MonoBehaviour
         OnAuthExpired?.Invoke();
     }
 
-    public void SignUp(string name, string file, string email, string password, Action onSuccess, Action<long, string> onError)
+    public void SignUp(string name, string base64File, string email, string password, Action onSuccess, Action<long, string> onError)
     {
         var payload = new SignUpRequestDto
         {
             name = name,
-            file = file,
+            file = base64File,
             email = email,
             password = password
         };
