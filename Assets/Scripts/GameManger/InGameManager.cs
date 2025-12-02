@@ -127,16 +127,16 @@ public class InGameManager : MonoBehaviour
             item4 = itemManager.GetUsedOverlapCount()
         };
 
-        // DataManager.instance.UploadGameResult(resultData,
-        //     onSuccess: () =>
-        //     {
-        //         Debug.Log("게임 결과 서버 업로드 완료.");
-        //     },
-        //     onError: (code, msg) =>
-        //     {
-        //         Debug.LogError($"게임 결과 업로드 실패: {msg}");
-        //     }
-        // );        
+        DataManager.instance.UploadGameResult(resultData,
+            onSuccess: () =>
+            {
+                Debug.Log("게임 결과 서버 업로드 완료.");
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"게임 결과 업로드 실패: {msg}");
+            }
+        );        
 
         if (foundCount == currentStage.totalAnswerCount)
         {
@@ -145,24 +145,28 @@ public class InGameManager : MonoBehaviour
 
             var country = GameManager.instance.selectedCountry;
             int countryIndex = GameManager.instance.GetCountryIndex(country);
-            string countryCode = countryCodes[countryIndex];
             var stages = country.stagesSlots;
             int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
-
-            if(gameId > 0 && countryIndex != -1)
+            
+            if(countryIndex >= 0 && countryIndex < countryCodes.Length)
             {
-                DataManager.instance.GetGameScore(countryCode, gameId,
-                    onSuccess: (score) =>
-                    {
-                        if (stageScoreText != null)
-                            stageScoreText.text = $"획득 점수: {score}점";
-                    },
-                    onError: (code, msg) =>
-                    {
-                        if (stageScoreText != null)
-                            stageScoreText.text = "점수 로드 실패";
-                    }
-                );
+                string countryCode = countryCodes[countryIndex];
+
+                if(gameId > 0)
+                {
+                    DataManager.instance.GetGameScore(countryCode, gameId,
+                        onSuccess: (score) =>
+                        {
+                            if (stageScoreText != null)
+                                stageScoreText.text = $"획득 점수: {score}점";
+                        },
+                        onError: (code, msg) =>
+                        {
+                            if (stageScoreText != null)
+                                stageScoreText.text = "점수 로드 실패";
+                        }
+                    );
+                }
             }
 
             if (country != null)
