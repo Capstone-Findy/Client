@@ -56,6 +56,13 @@ namespace Findy.Define
         public int item4;
     }
     [Serializable]
+    public class GetUserInfoWrapper
+    {
+        public bool error;
+        public string message;
+        public UserDataDto data;
+    }
+    [Serializable]
     public class HeartUpdateDto
     {
         public int heart;

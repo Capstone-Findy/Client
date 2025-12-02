@@ -2021,7 +2021,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1918576332}
         m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
         m_MethodName: OnClickSignUpSubmit
         m_Mode: 1
@@ -4501,7 +4501,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1918576332}
         m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
         m_MethodName: OnClickLoginSubmit
         m_Mode: 1

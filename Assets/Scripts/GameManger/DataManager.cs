@@ -93,7 +93,7 @@ public class DataManager : MonoBehaviour
 
         using (UnityWebRequest req = UnityWebRequest.Get(BASE_URL + path))
         {
-            req.SetRequestHeader("Authorization", "Bearer " + GetJwt());
+            req.SetRequestHeader("Cookie", "OID_AUT=" + GetJwt());
             yield return req.SendWebRequest();
 
             if (req.result == UnityWebRequest.Result.Success)
@@ -127,8 +127,7 @@ public class DataManager : MonoBehaviour
             req.uploadHandler = new UploadHandlerRaw(jsonBytes);
             req.downloadHandler = new DownloadHandlerBuffer();
             req.SetRequestHeader("Content-Type", "application/json");
-            req.SetRequestHeader("Authorization", "Bearer " + GetJwt());
-
+            req.SetRequestHeader("Cookie", "OID_AUT=" + GetJwt());
             yield return req.SendWebRequest();
 
             if (req.result == UnityWebRequest.Result.Success)
@@ -160,6 +159,24 @@ public class DataManager : MonoBehaviour
 
             if(req.result == UnityWebRequest.Result.Success)
             {
+                var headers = req.GetResponseHeaders();
+                if (headers != null && headers.TryGetValue("Set-Cookie", out string cookieHeader))
+                {
+                    if (cookieHeader.Contains("OID_AUT="))
+                    {
+                        int startIndex = cookieHeader.IndexOf("OID_AUT=") + "OID_AUT=".Length;
+                        int endIndex = cookieHeader.IndexOf(';', startIndex);
+                        if (endIndex == -1) endIndex = cookieHeader.Length; 
+
+                        string accessTokenCookie = cookieHeader.Substring(startIndex, endIndex - startIndex);
+                        
+                        if (!string.IsNullOrEmpty(accessTokenCookie))
+                        {
+                            SaveJwt(accessTokenCookie);
+                            Debug.Log($"[Auth] Access Token (OID_AUT) extracted and saved.");
+                        }
+                    }
+                }
                 onSuccess?.Invoke(req.downloadHandler.text);
             }
             else
@@ -201,56 +218,66 @@ public class DataManager : MonoBehaviour
         ));
     }
 
-    public void Login(string email, string password, bool rememberMe, Action onSuccess, Action<long, string> onError)
-    {
-        var payload = new LoginRequestDto
+public void Login(string email, string password, bool rememberMe, Action onSuccess, Action<long, string> onError)
+{
+    var payload = new LoginRequestDto
         {
             email = email,
             password = password,
             rememberMe = rememberMe
         };
 
-        StartCoroutine(CoPostJson(POST_LOGIN_URL, payload,
-            onSuccess: (txt) =>
+    StartCoroutine(CoPostJson(POST_LOGIN_URL, payload,
+        onSuccess: (txt) =>
+        {
+            LoginResponseWrapper wrapper = JsonUtility.FromJson<LoginResponseWrapper>(txt);
+            
+            if (HasJwt())
             {
-                var ar = JsonUtility.FromJson<AuthResponse>(JsonHelper.WrapJsonIfBare(txt));
-                if(ar != null && !string.IsNullOrEmpty(ar.accessToken))
+                AuthResponse ar = wrapper?.data; 
+                
+                if (ar != null && !string.IsNullOrEmpty(ar.refreshToken))
                 {
-                    SaveJwt(ar.accessToken);
-                    if (rememberMe && !string.IsNullOrEmpty(ar.refreshToken))
+                    if (rememberMe)
                     {
                         SaveRefreshToken(ar.refreshToken); 
                     }
-                    else if (!rememberMe)
+                    else
                     {
                         ClearRefreshToken();
                     }
-                    Debug.Log($"[API] Login Success. JWT Saved.");
-                    GetUserInfo(
-                        onSuccess: (userData) =>
-                        {
-                            GameManager.instance.currentUserData = userData;
-                            Debug.Log($"User Data Fetched for: {userData.name}, Money: {userData.money}");
-                            onSuccess?.Invoke();
-                        },
-                        onError: (code, msg) =>
-                        {
-                            onError?.Invoke(code, $"로그인은 성공했으나 유저 정보 로드 실패: {msg}");
-                        }
-                    );
                 }
-                else
-                {
-                    onError?.Invoke(0, "로그인 응답에서 토큰을 찾을 수 없습니다.");
-                }
-            },
-            onError: (code, msg) =>
-            {
-                Debug.LogError($"[API] Login Failed: Code {code}, Msg {msg}");
-                onError?.Invoke(code, msg);
+                
+                Debug.Log($"[API] Login Success. Cookie Saved. Proceeding to GetUserInfo.");
+                
+                GetUserInfo(
+                    onSuccess: (userData) =>
+                    {
+                        GameManager.instance.currentUserData = userData;
+                        onSuccess?.Invoke();
+                    },
+                    onError: (code, msg) =>
+                    {
+                        onError?.Invoke(code, $"로그인 성공 (쿠키 획득) 후 유저 정보 로드 실패: {msg}");
+                    }
+                );
             }
-        ));
-    }
+            else if (wrapper != null && wrapper.error)
+            {
+                onError?.Invoke(401, wrapper.message);
+            }
+            else
+            {
+                onError?.Invoke(0, "로그인 응답 구조 문제 또는 Access Token 쿠키 획득 실패.");
+            }
+        },
+        onError: (code, msg) =>
+        {
+            Debug.LogError($"[API] Login Failed: Code {code}, Msg {msg}");
+            onError?.Invoke(code, msg);
+        }
+    ));
+}
     public void SendValidationEmail(string email, Action onSuccess, Action<long, string> onError)
     {
         var payload = new EmailValidationDto { email = email };
@@ -302,15 +329,21 @@ public class DataManager : MonoBehaviour
         ));
     }
 
-    public void GetUserInfo(Action<Findy.Define.UserDataDto> onSuccess, Action<long, string> onError)
-    {
-        StartCoroutine(CoGetAuthorized(GET_USER_INFO_PATH,
-            onSuccess: (txt) =>
+public void GetUserInfo(Action<UserDataDto> onSuccess, Action<long, string> onError)
+{
+    StartCoroutine(CoGetAuthorized(GET_USER_INFO_PATH,
+        onSuccess: (txt) =>
+        {
+            try
             {
-                try
+                Debug.Log($"[User Info Response JSON]: {txt}");
+                
+                GetUserInfoWrapper wrapper = JsonUtility.FromJson<GetUserInfoWrapper>(txt);
+                
+                if(wrapper != null && !wrapper.error && wrapper.data != null)
                 {
-                    var resp = JsonUtility.FromJson<Findy.Define.UserDataDto>(txt);
-
+                    var resp = wrapper.data;
+                    
                     if(resp != null && !string.IsNullOrEmpty(resp.name))
                     {
                         Debug.Log($"[API] User Info Success: {resp.name}");
@@ -318,22 +351,31 @@ public class DataManager : MonoBehaviour
                     }
                     else
                     {
-                        onError?.Invoke(0, "유저 정보 응답 형식이 잘못되었습니다.");
+                        onError?.Invoke(0, "유저 정보 응답 형식이 잘못되었습니다. (Name field missing)");
                     }
                 }
-                catch (Exception e)
+                else if (wrapper != null && wrapper.error)
                 {
-                    Debug.LogError($"[API] User Info JSON Parse Error: {e.Message}");
-                    onError?.Invoke(0, "유저 정보 파싱 오류");
+                    onError?.Invoke(401, wrapper.message); 
                 }
-            },
-            onError: (code, msg) =>
-            {
-                Debug.LogError($"[API] Get User Info Failed: Code {code}, Msg {msg}");
-                onError?.Invoke(code, msg);
+                else
+                {
+                    onError?.Invoke(0, "유저 정보 응답 형식이 잘못되었습니다."); 
+                }
             }
-        ));
-    }
+            catch (Exception e)
+            {
+                Debug.LogError($"[API] User Info JSON Parse Error: {e.Message}. Response: {txt}");
+                onError?.Invoke(0, "유저 정보 파싱 오류");
+            }
+        },
+        onError: (code, msg) =>
+        {
+            Debug.LogError($"[API] Get User Info Failed: Code {code}, Msg {msg}");
+            onError?.Invoke(code, msg);
+        }
+    ));
+}
 
     public void UpdateHeart(int delta, Action onSuccess = null, Action<long, string> onError = null)
     {
