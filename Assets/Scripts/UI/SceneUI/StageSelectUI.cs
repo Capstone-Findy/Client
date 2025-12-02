@@ -123,14 +123,15 @@ public class StageSelectUI : MonoBehaviour
             panelStartButton.onClick.AddListener(() =>
             {
                 // TODO : 데이터 연결 시 추후 제거
-                GameManager.instance.LoadScene("GameScene");
+                // GameManager.instance.LoadScene("GameScene");
 
-                // GameManager.instance.TryStartStage(
-                //     onError: (code, msg) =>
-                //     {
-                //         // TODO : 하트 부족 UI 패널 띄우기
-                //     }
-                // );
+                GameManager.instance.TryStartStage(
+                    onError: (code, msg) =>
+                    {
+                        Debug.LogError($"[Stage Start Error] Code: {code}, Message: {msg}");
+                        // TODO : 하트 부족 UI 패널 띄우기
+                    }
+                );
             });
         }
         stageInfoPanel.SetActive(true);

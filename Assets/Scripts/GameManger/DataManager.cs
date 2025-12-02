@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using Findy.Define;
 using Findy.JsonHelper;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -18,6 +19,7 @@ public class DataManager : MonoBehaviour
     private const string POST_REFRESH_PATH = "/auth/refresh";
     private const string GET_USER_INFO_PATH = "/auth/user";
     private const string HEART_UPDATE_PATH = "/auth/user/heart/1";
+    private const string ITEM_UPDATE_PATH = "/auth/user/item";
     private const string POST_GAME_RESULT_PATH = "/auth/origin/result";
     private const string GET_GAME_SCORE_PATH = "/auth/origin";
     
@@ -383,6 +385,25 @@ public void GetUserInfo(Action<UserDataDto> onSuccess, Action<long, string> onEr
         StartCoroutine(CoPostJsonAuthorized(HEART_UPDATE_PATH, payload,
             onSuccess: (txt) => onSuccess?.Invoke(),
             onError: (code, msg) => onError?.Invoke(code, msg)));
+    }
+
+    public void UpdateItem(int itemIndex, int delta, Action<string> onSuccess = null, Action<long, string> onError = null)
+    {
+        var payload = new ItemUpdateDto { item1 = 0, item2 = 0, item3 = 0, item4 = 0};
+
+        switch(itemIndex)
+        {
+            case 1 : payload.item1 = delta; break;
+            case 2: payload.item2 = delta; break;
+            case 3: payload.item3 = delta; break;
+            case 4: payload.item4 = delta; break;
+            default: 
+                Debug.LogError("Invalid item index for update."); 
+                onError?.Invoke(0, "Invalid Item Index");
+                return;
+        }
+
+        StartCoroutine(CoPostJsonAuthorized(ITEM_UPDATE_PATH, payload, onSuccess, onError));
     }
 
     public void UploadGameResult(GameResultDto result, Action onSuccess = null, Action<long, string> onError = null)

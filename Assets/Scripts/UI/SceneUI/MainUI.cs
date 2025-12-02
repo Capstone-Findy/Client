@@ -13,16 +13,24 @@ public class MainUI : MonoBehaviour
 
     [Header("UI")]
     public Button settingButton;
-    public Button exitButton;
+    public Button shopButton;
     public GameObject settingPanel;
+    public GameObject shopPanel;
     public GameObject[] objects;
+    [Header("Shop")]
+    public Button item1Button;
+    public Button item2Button;
+    public Button item3Button;
+    public Button item4Button;
+    private const int ITEM_COST = 100;
+    private const int ITEM_INDEX_TO_BUY = 1;
 
     void OnEnable()
     {
         UpdateUserInfoUI();
 
         if (settingButton != null) settingButton.onClick.RemoveAllListeners();
-        if (exitButton != null) exitButton.onClick.RemoveAllListeners();
+        if(shopButton != null) shopButton.onClick.RemoveAllListeners();
 
         if (settingButton != null) 
             settingButton.onClick.AddListener(() =>
@@ -30,13 +38,21 @@ public class MainUI : MonoBehaviour
                 settingPanel.SetActive(true);
                 SetObjectsActive(false);
             });
-        
-        if (exitButton != null) 
-            exitButton.onClick.AddListener(() =>
+
+        if(shopButton != null)
+        {
+            shopButton.onClick.AddListener(() =>
             {
-                settingPanel.SetActive(false);
-                SetObjectsActive(true);
+                shopPanel.SetActive(true);
+                SetObjectsActive(false);
             });
+        }
+        if (item1Button != null) item1Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
+        if (item2Button != null) item2Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
+        if (item3Button != null) item3Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
+        if (item4Button != null) item4Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
+
+      
     }
 
     private void UpdateUserInfoUI()
@@ -63,6 +79,34 @@ public class MainUI : MonoBehaviour
             }
         }
     }
+
+    public void TryPurchaseItem(int itemIndex)
+    {
+        var userData = GameManager.instance.currentUserData;
+        
+        if(userData.money < ITEM_COST)
+        {
+            Debug.LogWarning($"구매 실패: 골드 부족! 현재: {userData.money}, 필요: {ITEM_COST}");
+            // TODO: 골드 부족 팝업 띄우기
+            return;
+        }
+        DataManager.instance.UpdateItem(itemIndex, 1,
+            onSuccess: (txt) =>
+            {
+                userData.money -= ITEM_COST;
+                if(itemIndex == 1) userData.item1 += 1;
+                else if (itemIndex == 2) userData.item2 += 1;
+                else if (itemIndex == 3) userData.item3 += 1;
+                else userData.item4 += 1;
+
+                Debug.Log($"아이템 {itemIndex} 구매 성공! 100 골드 차감 완료.");
+                UpdateUserInfoUI();
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"구매 실패: 서버 통신 오류 (아이템 업데이트). {code} {msg}");
+            });
+    }
     private void SetObjectsActive(bool isActive)
     {
         if(objects != null)
@@ -75,6 +119,12 @@ public class MainUI : MonoBehaviour
                 }
             }
         }
+    }
+    public void CloseAllPanel()
+    {
+        settingPanel.SetActive(false);
+        shopPanel.SetActive(false);
+        SetObjectsActive(true);
     }
     
 }

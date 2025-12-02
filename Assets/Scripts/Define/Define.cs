@@ -91,6 +91,15 @@ namespace Findy.Define
     {
         public StageScoreDto[] scores;
     }
+    //----- Item -----//
+    [Serializable]
+    public class ItemUpdateDto
+    {
+        public int item1;
+        public int item2;
+        public int item3;
+        public int item4;
+    }
 
     //----- Sound -----//
     public enum SoundType
