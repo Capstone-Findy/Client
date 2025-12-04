@@ -67,17 +67,6 @@ public class InGameManager : MonoBehaviour
         && !gameOverPanel.activeInHierarchy && !gameVictoryPanel.activeInHierarchy)
         {
             Vector2 pos = Input.mousePosition;
-            ///// 추후 제거 (위치 탐색 코드)/////
-            Vector2 localPoint;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                originalImage.rectTransform, 
-                pos,                 
-                null,                     
-                out localPoint             
-            );
-
-            Debug.Log($"Clicked Local Coords: new Vector2({localPoint.x}f, {localPoint.y}f)");
-            /////-----/////
             touchManager.CheckAnswer(pos);
 
             if (touchManager.GetFoundAnswerCount() == currentStage.totalAnswerCount)
@@ -111,6 +100,7 @@ public class InGameManager : MonoBehaviour
 
         itemUsagePanel.SetActive(true);
         ShowUsedItem();
+        ConsumeUsedItems();
 
         int gameId = currentStage != null ? currentStage.gameId : 0;
         int foundCount = touchManager.GetFoundAnswerCount();
@@ -147,24 +137,20 @@ public class InGameManager : MonoBehaviour
             int countryIndex = GameManager.instance.GetCountryIndex(country);
             var stages = country.stagesSlots;
             int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
-            Debug.Log($"[Debug] CountryIndex: {countryIndex}, GameID: {gameId}"); // 1. 값 확인
             if(countryIndex >= 0 && countryIndex < countryCodes.Length)
             {
                 string countryCode = countryCodes[countryIndex];
 
                 if(gameId > 0)
                 {
-                    Debug.Log("[Debug] 점수 요청 시작"); // 2. 요청 진입 확인
                     DataManager.instance.GetGameScore(countryCode, gameId,
                         onSuccess: (score) =>
                         {
-                            Debug.Log($"[Debug] 점수 로드 성공: {score}"); // 3. 성공 콜백 확인
                             if (stageScoreText != null)
                                 stageScoreText.text = $"획득 점수: {score}점";
                         },
                         onError: (code, msg) =>
                         {
-                            Debug.LogError($"[Debug] 점수 로드 실패: {msg}"); // 5. 실패 콜백 확인
                             if (stageScoreText != null)
                                 stageScoreText.text = "점수 로드 실패";
                         }
@@ -310,6 +296,36 @@ public class InGameManager : MonoBehaviour
         remainTimeAddCountText.text = $"{leftTimeAddCount}";
         remainOverlapCountText.text = $"{leftOverlapCount}";
         remainGambleCountText.text = $"{leftGambleCount}";
+    }
+    private void ConsumeUsedItems()
+    {
+        int usedHint = itemManager.GetUsedHintCount();
+        int usedTime = itemManager.GetUsedTimeAddCount();
+        int usedOverlap = itemManager.GetUsedOverlapCount();
+        int usedGamble = itemManager.GetUsedGambleCount();
+
+        var userData = GameManager.instance.currentUserData;
+
+        if (usedHint > 0)
+        {
+            DataManager.instance.UpdateItem(1, -usedHint);
+            if(userData != null) userData.item1 -= usedHint;
+        }
+        if (usedTime > 0)
+        {
+            DataManager.instance.UpdateItem(2, -usedTime);
+            if(userData != null) userData.item2 -= usedTime;
+        }
+        if (usedOverlap > 0)
+        {
+            DataManager.instance.UpdateItem(3, -usedOverlap);
+            if(userData != null) userData.item3 -= usedOverlap;
+        }
+        if (usedGamble > 0)
+        {
+            DataManager.instance.UpdateItem(4, -usedGamble);
+            if(userData != null) userData.item4 -= usedGamble;
+        }
     }
 }
 

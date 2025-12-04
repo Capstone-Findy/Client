@@ -16,7 +16,7 @@ public class DataManager : MonoBehaviour
     private const string POST_EMAIL_VALID_PATH = "/valid";
     private const string POST_REFRESH_PATH = "/auth/refresh";
     private const string GET_USER_INFO_PATH = "/auth/user";
-    private const string HEART_UPDATE_PATH = "/auth/user/heart/1";
+    private const string HEART_UPDATE_PATH = "/auth/user/heart/-1";
     private const string ITEM_UPDATE_PATH = "/auth/user/item";
     private const string POST_GAME_RESULT_PATH = "/auth/origin/result";
     private const string GET_GAME_SCORE_PATH = "/auth/origin";
