@@ -147,25 +147,32 @@ public class InGameManager : MonoBehaviour
             int countryIndex = GameManager.instance.GetCountryIndex(country);
             var stages = country.stagesSlots;
             int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
-            
+            Debug.Log($"[Debug] CountryIndex: {countryIndex}, GameID: {gameId}"); // 1. 값 확인
             if(countryIndex >= 0 && countryIndex < countryCodes.Length)
             {
                 string countryCode = countryCodes[countryIndex];
 
                 if(gameId > 0)
                 {
+                    Debug.Log("[Debug] 점수 요청 시작"); // 2. 요청 진입 확인
                     DataManager.instance.GetGameScore(countryCode, gameId,
                         onSuccess: (score) =>
                         {
+                            Debug.Log($"[Debug] 점수 로드 성공: {score}"); // 3. 성공 콜백 확인
                             if (stageScoreText != null)
                                 stageScoreText.text = $"획득 점수: {score}점";
                         },
                         onError: (code, msg) =>
                         {
+                            Debug.LogError($"[Debug] 점수 로드 실패: {msg}"); // 5. 실패 콜백 확인
                             if (stageScoreText != null)
                                 stageScoreText.text = "점수 로드 실패";
                         }
                     );
+                }
+                else
+                {
+                    Debug.LogWarning("[Debug] countryIndex가 범위를 벗어남");
                 }
             }
 

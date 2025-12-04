@@ -1006,7 +1006,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC810\uC218 : 100\uC810"
+  m_text: "\uC810\uC218 : 50\uC810"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0444670794fcb4102bdb4cc81b546a22, type: 2}
   m_sharedMaterial: {fileID: 4052068741840497300, guid: 0444670794fcb4102bdb4cc81b546a22, type: 2}
@@ -10545,6 +10545,66 @@ RectTransform:
   m_AnchoredPosition: {x: -150, y: 183.19354}
   m_SizeDelta: {x: 554.8668, y: 96.93933}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1952173772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1952173774}
+  - component: {fileID: 1952173773}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1952173773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952173772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e91fd205b5e04ec2811050425131e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentUserData:
+    name: 
+    money: 0
+    heart: 0
+    item1: 0
+    item2: 0
+    item3: 0
+    item4: 0
+  selectedCountry: {fileID: 0}
+  selectedStage: {fileID: 0}
+  allcountries:
+  - {fileID: 11400000, guid: 88e82ad6c086c4b2f8eac0c7ecfac4e6, type: 2}
+  - {fileID: 11400000, guid: db9f3b12cddf24e4f9667822153122f9, type: 2}
+  - {fileID: 11400000, guid: b3992954ca7684f9eb7e2e3fe6642304, type: 2}
+  - {fileID: 11400000, guid: 73171f70074ae44aa8e8a1ea32392eb3, type: 2}
+  - {fileID: 11400000, guid: e87fe6c240ac94a3ebcfa845032cfef1, type: 2}
+--- !u!4 &1952173774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952173772}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1010.6027, y: 1468.3099, z: -5.6755395}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1965288243
 GameObject:
   m_ObjectHideFlags: 0
@@ -11341,3 +11401,4 @@ SceneRoots:
   - {fileID: 1017418623}
   - {fileID: 927320551}
   - {fileID: 436105736}
+  - {fileID: 1952173774}

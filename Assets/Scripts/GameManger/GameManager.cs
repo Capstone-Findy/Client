@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
     {
         if(currentUserData == null || currentUserData.heart <= 0) return;
 
-        DataManager.instance.UpdateHeart(-1,
+        DataManager.instance.UpdateHeart(
             onSuccess: () =>
             {
                 currentUserData.heart--;

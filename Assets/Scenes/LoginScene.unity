@@ -4336,7 +4336,12 @@ MonoBehaviour:
     item4: 0
   selectedCountry: {fileID: 0}
   selectedStage: {fileID: 0}
-  allcountries: []
+  allcountries:
+  - {fileID: 11400000, guid: 88e82ad6c086c4b2f8eac0c7ecfac4e6, type: 2}
+  - {fileID: 11400000, guid: db9f3b12cddf24e4f9667822153122f9, type: 2}
+  - {fileID: 11400000, guid: b3992954ca7684f9eb7e2e3fe6642304, type: 2}
+  - {fileID: 11400000, guid: 73171f70074ae44aa8e8a1ea32392eb3, type: 2}
+  - {fileID: 11400000, guid: e87fe6c240ac94a3ebcfa845032cfef1, type: 2}
 --- !u!114 &1650822337
 MonoBehaviour:
   m_ObjectHideFlags: 0

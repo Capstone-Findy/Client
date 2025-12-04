@@ -62,11 +62,6 @@ namespace Findy.Define
         public string message;
         public UserDataDto data;
     }
-    [Serializable]
-    public class HeartUpdateDto
-    {
-        public int heart;
-    }
 
     //----- Game Result -----//
     [Serializable]
@@ -85,6 +80,13 @@ namespace Findy.Define
     {
         public int gameId;
         public int score;
+    }
+    [Serializable]
+    public class GameScoreResponse
+    {
+        public bool error;
+        public string message;
+        public StageScoreDto[] data;
     }
     [Serializable]
     public class StageScoreListWrapper

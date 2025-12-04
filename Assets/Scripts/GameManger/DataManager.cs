@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Text;
 using Findy.Define;
-using Findy.JsonHelper;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -122,6 +120,7 @@ public class DataManager : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(bodyObj);
+        Debug.Log($"[API Request] Sending to {path}: {json}");
         byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
 
         using (UnityWebRequest req = new UnityWebRequest(BASE_URL + path, "POST"))
@@ -185,6 +184,41 @@ public class DataManager : MonoBehaviour
             {
                 string errorMsg = string.IsNullOrEmpty(req.downloadHandler.text) ? req.error : req.downloadHandler.text;
                 onError?.Invoke(req.responseCode, errorMsg);
+            }
+        }
+    }
+    private IEnumerator CoPatchJsonAuthorized(string path, object bodyObj, Action<string> onSuccess, Action<long, string> onError)
+    {
+        if(!HasJwt())
+        {
+            onError?.Invoke(0, "No JWT");
+            yield break;
+        }
+        string json = bodyObj != null ? JsonUtility.ToJson(bodyObj) : "{}";
+        Debug.Log($"[API Request] Sending PATCH to {path}: {json}");
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+
+        using(UnityWebRequest req = new UnityWebRequest(BASE_URL + path, "PATCH"))
+        {
+            req.uploadHandler = new UploadHandlerRaw(jsonBytes);
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+            req.SetRequestHeader("Cookie", "OID_AUT=" + GetJwt());
+
+            yield return req.SendWebRequest();
+
+            if(req.result == UnityWebRequest.Result.Success)
+            {
+                onSuccess?.Invoke(req.downloadHandler.text);
+            }
+            else
+            {
+                if(req.responseCode == 401)
+                {
+                    HandleAuthExpired();
+                }
+                Debug.LogError($"[API Error] {path} | Code: {req.responseCode} | Msg: {req.error}");
+                onError?.Invoke(req.responseCode, req.error);
             }
         }
     }
@@ -379,12 +413,19 @@ public void GetUserInfo(Action<UserDataDto> onSuccess, Action<long, string> onEr
     ));
 }
 
-    public void UpdateHeart(int delta, Action onSuccess = null, Action<long, string> onError = null)
+    public void UpdateHeart(Action onSuccess = null, Action<long, string> onError = null)
     {
-        var payload = new HeartUpdateDto {heart = delta};
-        StartCoroutine(CoPostJsonAuthorized(HEART_UPDATE_PATH, payload,
-            onSuccess: (txt) => onSuccess?.Invoke(),
-            onError: (code, msg) => onError?.Invoke(code, msg)));
+        StartCoroutine(CoPatchJsonAuthorized(HEART_UPDATE_PATH, null,
+            onSuccess: (txt) => 
+            {
+                Debug.Log("[API] Heart Update Success");
+                onSuccess?.Invoke();
+            },
+            onError: (code, msg) => 
+            {
+                Debug.LogError($"[API] Heart Update Failed: {msg}");
+                onError?.Invoke(code, msg);
+            }));
     }
 
     public void UpdateItem(int itemIndex, int delta, Action<string> onSuccess = null, Action<long, string> onError = null)
@@ -403,7 +444,7 @@ public void GetUserInfo(Action<UserDataDto> onSuccess, Action<long, string> onEr
                 return;
         }
 
-        StartCoroutine(CoPostJsonAuthorized(ITEM_UPDATE_PATH, payload, onSuccess, onError));
+        StartCoroutine(CoPatchJsonAuthorized(ITEM_UPDATE_PATH, payload, onSuccess, onError));
     }
 
     public void UploadGameResult(GameResultDto result, Action onSuccess = null, Action<long, string> onError = null)
@@ -430,22 +471,27 @@ public void GetUserInfo(Action<UserDataDto> onSuccess, Action<long, string> onEr
             {
                 try
                 {
-                    string wrapperJson = $"{{ \"scores\": {txt} }}";
+                    Debug.Log($"[API] GetGameScore Raw Response: {txt}");
+                    var response = JsonUtility.FromJson<GameScoreResponse>(txt);
 
-                    var wrapper = JsonUtility.FromJson<StageScoreListWrapper>(wrapperJson);
-                    var allScores = wrapper?.scores;
-
-                    if(allScores != null)
+                    if (response != null && response.data != null)
                     {
-                        var targetScoreData = System.Array.Find(allScores, s => s.gameId == currentStageGameId);
-                        if(targetScoreData != null)
+                        var targetScoreData = System.Array.Find(response.data, s => s.gameId == currentStageGameId);
+                        
+                        if (targetScoreData != null)
+                        {
+                            Debug.Log($"[API] 점수 찾음: {targetScoreData.score}");
                             onSuccess?.Invoke(targetScoreData.score);
+                        }
                         else
+                        {
+                            Debug.Log($"[API] 해당 게임ID({currentStageGameId})의 점수 기록 없음 -> 0점 처리");
                             onSuccess?.Invoke(0);
+                        }
                     }
                     else
                     {
-                        onError?.Invoke(0, "유효한 점수 응답 데이터 없음");
+                        onSuccess?.Invoke(0);
                     }
                 }
                 catch(Exception e)

@@ -47,10 +47,10 @@ public class MainUI : MonoBehaviour
                 SetObjectsActive(false);
             });
         }
-        if (item1Button != null) item1Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
-        if (item2Button != null) item2Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
-        if (item3Button != null) item3Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
-        if (item4Button != null) item4Button.onClick.AddListener(() => TryPurchaseItem(ITEM_INDEX_TO_BUY));
+        if (item1Button != null) item1Button.onClick.AddListener(() => TryPurchaseItem(1));
+        if (item2Button != null) item2Button.onClick.AddListener(() => TryPurchaseItem(2));
+        if (item3Button != null) item3Button.onClick.AddListener(() => TryPurchaseItem(3));
+        if (item4Button != null) item4Button.onClick.AddListener(() => TryPurchaseItem(4));
 
       
     }
