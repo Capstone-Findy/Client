@@ -115,6 +115,8 @@ namespace Findy.Define
         SFX_AlreadyFound,
         SFX_Item,
         SFX_GameWin,
-        SFX_GameOver
+        SFX_GameOver,
+        SFX_Purchase,
+        SFX_PopupOpen
     }
 }
