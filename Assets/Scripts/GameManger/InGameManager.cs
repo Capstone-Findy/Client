@@ -221,8 +221,8 @@ public class InGameManager : MonoBehaviour
             gameOverPanel.SetActive(true);
             SoundManager.instance.PlaySFX(SoundType.SFX_GameOver);
 
-            answerCountText.text = $"찾은 정답 개수 : {foundCount}개";
-            remainCountText.text = $"남은 정답 개수 : {remainCountAnswer}개";
+            answerCountText.text = $"{foundCount}";
+            remainCountText.text = $"{remainCountAnswer}";
         }
     }
     public void LoadNextStage()
