@@ -8,8 +8,14 @@ public class MainUI : MonoBehaviour
     [Header("User Info Data")]
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI shopMoneyText;
     public TextMeshProUGUI heartText;
     public TextMeshProUGUI[] itemTexts = new TextMeshProUGUI[4];
+
+    [Header("Shop Data")]
+    public PurchasePopupUI purchasePopup;
+    public Sprite[] itemIcons;
+    [TextArea] public string[] itemDescriptions;
 
     [Header("UI")]
     public Button settingButton;
@@ -22,8 +28,6 @@ public class MainUI : MonoBehaviour
     public Button item2Button;
     public Button item3Button;
     public Button item4Button;
-    private const int ITEM_COST = 100;
-    private const int ITEM_INDEX_TO_BUY = 1;
 
     void OnEnable()
     {
@@ -47,10 +51,10 @@ public class MainUI : MonoBehaviour
                 SetObjectsActive(false);
             });
         }
-        if (item1Button != null) item1Button.onClick.AddListener(() => TryPurchaseItem(1));
-        if (item2Button != null) item2Button.onClick.AddListener(() => TryPurchaseItem(2));
-        if (item3Button != null) item3Button.onClick.AddListener(() => TryPurchaseItem(3));
-        if (item4Button != null) item4Button.onClick.AddListener(() => TryPurchaseItem(4));
+        if (item1Button != null) item1Button.onClick.AddListener(() => OpenPurchasePopup(1));
+        if (item2Button != null) item2Button.onClick.AddListener(() => OpenPurchasePopup(2));
+        if (item3Button != null) item3Button.onClick.AddListener(() => OpenPurchasePopup(3));
+        if (item4Button != null) item4Button.onClick.AddListener(() => OpenPurchasePopup(4));
 
       
     }
@@ -64,6 +68,7 @@ public class MainUI : MonoBehaviour
 
         if(nameText != null) nameText.text = userData.name;
         if(moneyText != null) moneyText.text = $"{userData.money}";
+        if(shopMoneyText != null) shopMoneyText.text = $"{userData.money}";
         if(heartText != null) heartText.text = $"{userData.heart} / 5";
 
         if(itemTexts.Length >= 4)
@@ -79,33 +84,16 @@ public class MainUI : MonoBehaviour
             }
         }
     }
-
-    public void TryPurchaseItem(int itemIndex)
+    private void OpenPurchasePopup(int itemIndex)
     {
-        var userData = GameManager.instance.currentUserData;
-        
-        if(userData.money < ITEM_COST)
-        {
-            Debug.LogWarning($"구매 실패: 골드 부족! 현재: {userData.money}, 필요: {ITEM_COST}");
-            // TODO: 골드 부족 팝업 띄우기
-            return;
-        }
-        DataManager.instance.UpdateItem(itemIndex, 1,
-            onSuccess: (txt) =>
-            {
-                userData.money -= ITEM_COST;
-                if(itemIndex == 1) userData.item1 += 1;
-                else if (itemIndex == 2) userData.item2 += 1;
-                else if (itemIndex == 3) userData.item3 += 1;
-                else userData.item4 += 1;
+        int arrayIndex = itemIndex - 1;
 
-                Debug.Log($"아이템 {itemIndex} 구매 성공! 100 골드 차감 완료.");
-                UpdateUserInfoUI();
-            },
-            onError: (code, msg) =>
-            {
-                Debug.LogError($"구매 실패: 서버 통신 오류 (아이템 업데이트). {code} {msg}");
-            });
+        if (arrayIndex < 0 || arrayIndex >= itemIcons.Length) return;
+
+        Sprite icon = itemIcons[arrayIndex];
+        string desc = itemDescriptions[arrayIndex];
+
+        purchasePopup.Open(itemIndex, icon, desc, UpdateUserInfoUI);
     }
     private void SetObjectsActive(bool isActive)
     {
