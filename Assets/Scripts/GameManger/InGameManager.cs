@@ -147,7 +147,7 @@ public class InGameManager : MonoBehaviour
                         onSuccess: (score) =>
                         {
                             if (stageScoreText != null)
-                                stageScoreText.text = $"획득 점수: {score}점";
+                                stageScoreText.text = $"{score}점";
                         },
                         onError: (code, msg) =>
                         {
@@ -201,7 +201,7 @@ public class InGameManager : MonoBehaviour
                         if (FirstClearTimeText != null)
                             FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
                         if (NonFirstClearTimeText != null)
-                            NonFirstClearTimeText.text = $"이번 시도 기록 : {actualPlayTime:F2}초";
+                            NonFirstClearTimeText.text = $"이번 시도 : {actualPlayTime:F2}초";
                     }
                 }
                 else
@@ -209,7 +209,7 @@ public class InGameManager : MonoBehaviour
                     DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
 
                     if (FirstClearTimeText != null)
-                        FirstClearTimeText.text = $"첫 클리어 기록 : {actualPlayTime:F2}초";
+                        FirstClearTimeText.text = $"첫 클리어! : {actualPlayTime:F2}초";
                     if (NonFirstClearTimeText != null)
                         NonFirstClearTimeText.text = string.Empty;
                 }
