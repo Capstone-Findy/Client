@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
         if (instance != null) { Destroy(gameObject); return; }
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        Application.targetFrameRate = 60;
     }
 
     void Start()
