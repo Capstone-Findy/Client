@@ -413,12 +413,13 @@ public void GetUserInfo(Action<UserDataDto> onSuccess, Action<long, string> onEr
     ));
 }
 
-    public void UpdateHeart(Action onSuccess = null, Action<long, string> onError = null)
+    public void UpdateHeart(int delta, Action onSuccess = null, Action<long, string> onError = null)
     {
-        StartCoroutine(CoPatchJsonAuthorized(HEART_UPDATE_PATH, null,
+        string dynamicPath = $"/auth/user/heart/{delta}";
+        StartCoroutine(CoPatchJsonAuthorized(dynamicPath, null,
             onSuccess: (txt) => 
             {
-                Debug.Log("[API] Heart Update Success");
+                Debug.Log($"[API] Heart Update ({delta}) Success");
                 onSuccess?.Invoke();
             },
             onError: (code, msg) => 
