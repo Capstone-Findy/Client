@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Findy.Define
@@ -101,6 +103,21 @@ namespace Findy.Define
         public int item2;
         public int item3;
         public int item4;
+    }
+
+    //----- AI Generator -----//
+    public class AIDiffResponse
+    {
+        public string base_image;     
+        public string diff_image;    
+        public string answer_image; 
+        public string mask_image;   
+        
+        public JObject coordinates;
+    }
+    public class CoordinateWrapper
+    {
+        public List<List<float>> canvas;
     }
 
     //----- Sound -----//
