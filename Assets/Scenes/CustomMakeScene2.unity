@@ -565,6 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentUserData:
+    id: 0
     name: 
     money: 0
     heart: 0
@@ -2003,8 +2004,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 55.00003, y: -719.89014}
-  m_SizeDelta: {x: -354.95996, y: -1684.27}
+  m_AnchoredPosition: {x: 55.00003, y: -875.4}
+  m_SizeDelta: {x: -355, y: -1995.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &955360998
 MonoBehaviour:
@@ -2206,8 +2207,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18, y: -64}
-  m_SizeDelta: {x: 686.27, y: 30}
+  m_AnchoredPosition: {x: 4, y: -68.9}
+  m_SizeDelta: {x: 544, y: 61.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1130281222
 MonoBehaviour:
@@ -2236,7 +2237,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -3064,8 +3065,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22, y: -9}
-  m_SizeDelta: {x: 708.8, y: 26.95}
+  m_AnchoredPosition: {x: -0.9, y: 1.3}
+  m_SizeDelta: {x: 537.3, y: 70.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1980730757
 MonoBehaviour:
