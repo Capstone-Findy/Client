@@ -15,6 +15,8 @@ public class DataManager : MonoBehaviour
     private const string POST_LOGIN_URL = "/sign-in";
     private const string POST_EMAIL_VALID_PATH = "/valid";
     private const string POST_REFRESH_PATH = "/auth/refresh";
+    private const string LOGOUT_PATH = "/auth/logout";
+    private const string WITHDRAW_PATH = "/auth/withdraw";
     private const string GET_USER_INFO_PATH = "/auth/user";
     private const string HEART_UPDATE_PATH = "/auth/user/heart/-1";
     private const string ITEM_UPDATE_PATH = "/auth/user/item";
@@ -222,6 +224,32 @@ public class DataManager : MonoBehaviour
             }
         }
     }
+    private IEnumerator CoDeleteAuthorized(string path, Action<string> onSuccess, Action<long, string> onError)
+    {
+        if(!HasJwt())
+        {
+            onError?.Invoke(0, "No JWT");
+            yield break;
+        }
+
+        using (UnityWebRequest req = UnityWebRequest.Delete(BASE_URL + path))
+        {
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Cookie", "OID_AUT=" + GetJwt());
+
+            yield return req.SendWebRequest();
+
+            if (req.result == UnityWebRequest.Result.Success)
+            {
+                onSuccess?.Invoke(req.downloadHandler.text);
+            }
+            else
+            {
+                if (req.responseCode == 401) HandleAuthExpired();
+                onError?.Invoke(req.responseCode, req.error);
+            }
+        }
+    }
     private void HandleAuthExpired()
     {
         Debug.LogWarning("[Auth] JWT expired or invalid. Clearing token.");
@@ -314,6 +342,42 @@ public void Login(string email, string password, bool rememberMe, Action onSucce
         }
     ));
 }
+    public void Logout(int userId, Action onSuccess, Action<long, string> onError)
+    {
+        var payload = new LogoutRequestDto { id = userId };
+
+        StartCoroutine(CoPostJsonAuthorized(LOGOUT_PATH, payload,
+            onSuccess: (txt) =>
+            {
+                Debug.Log("[API] 로그아웃 성공");
+                ClearJwt();        
+                ClearRefreshToken();
+                onSuccess?.Invoke();
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] 로그아웃 실패: {msg}");
+                onError?.Invoke(code, msg);
+            }
+        ));
+    }
+    public void Withdraw(Action onSuccess, Action<long, string> onError)
+    {
+        StartCoroutine(CoDeleteAuthorized(WITHDRAW_PATH,
+            onSuccess: (txt) =>
+            {
+                Debug.Log("[API] 회원탈퇴 성공");
+                ClearJwt();
+                ClearRefreshToken();
+                onSuccess?.Invoke();
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"[API] 회원탈퇴 실패: {msg}");
+                onError?.Invoke(code, msg);
+            }
+        ));
+    }
     public void SendValidationEmail(string email, Action onSuccess, Action<long, string> onError)
     {
         var payload = new EmailValidationDto { email = email };

@@ -20,8 +20,12 @@ public class MainUI : MonoBehaviour
     [Header("UI")]
     public Button settingButton;
     public Button shopButton;
+    public Button myPageButton;
+    public Button logoutButton;
+    public Button withdrawButton;
     public GameObject settingPanel;
     public GameObject shopPanel;
+    public GameObject myPagePanel;
     public GameObject[] objects;
     [Header("Shop")]
     public Button item1Button;
@@ -35,6 +39,7 @@ public class MainUI : MonoBehaviour
 
         if (settingButton != null) settingButton.onClick.RemoveAllListeners();
         if(shopButton != null) shopButton.onClick.RemoveAllListeners();
+        if (myPageButton != null) myPageButton.onClick.RemoveAllListeners();
 
         if (settingButton != null) 
             settingButton.onClick.AddListener(() =>
@@ -51,12 +56,30 @@ public class MainUI : MonoBehaviour
                 SetObjectsActive(false);
             });
         }
+        if(myPageButton != null)
+        {
+            myPageButton.onClick.AddListener(() =>
+            {
+                myPagePanel.SetActive(true);
+                SetObjectsActive(false);
+            });
+        }
+        if (logoutButton != null)
+        {
+            logoutButton.onClick.RemoveAllListeners();
+            logoutButton.onClick.AddListener(OnClickLogout);
+        }
+
+        if (withdrawButton != null)
+        {
+            withdrawButton.onClick.RemoveAllListeners();
+            withdrawButton.onClick.AddListener(OnClickWithdraw);
+        }
+
         if (item1Button != null) item1Button.onClick.AddListener(() => OpenPurchasePopup(1));
         if (item2Button != null) item2Button.onClick.AddListener(() => OpenPurchasePopup(2));
         if (item3Button != null) item3Button.onClick.AddListener(() => OpenPurchasePopup(3));
-        if (item4Button != null) item4Button.onClick.AddListener(() => OpenPurchasePopup(4));
-
-      
+        if (item4Button != null) item4Button.onClick.AddListener(() => OpenPurchasePopup(4));      
     }
 
     private void UpdateUserInfoUI()
@@ -108,11 +131,41 @@ public class MainUI : MonoBehaviour
             }
         }
     }
+    private void OnClickLogout()
+    {
+        int userId = GameManager.instance.currentUserData != null ? GameManager.instance.currentUserData.id : 0;
+
+        DataManager.instance.Logout(userId,
+            onSuccess: () =>
+            {
+                GameManager.instance.LoadScene("LoginScene", false);
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError("로그아웃 실패");
+                GameManager.instance.LoadScene("LoginScene", false);
+            }
+        );
+    }
+    private void OnClickWithdraw()
+    {      
+        DataManager.instance.Withdraw(
+            onSuccess: () =>
+            {
+                Debug.Log("회원탈퇴 완료. 로그인 화면으로 이동합니다.");
+                GameManager.instance.LoadScene("LoginScene", false);
+            },
+            onError: (code, msg) =>
+            {
+                Debug.LogError($"회원탈퇴 실패: {msg}");
+            }
+        );
+    }
     public void CloseAllPanel()
     {
         settingPanel.SetActive(false);
         shopPanel.SetActive(false);
+        myPagePanel.SetActive(false);
         SetObjectsActive(true);
     }
-    
 }

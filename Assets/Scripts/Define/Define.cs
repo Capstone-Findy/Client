@@ -45,10 +45,17 @@ namespace Findy.Define
         public string accessToken;
         public string refreshToken;
     }
+    [Serializable]
+    public class LogoutRequestDto
+    {
+        public int id;
+    }
+
     //----- User Info -----//
     [Serializable]
     public class UserDataDto
     {
+        public int id;
         public string name;
         public int money;
         public int heart;
