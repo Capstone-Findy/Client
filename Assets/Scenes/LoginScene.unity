@@ -4327,6 +4327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentUserData:
+    id: 0
     name: 
     money: 0
     heart: 0
@@ -5012,7 +5013,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1918576332}
         m_TargetAssemblyTypeName: LoginUI, Assembly-CSharp
         m_MethodName: OnClickSendValidationEmail
         m_Mode: 1
