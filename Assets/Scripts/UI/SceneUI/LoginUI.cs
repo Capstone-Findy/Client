@@ -10,6 +10,7 @@ public class LoginUI : MonoBehaviour
     [Header("Button")]
     public Button SignUpButton;
     public Button LoginButton;
+
     [Header("Login Panel")]
     public GameObject LoginPanel;
     public InputField LoginEmailInput;
@@ -23,6 +24,8 @@ public class LoginUI : MonoBehaviour
     public InputField SignUpPasswordInput;
     public Image ProfileImage;
     private Texture2D selectedProfileTexture;
+    public GameObject SuccessPanel;
+    public GameObject SuccessSignUpPanel;
 
     void Start()
     {
@@ -56,6 +59,10 @@ public class LoginUI : MonoBehaviour
     {
         LoginPanel.SetActive(false);
         SignUpPanel.SetActive(false);
+    }
+    public void CloseSuccessPanel()
+    {
+        SuccessPanel.SetActive(false);
     }
 
     public void OnClickLoginSubmit()
@@ -123,6 +130,7 @@ public class LoginUI : MonoBehaviour
         DataManager.instance.SendValidationEmail(email,
             onSuccess: () =>
             {
+                SuccessPanel.SetActive(true);
                 Debug.Log("인증 메일 발송 성공! 메일함을 확인해주세요.");
             },
             onError: (code, msg) =>
