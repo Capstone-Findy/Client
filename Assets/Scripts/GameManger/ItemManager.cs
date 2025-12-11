@@ -20,6 +20,7 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private RectTransform originalImageArea;
     [SerializeField] private RectTransform wrongImageArea;
     [SerializeField] private GameObject noMoreItemPrefab;
+    [SerializeField] private GameObject itemlockPrefab;
     [SerializeField] private Image overlayBackground;
     [SerializeField] private GameObject coinAnimPrefab;
     [SerializeField] private Transform uiCanvas;
@@ -79,7 +80,7 @@ public class ItemManager : MonoBehaviour
         int remainingAnswer = currentStage.totalAnswerCount - touchManager.GetFoundAnswerCount();
         if (remainingAnswer <= 1)
         {
-            Debug.Log("힌트 아이템을 사용할 수 없습니다.");
+            touchManager.ShowCurStateImage(itemlockPrefab);
             return;
         }
         foreach (var answer in currentStage.answerPos)
@@ -215,7 +216,6 @@ public class ItemManager : MonoBehaviour
         GameObject marker = Instantiate(hintMarkerPrefab, imageArea);
         marker.transform.localScale = Vector3.one;
         marker.GetComponent<RectTransform>().anchoredPosition = localPos;
-        Destroy(marker, 1f);
     }
 
     public void CreateWrongMarker(RectTransform imageArea, Vector2 localPos)
