@@ -46,7 +46,9 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI moveToMainText;
     [SerializeField] private TextMeshProUGUI stageScoreText;
     [SerializeField] private GameObject remainIconPrefab;
-    [SerializeField] private Transform remainIconContainer;
+    [SerializeField] private Transform iconRow1;
+    [SerializeField] private Transform iconRow2;
+
     private List<GameObject> remainIcons = new List<GameObject>();
 
     void Start()
@@ -101,25 +103,32 @@ public class InGameManager : MonoBehaviour
 
     private IEnumerator InitRemainIconsRoutine()
     {
-        if (currentStage == null || remainIconPrefab == null || remainIconContainer == null) yield break;
-        
-        foreach(Transform child in remainIconContainer)
-        {
-            Destroy(child.gameObject);
-        }
-        remainIcons.Clear();
+        if (currentStage == null || remainIconPrefab == null || iconRow1 == null || iconRow2 == null) yield break;        
+        foreach(Transform child in iconRow1) Destroy(child.gameObject);
+        foreach(Transform child in iconRow2) Destroy(child.gameObject);
 
+        remainIcons.Clear();
         yield return null; 
 
         int totalCount = currentStage.totalAnswerCount;
         for(int i = 0; i < totalCount; i++)
         {
-            GameObject icon = Instantiate(remainIconPrefab, remainIconContainer);
+            Transform targetParent;
+            if (i < 7) 
+            {
+                targetParent = iconRow1;
+            }
+            else 
+            {
+                targetParent = iconRow2;
+            }
+            GameObject icon = Instantiate(remainIconPrefab, targetParent);
             icon.SetActive(true);
             remainIcons.Add(icon);
         }
         yield return new WaitForEndOfFrame();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(remainIconContainer as RectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(iconRow1 as RectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(iconRow2 as RectTransform);
     }
     public void DecreaseRemainIcon()
     {
@@ -146,113 +155,115 @@ public class InGameManager : MonoBehaviour
         int gameId = currentStage != null ? currentStage.gameId : 0;
         int foundCount = touchManager.GetFoundAnswerCount();
         int remainingTime = Mathf.FloorToInt(currentTime);
+        bool isCustomMode = (gameId == -1);
 
-        var resultData = new GameResultDto
+        if (!isCustomMode)
         {
-            gameId = gameId,
-            remainTime = remainingTime < 0 ? 0 : remainingTime,
-            correct = foundCount,
-            item1 = itemManager.GetUsedHintCount(),
-            item2 = itemManager.GetUsedTimeAddCount(),
-            item3 = itemManager.GetUsedOverlapCount(),
-            item4 = itemManager.GetUsedOverlapCount()
-        };
+            var resultData = new GameResultDto
+            {
+                gameId = gameId,
+                remainTime = remainingTime < 0 ? 0 : remainingTime,
+                correct = foundCount,
+                item1 = itemManager.GetUsedHintCount(),
+                item2 = itemManager.GetUsedTimeAddCount(),
+                item3 = itemManager.GetUsedOverlapCount(),
+                item4 = itemManager.GetUsedOverlapCount()
+            };
 
-        DataManager.instance.UploadGameResult(resultData,
-            onSuccess: () =>
-            {
-                Debug.Log("게임 결과 서버 업로드 완료.");
-            },
-            onError: (code, msg) =>
-            {
-                Debug.LogError($"게임 결과 업로드 실패: {msg}");
-            }
-        );        
+            DataManager.instance.UploadGameResult(resultData,
+                onSuccess: () =>
+                {
+                    Debug.Log("게임 결과 서버 업로드 완료.");
+                },
+                onError: (code, msg) =>
+                {
+                    Debug.LogError($"게임 결과 업로드 실패: {msg}");
+                }
+            );
+        }
 
         if (foundCount == currentStage.totalAnswerCount)
         {
             gameVictoryPanel.SetActive(true);
             SoundManager.instance.PlaySFX(SoundType.SFX_GameWin);
 
-            var country = GameManager.instance.selectedCountry;
-            int countryIndex = GameManager.instance.GetCountryIndex(country);
-            var stages = country.stagesSlots;
-            int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
-            if(countryIndex >= 0 && countryIndex < countryCodes.Length)
+            if (isCustomMode)
             {
-                string countryCode = countryCodes[countryIndex];
-
-                if(gameId > 0)
-                {
-                    DataManager.instance.GetGameScore(countryCode, gameId,
-                        onSuccess: (score) =>
-                        {
-                            if (stageScoreText != null)
-                                stageScoreText.text = $"{score}점";
-                        },
-                        onError: (code, msg) =>
-                        {
-                            if (stageScoreText != null)
-                                stageScoreText.text = "점수 로드 실패";
-                        }
-                    );
-                }
-                else
-                {
-                    Debug.LogWarning("[Debug] countryIndex가 범위를 벗어남");
-                }
+                if (moveToMainText != null) moveToMainText.text = "메인으로 이동";
+                if (stageScoreText != null) stageScoreText.text = "Custom Stage";
+                if (FirstClearTimeText != null) FirstClearTimeText.text = "";
+                if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = "";
             }
-
-            if (country != null)
+            else
             {
-                DataManager.UnlockNextStage(country.countryName, currentIndex);
-            }
+                var country = GameManager.instance.selectedCountry;
 
-            bool isLastStageOfCountry = (currentIndex == stages.Count - 1);
-
-            if(isLastStageOfCountry)
-            {
-                int currentCountryIndex = GameManager.instance.GetCountryIndex(country);
-                if(currentCountryIndex != - 1)
+                if (country != null)
                 {
-                    DataManager.UnlockNextCountry(currentCountryIndex);
-                }
-            }
-            
-            if (currentIndex >= stages.Count - 1) moveToMainText.text = "메인으로 이동";
+                    int countryIndex = GameManager.instance.GetCountryIndex(country);
+                    var stages = country.stagesSlots;
+                    int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
 
-            if(country != null)
-            {
-                float? prevClearTime = DataManager.GetLocalBestClearTime(country.countryName, currentIndex);
-                
-                if(prevClearTime.HasValue)
-                {
-                    float bestTime = prevClearTime.Value;
-                    if(actualPlayTime < bestTime)
+                    if (countryIndex >= 0 && countryIndex < countryCodes.Length && gameId > 0)
                     {
-                        DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
+                        string countryCode = countryCodes[countryIndex];
+                        DataManager.instance.GetGameScore(countryCode, gameId,
+                            onSuccess: (score) =>
+                            {
+                                if (stageScoreText != null)
+                                    stageScoreText.text = $"획득 점수: {score}점";
+                            },
+                            onError: (code, msg) =>
+                            {
+                                if (stageScoreText != null)
+                                    stageScoreText.text = "점수 로드 실패";
+                            }
+                        );
+                    }
 
-                        if (FirstClearTimeText != null)
-                            FirstClearTimeText.text = $"최고 기록 달성! : {actualPlayTime:F2}초";
-                        if (NonFirstClearTimeText != null)
-                            NonFirstClearTimeText.text = $"이전 최고 기록 : {bestTime:F2}초";
+                    DataManager.UnlockNextStage(country.countryName, currentIndex);
+
+                    bool isLastStageOfCountry = (currentIndex == stages.Count - 1);
+                    if (isLastStageOfCountry)
+                    {
+                        int currentCountryIndex = GameManager.instance.GetCountryIndex(country);
+                        if (currentCountryIndex != -1)
+                        {
+                            DataManager.UnlockNextCountry(currentCountryIndex);
+                        }
+                    }
+
+                    if (currentIndex >= stages.Count - 1)
+                        if (moveToMainText != null) moveToMainText.text = "메인으로 이동";
+
+                    float? prevClearTime = DataManager.GetLocalBestClearTime(country.countryName, currentIndex);
+                    if (prevClearTime.HasValue)
+                    {
+                        float bestTime = prevClearTime.Value;
+                        if (actualPlayTime < bestTime)
+                        {
+                            DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
+                            if (FirstClearTimeText != null)
+                                FirstClearTimeText.text = $"최고 기록 달성! : {actualPlayTime:F2}초";
+                            if (NonFirstClearTimeText != null)
+                                NonFirstClearTimeText.text = $"이전 최고 기록 : {bestTime:F2}초";
+                        }
+                        else
+                        {
+                            if (FirstClearTimeText != null)
+                                FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
+                            if (NonFirstClearTimeText != null)
+                                NonFirstClearTimeText.text = $"이번 시도 기록 : {actualPlayTime:F2}초";
+                        }
                     }
                     else
                     {
+                        DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
                         if (FirstClearTimeText != null)
-                            FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
+                            FirstClearTimeText.text = $"첫 클리어 기록 : {actualPlayTime:F2}초";
                         if (NonFirstClearTimeText != null)
-                            NonFirstClearTimeText.text = $"이번 시도 : {actualPlayTime:F2}초";
+                            NonFirstClearTimeText.text = string.Empty;
                     }
-                }
-                else
-                {
-                    DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
-
-                    if (FirstClearTimeText != null)
-                        FirstClearTimeText.text = $"첫 클리어! : {actualPlayTime:F2}초";
-                    if (NonFirstClearTimeText != null)
-                        NonFirstClearTimeText.text = string.Empty;
                 }
             }
         }
@@ -289,7 +300,15 @@ public class InGameManager : MonoBehaviour
     public void ReturnToMain()
     {
         GameManager.instance.PopSceneHistory();
-        GameManager.instance.LoadScene("StageSelectScene", false);
+        if(currentStage != null && currentStage.gameId == -1)
+        {
+            GameManager.instance.LoadScene("CustomMakeScene2", false);
+        }
+        else
+        {
+            GameManager.instance.LoadScene("StageSelectScene", false);
+        }
+        
     }
 
     public void Pause()
