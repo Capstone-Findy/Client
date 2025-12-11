@@ -20,6 +20,7 @@ public class AIGenerator : MonoBehaviour
     [SerializeField] private Button startGameBtn;
     [SerializeField] private Image previewOriginalImage;
     [SerializeField] private TextMeshProUGUI statusText;
+    private Coroutine loadingCoroutine;
 
     [Header("Stage Data")]
     private StageData generatedStageData;
@@ -63,7 +64,9 @@ public class AIGenerator : MonoBehaviour
 
     IEnumerator CoRequestAISage(string prompt)
     {
-        statusText.text = "AI가 이미지를 생성 중입니다... 잠시만 기다려주세요.";
+        if(loadingCoroutine != null) StopCoroutine(loadingCoroutine);
+        loadingCoroutine = StartCoroutine(CoLoadingTextAnim());
+
         generateBtn.interactable = false;
 
         var requestData = new { prompt = prompt };
@@ -78,12 +81,19 @@ public class AIGenerator : MonoBehaviour
 
             yield return req.SendWebRequest();
 
+            if(loadingCoroutine != null)
+            {
+                StopCoroutine(loadingCoroutine);
+                loadingCoroutine = null;
+            }
+
             if(req.result == UnityWebRequest.Result.Success)
             {
-                statusText.text = "데이터 처리 중...";
+                string rawJson = req.downloadHandler.text;
+                statusText.text = "생성 완료!";
                 try
                 {
-                    ProcessResponse(req.downloadHandler.text);
+                    ProcessResponse(rawJson);
                 }
                 catch (System.Exception e)
                 {
@@ -226,5 +236,25 @@ public class AIGenerator : MonoBehaviour
 
         generatedStageData.stageDescription = "AI가 생성한 세상에 단 하나뿐인 스테이지입니다.";
         generatedStageData.stageMission = "틀린 그림을 모두 찾아보세요!";
+    }
+
+    IEnumerator CoLoadingTextAnim()
+    {
+        string baseText = "AI가 이미지를 생성 중입니다. 1~2분 정도 소요됩니다.";
+        int dotCount = 0;
+
+        while(true)
+        {
+            string dots = "";
+            for(int i = 0; i < dotCount; i++)
+            {
+                dots += ".";
+            }
+            statusText.text = $"{baseText}{dots}";
+            dotCount++;
+            if(dotCount > 3) dotCount = 0;
+
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
