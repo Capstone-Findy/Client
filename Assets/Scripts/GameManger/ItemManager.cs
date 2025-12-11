@@ -90,6 +90,7 @@ public class ItemManager : MonoBehaviour
                 CreateHintMarker(originalImageArea, answer);
                 CreateHintMarker(wrongImageArea, answer);
                 touchManager.ForceAddFoundAnswer(answer);
+                inGameManager.DecreaseRemainIcon();
                 break;
             }
         }
