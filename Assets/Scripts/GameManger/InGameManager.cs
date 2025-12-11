@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Collections;
 using Findy.Define;
 using TMPro;
 using UnityEngine;
@@ -43,6 +45,9 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timeLeftText;
     [SerializeField] private TextMeshProUGUI moveToMainText;
     [SerializeField] private TextMeshProUGUI stageScoreText;
+    [SerializeField] private GameObject remainIconPrefab;
+    [SerializeField] private Transform remainIconContainer;
+    private List<GameObject> remainIcons = new List<GameObject>();
 
     void Start()
     {
@@ -54,6 +59,8 @@ public class InGameManager : MonoBehaviour
             originalImage.sprite = currentStage.originalImage;
             wrongImage.sprite = currentStage.wrongImage;
         }
+
+        StartCoroutine(InitRemainIconsRoutine());
 
         currentTime = totalTime;
         timeSlider.maxValue = totalTime;
@@ -89,6 +96,40 @@ public class InGameManager : MonoBehaviour
             timeLeftText.text = "0";
             currentTime = 0;
             GameOver();
+        }
+    }
+
+    private IEnumerator InitRemainIconsRoutine()
+    {
+        if (currentStage == null || remainIconPrefab == null || remainIconContainer == null) yield break;
+        
+        foreach(Transform child in remainIconContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        remainIcons.Clear();
+
+        yield return null; 
+
+        int totalCount = currentStage.totalAnswerCount;
+        for(int i = 0; i < totalCount; i++)
+        {
+            GameObject icon = Instantiate(remainIconPrefab, remainIconContainer);
+            icon.SetActive(true);
+            remainIcons.Add(icon);
+        }
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(remainIconContainer as RectTransform);
+    }
+    public void DecreaseRemainIcon()
+    {
+        if(remainIcons.Count > 0)
+        {
+            int lastIndex = remainIcons.Count - 1;
+            GameObject iconToRemove = remainIcons[lastIndex];
+
+            iconToRemove.SetActive(false);
+            remainIcons.RemoveAt(lastIndex);
         }
     }
 

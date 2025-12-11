@@ -55,6 +55,7 @@ public class TouchManager : MonoBehaviour
             Vector2 answerPos = GetAnswerPosition(screenPos, originalImageArea);
             itemManager.CreateHintMarker(originalImageArea, answerPos);
             itemManager.CreateHintMarker(wrongImageArea, answerPos);
+            inGameManager.DecreaseRemainIcon();
             ShowCurStateImage(correctImgPrefab);
             SoundManager.instance.PlaySFX(SoundType.SFX_Correct);
         }
@@ -63,6 +64,7 @@ public class TouchManager : MonoBehaviour
             Vector2 answerPos = GetAnswerPosition(screenPos, wrongImageArea);
             itemManager.CreateHintMarker(originalImageArea, answerPos);
             itemManager.CreateHintMarker(wrongImageArea, answerPos);
+            inGameManager.DecreaseRemainIcon();
             ShowCurStateImage(correctImgPrefab);
             SoundManager.instance.PlaySFX(SoundType.SFX_Correct);
         }
