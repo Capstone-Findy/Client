@@ -25,15 +25,23 @@ public class InGameManager : MonoBehaviour
     private float totalTime = 60f;
     public float currentTime;
 
-    [Header("UI")]
+    [Header("UI Groups")]
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject gameVictoryPanel;
     [SerializeField] private GameObject itemUsagePanel;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject nextStageButton;
+
+    [Header("UI Texts")]
     [SerializeField] private TextMeshProUGUI answerCountText;
     [SerializeField] private TextMeshProUGUI remainCountText;
     [SerializeField] private TextMeshProUGUI FirstClearTimeText;
     [SerializeField] private TextMeshProUGUI NonFirstClearTimeText;
+    [SerializeField] private TextMeshProUGUI timeLeftText;
+    [SerializeField] private TextMeshProUGUI moveToMainText;
+    [SerializeField] private TextMeshProUGUI stageScoreText;
+    
+    [Header("Item UI Texts")]
     [SerializeField] private TextMeshProUGUI usedHintCountText;
     [SerializeField] private TextMeshProUGUI usedTimeAddCountText;
     [SerializeField] private TextMeshProUGUI usedOverlapCountText;
@@ -42,14 +50,16 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI remainTimeAddCountText;
     [SerializeField] private TextMeshProUGUI remainOverlapCountText;
     [SerializeField] private TextMeshProUGUI remainGambleCountText;
-    [SerializeField] private TextMeshProUGUI timeLeftText;
-    [SerializeField] private TextMeshProUGUI moveToMainText;
-    [SerializeField] private TextMeshProUGUI stageScoreText;
+
+    [Header("Remain Icons")]
     [SerializeField] private GameObject remainIconPrefab;
     [SerializeField] private Transform iconRow1;
     [SerializeField] private Transform iconRow2;
-
     private List<GameObject> remainIcons = new List<GameObject>();
+
+    [Header("Custom UI")]
+    [SerializeField] private Image victoryAnswerUI;
+    [SerializeField] private Image failAnswerUI;
 
     void Start()
     {
@@ -62,12 +72,16 @@ public class InGameManager : MonoBehaviour
             wrongImage.sprite = currentStage.wrongImage;
         }
 
+        if (victoryAnswerUI != null) victoryAnswerUI.gameObject.SetActive(false);
+        if (failAnswerUI != null) failAnswerUI.gameObject.SetActive(false);
+
         StartCoroutine(InitRemainIconsRoutine());
 
         currentTime = totalTime;
         timeSlider.maxValue = totalTime;
         timeSlider.value = currentTime;
     }
+
     void Update()
     {
         ShowLeftItemCount();
@@ -100,6 +114,216 @@ public class InGameManager : MonoBehaviour
             GameOver();
         }
     }
+    private void GameOver()
+    {
+        if (isGameOver) return;
+
+        isGameOver = true;
+        timeSlider.value = 0;
+        SoundManager.instance.StopBGM();
+
+        int gameId = currentStage != null ? currentStage.gameId : 0;
+        int foundCount = touchManager.GetFoundAnswerCount();
+        int totalCount = currentStage != null ? currentStage.totalAnswerCount : 0;
+        bool isCustomMode = (gameId == -1);
+
+        ProcessItems(isCustomMode);
+
+        ProcessServerUpload(isCustomMode, gameId, foundCount);
+
+        if (foundCount == totalCount)
+        {
+            HandleVictory(isCustomMode, gameId);
+        }
+        else
+        {
+            HandleDefeat(isCustomMode, foundCount, totalCount);
+        }
+    }
+    private void ProcessItems(bool isCustomMode)
+    {
+        if (!isCustomMode)
+        {
+            itemUsagePanel.SetActive(true);
+            ShowUsedItem();
+            ConsumeUsedItems();
+        }
+        else
+        {
+            itemUsagePanel.SetActive(false);
+        }
+    }
+
+    private void ProcessServerUpload(bool isCustomMode, int gameId, int foundCount)
+    {
+        if (isCustomMode) return;
+
+        int remainingTime = Mathf.FloorToInt(currentTime);
+        var resultData = new GameResultDto
+        {
+            gameId = gameId,
+            remainTime = remainingTime < 0 ? 0 : remainingTime,
+            correct = foundCount,
+            item1 = itemManager.GetUsedHintCount(),
+            item2 = itemManager.GetUsedTimeAddCount(),
+            item3 = itemManager.GetUsedOverlapCount(),
+            item4 = itemManager.GetUsedOverlapCount()
+        };
+
+        DataManager.instance.UploadGameResult(resultData,
+            onSuccess: () => Debug.Log("게임 결과 서버 업로드 완료."),
+            onError: (code, msg) => Debug.LogError($"게임 결과 업로드 실패: {msg}")
+        );
+    }
+
+    private void HandleVictory(bool isCustomMode, int gameId)
+    {
+        gameVictoryPanel.SetActive(true);
+        SoundManager.instance.PlaySFX(SoundType.SFX_GameWin);
+
+        if (isCustomMode)
+        {
+            if (nextStageButton != null) nextStageButton.SetActive(false);
+            HandleCustomVictory();
+        }
+        else
+        {
+            if (nextStageButton != null) nextStageButton.SetActive(true);
+            HandleNormalVictory(gameId);
+        }
+    }
+
+    private void HandleDefeat(bool isCustomMode, int foundCount, int totalCount)
+    {
+        gameOverPanel.SetActive(true);
+        SoundManager.instance.PlaySFX(SoundType.SFX_GameOver);
+
+        int remainCount = totalCount - foundCount;
+        answerCountText.text = $"{foundCount}";
+        remainCountText.text = $"{remainCount}";
+
+        SetAnswerImageUI(isCustomMode, failAnswerUI);
+    }
+    private void HandleCustomVictory()
+    {
+        SetAnswerImageUI(true, victoryAnswerUI);
+
+        if (moveToMainText != null) moveToMainText.text = "메인으로 이동";
+        if (stageScoreText != null) stageScoreText.text = "Custom Stage";
+
+        if (currentStage != null && !string.IsNullOrEmpty(currentStage.customId))
+        {
+            UpdateCustomBestRecord(currentStage.customId);
+        }
+        else
+        {
+            if (FirstClearTimeText != null) FirstClearTimeText.text = $"클리어 기록 : {actualPlayTime:F2}초";
+            if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = "갤러리에 저장하면 기록이 남습니다.";
+        }
+    }
+
+    private void UpdateCustomBestRecord(string customId)
+    {
+        string key = $"CustomBest_{customId}";
+        float bestTime = PlayerPrefs.GetFloat(key, float.MaxValue);
+
+        if (actualPlayTime < bestTime)
+        {
+            PlayerPrefs.SetFloat(key, actualPlayTime);
+            PlayerPrefs.Save();
+
+            if (FirstClearTimeText != null) FirstClearTimeText.text = $"최고 기록 달성! : {actualPlayTime:F2}초";
+            if (NonFirstClearTimeText != null)
+            {
+                if (bestTime == float.MaxValue) NonFirstClearTimeText.text = "";
+                else NonFirstClearTimeText.text = $"이전 최고 기록 : {bestTime:F2}초";
+            }
+        }
+        else
+        {
+            if (FirstClearTimeText != null) FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
+            if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = $"이번 시도 기록 : {actualPlayTime:F2}초";
+        }
+    }
+    private void HandleNormalVictory(int gameId)
+    {
+        SetAnswerImageUI(false, victoryAnswerUI);
+
+        var country = GameManager.instance.selectedCountry;
+        if (country == null) return;
+
+        int countryIndex = GameManager.instance.GetCountryIndex(country);
+        var stages = country.stagesSlots;
+        int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
+
+        if (countryIndex >= 0 && countryIndex < countryCodes.Length && gameId > 0)
+        {
+            string countryCode = countryCodes[countryIndex];
+            DataManager.instance.GetGameScore(countryCode, gameId,
+                onSuccess: (score) => { if (stageScoreText != null) stageScoreText.text = $"획득 점수: {score}점"; },
+                onError: (code, msg) => { if (stageScoreText != null) stageScoreText.text = "점수 로드 실패"; }
+            );
+        }
+
+        DataManager.UnlockNextStage(country.countryName, currentIndex);
+
+        bool isLastStage = (currentIndex == stages.Count - 1);
+
+        if (isLastStage)
+        {
+            int currentCountryIndex = GameManager.instance.GetCountryIndex(country);
+            if (currentCountryIndex != -1) DataManager.UnlockNextCountry(currentCountryIndex);
+            
+            if (moveToMainText != null) moveToMainText.text = "메인으로 이동";
+
+            if (nextStageButton != null) nextStageButton.SetActive(false);
+        }
+        else
+        {
+            if (nextStageButton != null) nextStageButton.SetActive(true);
+        }
+        UpdateNormalBestRecord(country.countryName, currentIndex);
+    }
+
+    private void UpdateNormalBestRecord(string countryName, int stageIndex)
+    {
+        float? prevClearTime = DataManager.GetLocalBestClearTime(countryName, stageIndex);
+        if (prevClearTime.HasValue)
+        {
+            float bestTime = prevClearTime.Value;
+            if (actualPlayTime < bestTime)
+            {
+                DataManager.SaveLocalBestClearTime(countryName, stageIndex, actualPlayTime);
+                if (FirstClearTimeText != null) FirstClearTimeText.text = $"최고 기록 달성! : {actualPlayTime:F2}초";
+                if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = $"이전 최고 기록 : {bestTime:F2}초";
+            }
+            else
+            {
+                if (FirstClearTimeText != null) FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
+                if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = $"이번 시도 기록 : {actualPlayTime:F2}초";
+            }
+        }
+        else
+        {
+            DataManager.SaveLocalBestClearTime(countryName, stageIndex, actualPlayTime);
+            if (FirstClearTimeText != null) FirstClearTimeText.text = $"첫 클리어 기록 : {actualPlayTime:F2}초";
+            if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = string.Empty;
+        }
+    }
+    private void SetAnswerImageUI(bool show, Image targetUI)
+    {
+        if (targetUI == null) return;
+
+        if (show && currentStage != null && currentStage.answerImage != null)
+        {
+            targetUI.gameObject.SetActive(true);
+            targetUI.sprite = currentStage.answerImage;
+        }
+        else
+        {
+            targetUI.gameObject.SetActive(false);
+        }
+    }
 
     private IEnumerator InitRemainIconsRoutine()
     {
@@ -113,15 +337,7 @@ public class InGameManager : MonoBehaviour
         int totalCount = currentStage.totalAnswerCount;
         for(int i = 0; i < totalCount; i++)
         {
-            Transform targetParent;
-            if (i < 7) 
-            {
-                targetParent = iconRow1;
-            }
-            else 
-            {
-                targetParent = iconRow2;
-            }
+            Transform targetParent = (i < 7) ? iconRow1 : iconRow2;
             GameObject icon = Instantiate(remainIconPrefab, targetParent);
             icon.SetActive(true);
             remainIcons.Add(icon);
@@ -130,6 +346,7 @@ public class InGameManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(iconRow1 as RectTransform);
         LayoutRebuilder.ForceRebuildLayoutImmediate(iconRow2 as RectTransform);
     }
+
     public void DecreaseRemainIcon()
     {
         if(remainIcons.Count > 0)
@@ -141,147 +358,11 @@ public class InGameManager : MonoBehaviour
             remainIcons.RemoveAt(lastIndex);
         }
     }
-
-    private void GameOver()
-    {
-        isGameOver = true;
-        timeSlider.value = 0;
-        SoundManager.instance.StopBGM();
-
-        itemUsagePanel.SetActive(true);
-        ShowUsedItem();
-        ConsumeUsedItems();
-
-        int gameId = currentStage != null ? currentStage.gameId : 0;
-        int foundCount = touchManager.GetFoundAnswerCount();
-        int remainingTime = Mathf.FloorToInt(currentTime);
-        bool isCustomMode = (gameId == -1);
-
-        if (!isCustomMode)
-        {
-            var resultData = new GameResultDto
-            {
-                gameId = gameId,
-                remainTime = remainingTime < 0 ? 0 : remainingTime,
-                correct = foundCount,
-                item1 = itemManager.GetUsedHintCount(),
-                item2 = itemManager.GetUsedTimeAddCount(),
-                item3 = itemManager.GetUsedOverlapCount(),
-                item4 = itemManager.GetUsedOverlapCount()
-            };
-
-            DataManager.instance.UploadGameResult(resultData,
-                onSuccess: () =>
-                {
-                    Debug.Log("게임 결과 서버 업로드 완료.");
-                },
-                onError: (code, msg) =>
-                {
-                    Debug.LogError($"게임 결과 업로드 실패: {msg}");
-                }
-            );
-        }
-
-        if (foundCount == currentStage.totalAnswerCount)
-        {
-            gameVictoryPanel.SetActive(true);
-            SoundManager.instance.PlaySFX(SoundType.SFX_GameWin);
-
-            if (isCustomMode)
-            {
-                if (moveToMainText != null) moveToMainText.text = "메인으로 이동";
-                if (stageScoreText != null) stageScoreText.text = "Custom Stage";
-                if (FirstClearTimeText != null) FirstClearTimeText.text = "";
-                if (NonFirstClearTimeText != null) NonFirstClearTimeText.text = "";
-            }
-            else
-            {
-                var country = GameManager.instance.selectedCountry;
-
-                if (country != null)
-                {
-                    int countryIndex = GameManager.instance.GetCountryIndex(country);
-                    var stages = country.stagesSlots;
-                    int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
-
-                    if (countryIndex >= 0 && countryIndex < countryCodes.Length && gameId > 0)
-                    {
-                        string countryCode = countryCodes[countryIndex];
-                        DataManager.instance.GetGameScore(countryCode, gameId,
-                            onSuccess: (score) =>
-                            {
-                                if (stageScoreText != null)
-                                    stageScoreText.text = $"획득 점수: {score}점";
-                            },
-                            onError: (code, msg) =>
-                            {
-                                if (stageScoreText != null)
-                                    stageScoreText.text = "점수 로드 실패";
-                            }
-                        );
-                    }
-
-                    DataManager.UnlockNextStage(country.countryName, currentIndex);
-
-                    bool isLastStageOfCountry = (currentIndex == stages.Count - 1);
-                    if (isLastStageOfCountry)
-                    {
-                        int currentCountryIndex = GameManager.instance.GetCountryIndex(country);
-                        if (currentCountryIndex != -1)
-                        {
-                            DataManager.UnlockNextCountry(currentCountryIndex);
-                        }
-                    }
-
-                    if (currentIndex >= stages.Count - 1)
-                        if (moveToMainText != null) moveToMainText.text = "메인으로 이동";
-
-                    float? prevClearTime = DataManager.GetLocalBestClearTime(country.countryName, currentIndex);
-                    if (prevClearTime.HasValue)
-                    {
-                        float bestTime = prevClearTime.Value;
-                        if (actualPlayTime < bestTime)
-                        {
-                            DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
-                            if (FirstClearTimeText != null)
-                                FirstClearTimeText.text = $"최고 기록 달성! : {actualPlayTime:F2}초";
-                            if (NonFirstClearTimeText != null)
-                                NonFirstClearTimeText.text = $"이전 최고 기록 : {bestTime:F2}초";
-                        }
-                        else
-                        {
-                            if (FirstClearTimeText != null)
-                                FirstClearTimeText.text = $"최고 기록 : {bestTime:F2}초";
-                            if (NonFirstClearTimeText != null)
-                                NonFirstClearTimeText.text = $"이번 시도 기록 : {actualPlayTime:F2}초";
-                        }
-                    }
-                    else
-                    {
-                        DataManager.SaveLocalBestClearTime(country.countryName, currentIndex, actualPlayTime);
-                        if (FirstClearTimeText != null)
-                            FirstClearTimeText.text = $"첫 클리어 기록 : {actualPlayTime:F2}초";
-                        if (NonFirstClearTimeText != null)
-                            NonFirstClearTimeText.text = string.Empty;
-                    }
-                }
-            }
-        }
-        else
-        {
-            int remainCountAnswer = currentStage.totalAnswerCount - foundCount;
-            gameOverPanel.SetActive(true);
-            SoundManager.instance.PlaySFX(SoundType.SFX_GameOver);
-
-            answerCountText.text = $"{foundCount}";
-            remainCountText.text = $"{remainCountAnswer}";
-        }
-    }
+    
     public void LoadNextStage()
     {
         var country = GameManager.instance.selectedCountry;
         var stages = country.stagesSlots;
-
         int currentIndex = stages.FindIndex(slot => slot.stage == currentStage);
 
         if (currentIndex >= stages.Count - 1)
@@ -302,13 +383,14 @@ public class InGameManager : MonoBehaviour
         GameManager.instance.PopSceneHistory();
         if(currentStage != null && currentStage.gameId == -1)
         {
-            GameManager.instance.LoadScene("CustomMakeScene2", false);
+            string targetScene = GameManager.instance.returnSceneName;
+            if (string.IsNullOrEmpty(targetScene)) targetScene = "CustomMakeScene2";
+            GameManager.instance.LoadScene(targetScene, false);
         }
         else
         {
             GameManager.instance.LoadScene("StageSelectScene", false);
         }
-        
     }
 
     public void Pause()
@@ -316,7 +398,6 @@ public class InGameManager : MonoBehaviour
         Time.timeScale = 0f;
         pausePanel.SetActive(true);
     }
-
     public void Resume()
     {
         Time.timeScale = 1f;
@@ -334,29 +415,20 @@ public class InGameManager : MonoBehaviour
 
     private void ShowUsedItem()
     {
-        int hintUsed = itemManager.GetUsedHintCount();
-        int timeAddUsed = itemManager.GetUsedTimeAddCount();
-        int overlapUsed = itemManager.GetUsedOverlapCount();
-        int gambleUsed = itemManager.GetUsedGambleCount();
-
-        usedHintCountText.text = $"{hintUsed}";
-        usedTimeAddCountText.text = $"{timeAddUsed}";
-        usedOverlapCountText.text = $"{overlapUsed}";
-        usedGambleCountText.text = $"{gambleUsed}";
+        usedHintCountText.text = $"{itemManager.GetUsedHintCount()}";
+        usedTimeAddCountText.text = $"{itemManager.GetUsedTimeAddCount()}";
+        usedOverlapCountText.text = $"{itemManager.GetUsedOverlapCount()}";
+        usedGambleCountText.text = $"{itemManager.GetUsedGambleCount()}";
     }
 
     private void ShowLeftItemCount()
     {
-        int leftHintCount = itemManager.hintItemCount;
-        int leftTimeAddCount = itemManager.timeAddItemCount;
-        int leftOverlapCount = itemManager.overlapItemCount;
-        int leftGambleCount = itemManager.gambleItemCount;
-
-        remainHintCountText.text = $"{leftHintCount}";
-        remainTimeAddCountText.text = $"{leftTimeAddCount}";
-        remainOverlapCountText.text = $"{leftOverlapCount}";
-        remainGambleCountText.text = $"{leftGambleCount}";
+        remainHintCountText.text = $"{itemManager.hintItemCount}";
+        remainTimeAddCountText.text = $"{itemManager.timeAddItemCount}";
+        remainOverlapCountText.text = $"{itemManager.overlapItemCount}";
+        remainGambleCountText.text = $"{itemManager.gambleItemCount}";
     }
+
     private void ConsumeUsedItems()
     {
         int usedHint = itemManager.GetUsedHintCount();
@@ -366,26 +438,9 @@ public class InGameManager : MonoBehaviour
 
         var userData = GameManager.instance.currentUserData;
 
-        if (usedHint > 0)
-        {
-            DataManager.instance.UpdateItem(1, -usedHint);
-            if(userData != null) userData.item1 -= usedHint;
-        }
-        if (usedTime > 0)
-        {
-            DataManager.instance.UpdateItem(2, -usedTime);
-            if(userData != null) userData.item2 -= usedTime;
-        }
-        if (usedOverlap > 0)
-        {
-            DataManager.instance.UpdateItem(3, -usedOverlap);
-            if(userData != null) userData.item3 -= usedOverlap;
-        }
-        if (usedGamble > 0)
-        {
-            DataManager.instance.UpdateItem(4, -usedGamble);
-            if(userData != null) userData.item4 -= usedGamble;
-        }
+        if (usedHint > 0) { DataManager.instance.UpdateItem(1, -usedHint); if(userData != null) userData.item1 -= usedHint; }
+        if (usedTime > 0) { DataManager.instance.UpdateItem(2, -usedTime); if(userData != null) userData.item2 -= usedTime; }
+        if (usedOverlap > 0) { DataManager.instance.UpdateItem(3, -usedOverlap); if(userData != null) userData.item3 -= usedOverlap; }
+        if (usedGamble > 0) { DataManager.instance.UpdateItem(4, -usedGamble); if(userData != null) userData.item4 -= usedGamble; }
     }
 }
-
