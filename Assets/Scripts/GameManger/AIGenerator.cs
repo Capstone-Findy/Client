@@ -32,6 +32,7 @@ public class AIGenerator : MonoBehaviour
         generateBtn.onClick.AddListener(OnGenerateClicked);
         startGameBtn.onClick.AddListener(OnStartGameClicked);
         startGameBtn.gameObject.SetActive(false);
+        Debug.Log(Application.persistentDataPath);
     }
 
     void OnGenerateClicked()
@@ -53,6 +54,15 @@ public class AIGenerator : MonoBehaviour
     {
         if(generatedStageData != null)
         {
+            if(CustomDataHandler.instance != null)
+            {
+                CustomDataHandler.instance.SaveCustomStage(generatedStageData, promptInput.text);
+                Debug.Log("저장 성공!");
+            }
+            else
+            {
+                Debug.LogError("CustomDataHandler가 씬에 없습니다! 저장이 안 됩니다."); 
+            }
             GameManager.instance.SelectStage(generatedStageData);
             GameManager.instance.LoadScene("GameScene");
         }
@@ -232,7 +242,7 @@ public class AIGenerator : MonoBehaviour
         generatedStageData.wrongImage = wrg;
         generatedStageData.answerPos = answers;
         generatedStageData.totalAnswerCount = answers.Count;
-        generatedStageData.correctRange = 50f;
+        generatedStageData.correctRange = 80f;
 
         generatedStageData.stageDescription = "AI가 생성한 세상에 단 하나뿐인 스테이지입니다.";
         generatedStageData.stageMission = "틀린 그림을 모두 찾아보세요!";

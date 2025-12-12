@@ -122,9 +122,18 @@ namespace Findy.Define
         
         public JObject coordinates;
     }
-    public class CoordinateWrapper
+    [Serializable]
+    public class CustomStageInfo
     {
-        public List<List<float>> canvas;
+        public string id;
+        public string createdAt;
+        public string prompt;
+        public List<Vector2> answers;
+    }
+    [Serializable]
+    public class CustomStageList
+    {
+        public List<CustomStageInfo> stages = new List<CustomStageInfo>();
     }
 
     //----- Sound -----//
