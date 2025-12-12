@@ -23,10 +23,14 @@ public class MainUI : MonoBehaviour
     public Button myPageButton;
     public Button logoutButton;
     public Button withdrawButton;
+    public Button gameInfoButton;
+    public Button serviceButton;
     public GameObject settingPanel;
     public GameObject shopPanel;
     public GameObject myPagePanel;
     public GameObject[] objects;
+    [SerializeField] private GameObject gameInfoPanel;
+    [SerializeField] private GameObject servicePanel;
     [Header("Shop")]
     public Button item1Button;
     public Button item2Button;
@@ -167,5 +171,18 @@ public class MainUI : MonoBehaviour
         shopPanel.SetActive(false);
         myPagePanel.SetActive(false);
         SetObjectsActive(true);
+    }
+    public void OpenGameInfoPanel()
+    {
+        gameInfoPanel.SetActive(true);
+    }
+    public void OpenServicePanel()
+    {
+        servicePanel.SetActive(true);
+    }
+    public void CloseLittlePanel()
+    {
+        gameInfoPanel.SetActive(false);
+        servicePanel.SetActive(false);
     }
 }
