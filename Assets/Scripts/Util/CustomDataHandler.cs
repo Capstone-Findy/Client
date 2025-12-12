@@ -23,6 +23,7 @@ public class CustomDataHandler : MonoBehaviour
 
         SaveTexture(data.originalImage.texture, id + "_orig.png");
         SaveTexture(data.wrongImage.texture, id + "_wrong.png");
+        SaveTexture(data.answerImage.texture, id + "_answer.png");
 
         CustomStageInfo info = new CustomStageInfo
         {
@@ -61,21 +62,25 @@ public class CustomDataHandler : MonoBehaviour
     {
         Texture2D orgTex = LoadTexture(info.id + "_orig.png");
         Texture2D wrgTex = LoadTexture(info.id + "_wrong.png");
+        Texture2D ansTex = LoadTexture(info.id + "_answer.png");
 
         if(orgTex == null || wrgTex == null) return null;
 
         Sprite orgSprite = Sprite.Create(orgTex, new Rect(0, 0, orgTex.width, orgTex.height), new Vector2(0.5f, 0.5f));
         Sprite wrgSprite = Sprite.Create(wrgTex, new Rect(0, 0, wrgTex.width, wrgTex.height), new Vector2(0.5f, 0.5f));
+        Sprite ansSprite = Sprite.Create(ansTex, new Rect(0, 0, ansTex.width, ansTex.height), new Vector2(0.5f, 0.5f));
 
         StageData stage = ScriptableObject.CreateInstance<StageData>();
         stage.stageName = "Custom Gallery";
         stage.gameId = -1;
         stage.originalImage = orgSprite;
         stage.wrongImage = wrgSprite;
+        stage.answerImage = ansSprite;
         stage.answerPos = info.answers;
         stage.totalAnswerCount = info.answers.Count;
         stage.correctRange = 80f;
         stage.stageMission = info.prompt;
+        stage.customId = info.id;
 
         return stage;
     }

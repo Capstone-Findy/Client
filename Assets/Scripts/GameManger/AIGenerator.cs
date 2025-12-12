@@ -71,6 +71,7 @@ public class AIGenerator : MonoBehaviour
             {
                 Debug.LogError("CustomDataHandler가 씬에 없습니다! 저장이 안 됩니다."); 
             }
+            GameManager.instance.returnSceneName = "CustomMakeScene2";
             GameManager.instance.SelectStage(generatedStageData);
             GameManager.instance.LoadScene("GameScene");
         }
@@ -142,6 +143,7 @@ public class AIGenerator : MonoBehaviour
 
         Sprite originalSprite = Base64ToSprite(data.base_image);
         Sprite wrongSprite = Base64ToSprite(data.diff_image);
+        Sprite answerSprite = Base64ToSprite(data.answer_image);
 
         if(originalSprite == null || wrongSprite == null)
         {
@@ -181,7 +183,7 @@ public class AIGenerator : MonoBehaviour
 
         List<Vector2> answerPoints = ConvertCoordinates(targetCoords, originalSprite.texture.width, originalSprite.texture.height);
         
-        CreateAndStartStage(originalSprite, wrongSprite, answerPoints);
+        CreateAndStartStage(originalSprite, wrongSprite, answerSprite, answerPoints);
         
         statusText.text = "생성 완료! 게임을 시작하세요.";
         startGameBtn.interactable = true;
@@ -240,7 +242,7 @@ public class AIGenerator : MonoBehaviour
         return result;
     }
 
-    private void CreateAndStartStage(Sprite org, Sprite wrg, List<Vector2> answers)
+    private void CreateAndStartStage(Sprite org, Sprite wrg, Sprite ans, List<Vector2> answers)
     {
         generatedStageData = ScriptableObject.CreateInstance<StageData>();
 
@@ -248,6 +250,7 @@ public class AIGenerator : MonoBehaviour
         generatedStageData.gameId = -1;
         generatedStageData.originalImage = org;
         generatedStageData.wrongImage = wrg;
+        generatedStageData.answerImage = ans;
         generatedStageData.answerPos = answers;
         generatedStageData.totalAnswerCount = answers.Count;
         generatedStageData.correctRange = 80f;
