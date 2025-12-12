@@ -336,6 +336,8 @@ MonoBehaviour:
   startGameBtn: {fileID: 1153548580}
   previewOriginalImage: {fileID: 1222767297}
   statusText: {fileID: 546423451}
+  helpPanel: {fileID: 955360996}
+  helpButton: {fileID: 225301813}
 --- !u!1 &225301812
 GameObject:
   m_ObjectHideFlags: 0
@@ -2301,7 +2303,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

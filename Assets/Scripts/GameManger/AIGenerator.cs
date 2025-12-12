@@ -20,6 +20,8 @@ public class AIGenerator : MonoBehaviour
     [SerializeField] private Button startGameBtn;
     [SerializeField] private Image previewOriginalImage;
     [SerializeField] private TextMeshProUGUI statusText;
+    [SerializeField] private GameObject helpPanel;
+    [SerializeField] private Button helpButton;
     private Coroutine loadingCoroutine;
 
     [Header("Stage Data")]
@@ -31,8 +33,14 @@ public class AIGenerator : MonoBehaviour
     {
         generateBtn.onClick.AddListener(OnGenerateClicked);
         startGameBtn.onClick.AddListener(OnStartGameClicked);
-        startGameBtn.gameObject.SetActive(false);
-        Debug.Log(Application.persistentDataPath);
+        startGameBtn.interactable = false;
+
+        if(helpButton != null)
+            helpButton.onClick.AddListener(() =>
+            {
+                bool isActive = helpPanel.activeSelf;
+                helpPanel.SetActive(!isActive); 
+            });
     }
 
     void OnGenerateClicked()
@@ -45,7 +53,7 @@ public class AIGenerator : MonoBehaviour
         }
 
         generatedStageData = null;
-        startGameBtn.gameObject.SetActive(false);
+        startGameBtn.interactable = false;
 
         StartCoroutine(CoRequestAISage(prompt));
     }
@@ -176,7 +184,7 @@ public class AIGenerator : MonoBehaviour
         CreateAndStartStage(originalSprite, wrongSprite, answerPoints);
         
         statusText.text = "생성 완료! 게임을 시작하세요.";
-        startGameBtn.gameObject.SetActive(true);
+        startGameBtn.interactable = true;
         generateBtn.interactable = true;
     }
 
