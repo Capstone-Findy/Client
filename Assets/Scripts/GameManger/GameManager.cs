@@ -21,8 +21,12 @@ public class GameManager : MonoBehaviour
     public StageData selectedStage;
     [Header("Game Data")]
     [SerializeField] private List<CountryData> allcountries = new List<CountryData>();
+    
     [Header("Util")]
     private Stack<string> sceneHistory = new Stack<string>();
+
+    [Header("Navigation")]
+    public string returnSceneName = "CustomMakeScene2";
 
     void Awake()
     {

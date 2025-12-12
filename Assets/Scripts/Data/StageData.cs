@@ -16,4 +16,8 @@ public class StageData : ScriptableObject
     public List<Vector2> answerPos;
     public float correctRange = 40f; // 터치 허용 반경
     public int totalAnswerCount;
+
+    [Header("Custom Mode")]
+    public Sprite answerImage;
+    public string customId;
 }

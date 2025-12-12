@@ -85,6 +85,7 @@ public class CustomSelectUI : MonoBehaviour
 
         if(stageData != null)
         {
+            GameManager.instance.returnSceneName = "CustomSelectScene";
             GameManager.instance.SelectStage(stageData);
             GameManager.instance.LoadScene("GameScene");
         }
