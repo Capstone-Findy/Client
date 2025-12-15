@@ -120,6 +120,18 @@ public class GameManager : MonoBehaviour
             heartTimer += (float)secondsPassed;
         }
     }
+    public int GetMaxHeart()
+    {
+        return MAX_HEART;
+    }
+    public float GetRemainingRegenTime()
+    {
+        if(currentUserData == null || currentUserData.heart >= MAX_HEART)
+        {
+            return 0f;
+        }
+        return Mathf.Max(0, REGEN_TIME - heartTimer);
+    }
 
     public void AddHeart(int count)
     {

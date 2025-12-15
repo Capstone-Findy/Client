@@ -9,7 +9,6 @@ public class MainUI : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI shopMoneyText;
-    public TextMeshProUGUI heartText;
     public TextMeshProUGUI[] itemTexts = new TextMeshProUGUI[4];
 
     [Header("Shop Data")]
@@ -109,8 +108,6 @@ public class MainUI : MonoBehaviour
         if(moneyText != null) moneyText.text = FormatHelper.FormatNumber(userData.money);
         if(shopMoneyText != null) shopMoneyText.text = FormatHelper.FormatNumber(userData.money);
         
-        if(heartText != null) heartText.text = $"{userData.heart} / 5";
-
         if(itemTexts.Length >= 4)
         {
             int[] itemCounts = new int[] {userData.item1, userData.item2, userData.item3, userData.item4};

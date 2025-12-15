@@ -11,7 +11,6 @@ public class StageSelectUI : MonoBehaviour
     [SerializeField] private Image mapImage;
     [SerializeField] private RectTransform layoutArea;
     [Header("User Info")]
-    public TextMeshProUGUI heartText;
     public TextMeshProUGUI moneyText;
 
     [Header("Stage Info Panel")]
@@ -170,12 +169,10 @@ public class StageSelectUI : MonoBehaviour
             var data = GameManager.instance.currentUserData;
             if (!string.IsNullOrEmpty(data.name))
             {
-                if (heartText != null) heartText.text = $"{data.heart} / 5";
                 if (moneyText != null) moneyText.text = FormatHelper.FormatNumber(data.money);
             }
             else
             {
-                if (heartText != null) heartText.text = "- / 5"; 
                 if (moneyText != null) moneyText.text = "-";    
             }
         }
