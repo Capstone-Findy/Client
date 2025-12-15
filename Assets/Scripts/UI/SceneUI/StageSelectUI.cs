@@ -171,7 +171,7 @@ public class StageSelectUI : MonoBehaviour
             if (!string.IsNullOrEmpty(data.name))
             {
                 if (heartText != null) heartText.text = $"{data.heart} / 5";
-                if (moneyText != null) moneyText.text = $"{data.money}";
+                if (moneyText != null) moneyText.text = FormatHelper.FormatNumber(data.money);
             }
             else
             {

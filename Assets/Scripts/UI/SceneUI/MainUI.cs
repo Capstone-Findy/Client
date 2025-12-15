@@ -105,8 +105,10 @@ public class MainUI : MonoBehaviour
         if(userData == null) return;
 
         if(nameText != null) nameText.text = userData.name;
-        if(moneyText != null) moneyText.text = $"{userData.money}";
-        if(shopMoneyText != null) shopMoneyText.text = $"{userData.money}";
+
+        if(moneyText != null) moneyText.text = FormatHelper.FormatNumber(userData.money);
+        if(shopMoneyText != null) shopMoneyText.text = FormatHelper.FormatNumber(userData.money);
+        
         if(heartText != null) heartText.text = $"{userData.heart} / 5";
 
         if(itemTexts.Length >= 4)
