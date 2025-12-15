@@ -250,6 +250,53 @@ public class DataManager : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator CoPostRefreshToken(string path, object bodyObj, Action<string> onSuccess, Action<long, string> onError)
+    {
+        string json = JsonUtility.ToJson(bodyObj);
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+
+        using (UnityWebRequest req = new UnityWebRequest(BASE_URL + path, "POST"))
+        {
+            req.uploadHandler = new UploadHandlerRaw(jsonBytes);
+            req.downloadHandler = new DownloadHandlerBuffer();
+            req.SetRequestHeader("Content-Type", "application/json");
+
+            if (HasJwt())
+            {
+                req.SetRequestHeader("Cookie", "OID_AUT=" + GetJwt());
+            }
+
+            yield return req.SendWebRequest();
+
+            if (req.result == UnityWebRequest.Result.Success)
+            {
+                var headers = req.GetResponseHeaders();
+                if (headers != null && headers.TryGetValue("Set-Cookie", out string cookieHeader))
+                {
+                    if (cookieHeader.Contains("OID_AUT="))
+                    {
+                        int startIndex = cookieHeader.IndexOf("OID_AUT=") + "OID_AUT=".Length;
+                        int endIndex = cookieHeader.IndexOf(';', startIndex);
+                        if (endIndex == -1) endIndex = cookieHeader.Length;
+                        
+                        string accessTokenCookie = cookieHeader.Substring(startIndex, endIndex - startIndex);
+                        if (!string.IsNullOrEmpty(accessTokenCookie))
+                        {
+                            SaveJwt(accessTokenCookie);
+                            Debug.Log("[Auth] Refreshed Access Token saved from Cookie.");
+                        }
+                    }
+                }
+                onSuccess?.Invoke(req.downloadHandler.text);
+            }
+            else
+            {
+                string errorMsg = string.IsNullOrEmpty(req.downloadHandler.text) ? req.error : req.downloadHandler.text;
+                onError?.Invoke(req.responseCode, errorMsg);
+            }
+        }
+    }
     private void HandleAuthExpired()
     {
         Debug.LogWarning("[Auth] JWT expired or invalid. Clearing token.");
@@ -403,14 +450,21 @@ public void Login(string email, string password, bool rememberMe, Action onSucce
             return;
         }
         var payload = new RefreshRequestDto { refreshToken = currentRefreshToken};
-        StartCoroutine(CoPostJson(POST_REFRESH_PATH, payload,
+        StartCoroutine(CoPostRefreshToken(POST_REFRESH_PATH, payload,
             onSuccess: (txt) =>
             {
-                var ar = JsonUtility.FromJson<AuthResponse>(txt);
+                var wrapper = JsonUtility.FromJson<LoginResponseWrapper>(txt);
+                var ar = wrapper?.data;
 
-                if(ar != null && !string.IsNullOrEmpty(ar.accessToken) && !string.IsNullOrEmpty(ar.refreshToken))
+                bool hasNewAccessToken = !string.IsNullOrEmpty(ar?.accessToken) || HasJwt();
+                bool hasNewRefreshToken = !string.IsNullOrEmpty(ar?.refreshToken);
+
+                if(ar != null && hasNewAccessToken && hasNewRefreshToken)
                 {
-                    SaveJwt(ar.accessToken);
+                    if(!string.IsNullOrEmpty(ar.accessToken))
+                    {
+                        SaveJwt(ar.accessToken);
+                    }
                     SaveRefreshToken(ar.refreshToken);
                     onSuccess?.Invoke();
                 }
