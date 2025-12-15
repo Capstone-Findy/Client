@@ -20,6 +20,7 @@ public class MainUI : MonoBehaviour
     [Header("UI")]
     public Button settingButton;
     public Button shopButton;
+    public Button rankingButton;
     public Button myPageButton;
     public Button logoutButton;
     public Button withdrawButton;
@@ -27,6 +28,7 @@ public class MainUI : MonoBehaviour
     public Button serviceButton;
     public GameObject settingPanel;
     public GameObject shopPanel;
+    public GameObject rankingPanel;
     public GameObject myPagePanel;
     public GameObject[] objects;
     [SerializeField] private GameObject gameInfoPanel;
@@ -43,6 +45,7 @@ public class MainUI : MonoBehaviour
 
         if (settingButton != null) settingButton.onClick.RemoveAllListeners();
         if(shopButton != null) shopButton.onClick.RemoveAllListeners();
+        if(rankingButton != null) rankingButton.onClick.RemoveAllListeners();
         if (myPageButton != null) myPageButton.onClick.RemoveAllListeners();
 
         if (settingButton != null) 
@@ -57,6 +60,14 @@ public class MainUI : MonoBehaviour
             shopButton.onClick.AddListener(() =>
             {
                 shopPanel.SetActive(true);
+                SetObjectsActive(false);
+            });
+        }
+        if(rankingButton != null)
+        {
+            rankingButton.onClick.AddListener(() =>
+            {
+                rankingPanel.SetActive(true);
                 SetObjectsActive(false);
             });
         }
@@ -170,6 +181,7 @@ public class MainUI : MonoBehaviour
         settingPanel.SetActive(false);
         shopPanel.SetActive(false);
         myPagePanel.SetActive(false);
+        rankingPanel.SetActive(false);
         SetObjectsActive(true);
     }
     public void OpenGameInfoPanel()

@@ -2560,8 +2560,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000038146973, y: 0}
-  m_SizeDelta: {x: 326.4, y: 53.9}
+  m_AnchoredPosition: {x: 0.0000030994415, y: -2}
+  m_SizeDelta: {x: 417.8, y: 70.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &877612468
 MonoBehaviour:
@@ -2583,7 +2583,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC778\uC99D \uBA54\uC77C \uBC1C\uC1A1 \uC644\uB8CC!"
+  m_text: "\uC778\uC99D \uBA54\uC77C \uBC1C\uC1A1 \uC644\uB8CC! \uC778\uC99D \uC644\uB8CC
+    \uD6C4 \uD68C\uC6D0\uAC00\uC785\uC744 \uC9C4\uD589\uD574\uC8FC\uC138\uC694."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0444670794fcb4102bdb4cc81b546a22, type: 2}
   m_sharedMaterial: {fileID: 4052068741840497300, guid: 0444670794fcb4102bdb4cc81b546a22, type: 2}
@@ -2610,8 +2611,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4822,6 +4823,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b3992954ca7684f9eb7e2e3fe6642304, type: 2}
   - {fileID: 11400000, guid: 73171f70074ae44aa8e8a1ea32392eb3, type: 2}
   - {fileID: 11400000, guid: e87fe6c240ac94a3ebcfa845032cfef1, type: 2}
+  returnSceneName: CustomMakeScene2
 --- !u!114 &1650822337
 MonoBehaviour:
   m_ObjectHideFlags: 0
