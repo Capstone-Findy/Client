@@ -104,22 +104,14 @@ public class LoginUI : MonoBehaviour
             return;
         }
 
-        // string base64File = "";
-        // if(selectedProfileTexture != null && imageEncoder != null)
-        // {
-        //     base64File = imageEncoder.EncodeTextureToBase64(selectedProfileTexture);
-        // }
-
         DataManager.instance.SignUp(name, file, email, password,
             onSuccess: () =>
             {
-                // TODO : 회원가입 성공 팝업 띄우기
                 Debug.Log("회원가입 성공!");
                 CloseAllPanels();
             },
             onError: (code, msg) =>
             {
-                // TODO : 회원가입 실패 메시지 팝업 띄우기
                 Debug.LogError($"회원가입 실패: {code}, {msg}");
             });
     }

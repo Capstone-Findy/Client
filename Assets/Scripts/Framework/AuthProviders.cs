@@ -19,15 +19,4 @@ namespace Findy.Auth
             onError?.Invoke("Error");
         }
     }
-
-    public class KakaoAuthProvider : IAuthProvider
-    {
-        public string ProviderName => "kakao";
-
-        public void GetAuthorizationCode(Action<string> onSuccess, Action<string> onError)
-        {
-            // TODO: authorization code 획득
-            onError?.Invoke("Error");
-        }
-    }
 }
