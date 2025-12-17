@@ -2574,6 +2574,7 @@ GameObject:
   - component: {fileID: 1054822462}
   - component: {fileID: 1054822464}
   - component: {fileID: 1054822463}
+  - component: {fileID: 1054822465}
   m_Layer: 5
   m_Name: DetailPopupPanel
   m_TagString: Untagged
@@ -2643,6 +2644,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054822461}
   m_CullTransparentMesh: 1
+--- !u!95 &1054822465
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054822461}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5c39717cd8b5e4d18be9a3737e1fece4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1092937132
 GameObject:
   m_ObjectHideFlags: 0
@@ -2958,6 +2980,7 @@ GameObject:
   - component: {fileID: 1199168886}
   - component: {fileID: 1199168888}
   - component: {fileID: 1199168887}
+  - component: {fileID: 1199168889}
   m_Layer: 5
   m_Name: ModeSelectPanel
   m_TagString: Untagged
@@ -3028,6 +3051,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199168885}
   m_CullTransparentMesh: 1
+--- !u!95 &1199168889
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199168885}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5c39717cd8b5e4d18be9a3737e1fece4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1299404911
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,7 +4114,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -77.73}
+  m_AnchoredPosition: {x: 0, y: -77.72998}
   m_SizeDelta: {x: 0, y: -77.73}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1853244009
@@ -4878,6 +4922,18 @@ PrefabInstance:
     - target: {fileID: 7300943547769728716, guid: 29d7db314a9ce463d9a7b545de7a0eda, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777079438653035629, guid: 29d7db314a9ce463d9a7b545de7a0eda, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 213.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 7777079438653035629, guid: 29d7db314a9ce463d9a7b545de7a0eda, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 6.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 7868614633820472678, guid: 29d7db314a9ce463d9a7b545de7a0eda, type: 3}
+      propertyPath: m_text
+      value: 2025-12- 15 14:13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
